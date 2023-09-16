@@ -1,6 +1,6 @@
 // PascalCasing
 function Message() {
-  const name = "Lex";
+  const name = "Lex and Nathan";
   if (name) return <h1>Hello {name}</h1>;
   return <h1>Hello World</h1>;
 }

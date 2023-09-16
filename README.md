@@ -15,4 +15,4 @@ I still don't really know how to work react, but I hope this tech session gives 
 This is Wenshen, aka Thunderz2016 on Discord. This comment was added via VS Code. Note to self:
 Remember to use the Command Palette (Ctrl + Shift + P) to switch branches.
 
-//test to see if pull works ++++
+//test to see if pull works --

@@ -14,3 +14,5 @@ I still don't really know how to work react, but I hope this tech session gives 
 9/15/2023 - 7:15 PM:
 This is Wenshen, aka Thunderz2016 on Discord. This comment was added via VS Code. Note to self:
 Remember to use the Command Palette (Ctrl + Shift + P) to switch branches.
+
+This is Maxwell, aka Swatch⌚️ on discord

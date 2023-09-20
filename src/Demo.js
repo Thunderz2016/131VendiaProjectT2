@@ -12,12 +12,33 @@ export const Demo = () => {
     const [testName, setTestName] = useState() ;
     const [testMethod, setTestMethod] = useState();
     const [notes, setNotes] = useState();
-    const [completed, setCompleted] = useState(false); // Initialize as True or any default boolean value
+    const [completed, setCompleted] = useState(); // Initialize as True or any default boolean value
     const [testList, setTestList] = useState() ;
     const [updatedBy, setUpdatedBy] = useState(); // Initialize with an empty string
 
+    const container = document.getElementById("dropdown-container");
+    // Create a select element (dropdown)
+    const dropdown = document.createElement("select");
+    // Create and append option elements to the dropdown
+    const option1 = document.createElement("option");
+    option1.text = "Option 1";
+    const option2 = document.createElement("option");
+    option2.text = "Option 2";
+    const option3 = document.createElement("option");
+    option3.text = "Option 3";
+    const option4 = document.createElement("option");
+    option3.text = "Option 4";
+    
+    dropdown.add(option1);
+    dropdown.add(option2);
+    dropdown.add(option3);
+    dropdown.add(option4);
+
+    //container.appendChild(dropdown);
+
     useEffect(() => {
-        const listTest = async () => {
+        // List all the Test
+         const listTest = async () => {
             const listTestResponse = await client.entities.test.list();
             console.log(listTestResponse?.items);
             setTestList(listTestResponse?.items);
@@ -27,16 +48,17 @@ export const Demo = () => {
     }, [])
 
     const addDevice = async () => {
+        // Add a new product
         const addDeviceResponse = await client.entities.test.add ({
-            Device: device, 
+            Device: device,
             TestID: parseInt(testID),
             OrgAssignment:orgAssignment,
             TestName: testName,
             TestMethod:testMethod,
             Notes:notes,
-            Completed: completed,
-            UpdatedBy: updatedBy, 
-        }) 
+            Completed: Boolean(completed),
+            UpdatedBy: updatedBy,
+        })
         console.log(addDeviceResponse);
     }
 
@@ -64,6 +86,7 @@ export const Demo = () => {
         setTestMethod(event.target.value);
         //console.log(device);
     }
+
     const handleNotesChange = (event) => {
         setNotes(event.target.value);
         //console.log(device);
@@ -84,39 +107,44 @@ export const Demo = () => {
         addDevice();
     }
 
-    console.log(testList)
+    //console.log(testList)
 
     return (
         <div>
             Team Zephyr Device Test Tracker
             <div>
-            <form onSubmit={handleSubmit}>
+                <label>Device 1</label>
+                <div id="dropdown-container"></div>
 
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+ {/*// start horizonal change here*/}
                 {/*Device Output on website(string)??*/}
-                <div>
-                    <label>Device </label>
+                <div class="hstack gab-2">    
+                <label class="p-2">Device:
                     <input 
                     type="text"
                     name="Device"
                     value={device}
                     onChange={handleDeviceChange}
                     />
+                    </label>
                 </div>
 
                 {/* //test id user name place-integer-*/}
-                <div>
-                <label>TestID </label>
+                <div class="hstack gab-3">
+                <label class="p-2">TestID:
                         <input 
                         type="text"
                         name="TestID"
                         value={testID}
                         onChange={handleTestIDChange}
                         />
+                        </label>
                 </div>
 
                 {/* //OrgAssignment inputplace for website-string- oh SWAP here w input textnme*/}
-                <div>
-                <label>OrgAssignment </label>
+                <div class="hstack gab-3">
+                <label>OrgAssignment: </label>
                         <input 
                         type="text"
                         name="OrgAssignment"
@@ -126,8 +154,8 @@ export const Demo = () => {
                 </div>
 
                 {/*testName(strring) place to input*/}
-                <div>
-                <label>TestName </label>
+                <div class="hstack gab-3">
+                <label>TestName: </label>
                         <input 
                         type="text"
                         name="TestName"
@@ -137,8 +165,8 @@ export const Demo = () => {
                 </div>
                 
                 {/* //testMethod place -string-*/}
-                <div>
-                <label>TestMethod </label>
+                <div class="hstack gab-3">
+                <label>TestMethod: </label>
                         <input 
                         type="text"
                         name="TestMethod"
@@ -148,8 +176,8 @@ export const Demo = () => {
                 </div>
 
                 {/* //Notes input/Output -string-*/}
-                <div>
-                <label>Notes </label>
+                <div class="hstack gab-3">
+                <label>Notes: </label>
                         <input 
                         type="text"
                         name="Notes"
@@ -159,8 +187,8 @@ export const Demo = () => {
                 </div>
 
                 {/* // completed-this is the boolean- input/Output */}
-                <div>
-                <label>Completed </label>
+                <div class="hstack gab-3">
+                <label>Completed: </label>
                         <input 
                         type="text"
                         name="Completed"
@@ -170,8 +198,8 @@ export const Demo = () => {
                 </div>
 
                 {/* Add updated by column */}
-                <div>
-                <label>UpdatedBy </label>
+                <div class="hstack gab-3">
+                <label>UpdatedBy: </label>
                         <input 
                         type="text"
                         name="UpdatedBy"
@@ -181,7 +209,7 @@ export const Demo = () => {
                 </div>
 
                 <input type="Submit" />
-            </form>
+                </form>
             <div>
                 {testList?.map((item, index) => (
                     <div key={index}>

@@ -1,235 +1,172 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { vendiaClient } from "../vendiaClient";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
-
-//import 'bootstrap/dist/css/bootstrap.css'
+import { Input, HStack, Button, Text, Box, Stack, VStack } from "@chakra-ui/react";
+import { vendiaClient } from "../vendiaClient";
 
 const { client } = vendiaClient();
 
 export const Demo = () => {
-    
-    const [device, setDevice] = useState();
-    const [testID, setTestID] = useState(); // Initialize as 0 or any default integer value
-    const [orgAssignment, setOrgAssignment] = useState();
-    const [testName, setTestName] = useState() ;
-    const [testMethod, setTestMethod] = useState();
-    const [notes, setNotes] = useState();
-    const [completed, setCompleted] = useState(); // Initialize as True or any default boolean value
-    const [testList, setTestList] = useState() ;
-    const [updatedBy, setUpdatedBy] = useState(); // Initialize with an empty string
-    const [authUser, setAuthUser] = useState();
-    const navigate = useNavigate()
+  const [device, setDevice] = useState("");
+  const [testID, setTestID] = useState("");
+  const [orgAssignment, setOrgAssignment] = useState("");
+  const [testName, setTestName] = useState("");
+  const [testMethod, setTestMethod] = useState("");
+  const [notes, setNotes] = useState("");
+  const [completed, setCompleted] = useState(false);
+  const [testList, setTestList] = useState([]);
+  const [updatedBy, setUpdatedBy] = useState("");
+  const [authUser, setAuthUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredTests, setFilteredTests] = useState([]);
 
-    useEffect(() => {
-        // List all the Test
-         const listTest = async () => {
-            const listTestResponse = await client.entities.test.list();
-            console.log(listTestResponse?.items);
-            setTestList(listTestResponse?.items);
-        }
+  const navigate = useNavigate();
 
-    //listTest();
-    }, [])
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-          setAuthUser(user); // Set the user object when the authentication state changes
-        });
-      }, []);
-      
-
-    const addDevice = async () => {
-        // Add a new product
-        const addDeviceResponse = await client.entities.test.add ({
-            Device: device,
-            TestID: parseInt(testID),
-            OrgAssignment:orgAssignment,
-            TestName: testName,
-            TestMethod:testMethod,
-            Notes:notes,
-            Completed: Boolean(completed),
-            UpdatedBy: updatedBy,
-        })
-        console.log(addDeviceResponse);
-    }
-
-    const handleDeviceChange = (event) => {
-        setDevice(event.target.value);
-        //console.log(device);
-    }
-
-    const handleTestIDChange = (event) => {
-        setTestID(event.target.value);
-        //console.log(device);
-    }
-
-    const handleOrgAssignmentChange = (event) => {
-        setOrgAssignment(event.target.value);
-        //console.log(device);
-    }
-
-    const handleTestNameChange = (event) => {
-        setTestName(event.target.value);
-        //console.log(testName);
-    }
-
-    const handleTestMethodChange = (event) => {
-        setTestMethod(event.target.value);
-        //console.log(device);
-    }
-
-    const handleNotesChange = (event) => {
-        setNotes(event.target.value);
-        //console.log(device);
-    }
-
-    const handleCompletedChange = (event) => {
-        setCompleted(event.target.value);
-        //console.log(device);
-    }
-
-    const handleUpdatedByChange = (event) => {
-        setUpdatedBy(event.target.value);
-        //console.log(device);
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        addDevice();
-    }
-
-    const userSignOut = () => {
-        signOut(auth).then(() => {
-            console.log('sign out successful')
-            navigate('/login');
-        })
-        .catch(error => console.log(error));
+  useEffect(() => {
+    // List all the Test
+    const listTest = async () => {
+      const listTestResponse = await client.entities.test.list();
+      console.log(listTestResponse?.items);
+      setTestList(listTestResponse?.items);
     };
-      
-    //console.log(testList)
 
-    return (
-        <div>
-            Team Zephyr Device Test Tracker
-            <div>
-                <label>Device 1</label>
+    listTest();
+  }, []);
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
- {/*// start horizonal change here*/}
-                {/*Device Output on website(string)??*/}
-                <div className="hstack gab-2">    
-                <label className="p-2">Device:
-                    <input 
-                    type="text"
-                    name="Device"
-                    value={device}
-                    onChange={handleDeviceChange}
-                    />
-                    </label>
-                </div>
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setAuthUser(user); // Set the user object when the authentication state changes
+    });
+  }, []);
 
-                {/* //test id user name place-integer-*/}
-                <div className="hstack gab-3">
-                <label className="p-2">TestID:
-                        <input 
-                        type="text"
-                        name="TestID"
-                        value={testID}
-                        onChange={handleTestIDChange}
-                        />
-                        </label>
-                </div>
+  const addDevice = async () => {
+    // Add a new product
+    const addDeviceResponse = await client.entities.test.add({
+      Device: device,
+      TestID: parseInt(testID),
+      OrgAssignment: orgAssignment,
+      TestName: testName,
+      TestMethod: testMethod,
+      Notes: notes,
+      Completed: Boolean(completed),
+      UpdatedBy: updatedBy,
+    });
+    console.log(addDeviceResponse);
+  };
 
-                {/* //OrgAssignment inputplace for website-string- oh SWAP here w input textnme*/}
-                <div className="hstack gab-3">
-                <label>OrgAssignment: </label>
-                        <input 
-                        type="text"
-                        name="OrgAssignment"
-                        value={orgAssignment}
-                        onChange={handleOrgAssignmentChange}
-                        />
-                </div>
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addDevice();
+  };
 
-                {/*testName(strring) place to input*/}
-                <div className="hstack gab-3">
-                <label>TestName: </label>
-                        <input 
-                        type="text"
-                        name="TestName"
-                        value={testName}
-                        onChange={handleTestNameChange}
-                        />
-                </div>
-                
-                {/* //testMethod place -string-*/}
-                <div className="hstack gab-3">
-                <label>TestMethod: </label>
-                        <input 
-                        type="text"
-                        name="TestMethod"
-                        value={testMethod}
-                        onChange={handleTestMethodChange}
-                        />
-                </div>
+  const userSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("sign out successful");
+        navigate("/login");
+      })
+      .catch((error) => console.log(error));
+  };
 
-                {/* //Notes input/Output -string-*/}
-                <div className="hstack gab-3">
-                <label>Notes: </label>
-                        <input 
-                        type="text"
-                        name="Notes"
-                        value={notes}
-                        onChange={handleNotesChange}
-                        />
-                </div>
+  const filterTests = () => {
+    const lowerSearchQuery = searchQuery.toLowerCase();
+    const filtered = testList.filter((test) => {
+      return (
+        test.TestName.toLowerCase().includes(lowerSearchQuery) ||
+        test.OrgAssignment.toLowerCase().includes(lowerSearchQuery)
+      );
+    });
+    setFilteredTests(filtered);
+  };
 
-                {/* // completed-this is the boolean- input/Output */}
-                <div className="hstack gab-3">
-                <label>Completed: </label>
-                        <input 
-                        type="text"
-                        name="Completed"
-                        value={completed}
-                        onChange={handleCompletedChange}
-                        />
-                </div>
+  return (
+    <Stack spacing={4}>
+      <Text fontSize="xl">Device Page</Text>
 
-                {/* Add updated by column */}
-                <div className="hstack gab-3">
-                <label>UpdatedBy: </label>
-                        <input 
-                        type="text"
-                        name="UpdatedBy"
-                        value={updatedBy}
-                        onChange={handleUpdatedByChange}
-                        />
-                </div>
+      {/* Search box */}
+      <Input htmlSize={5} width='20'
+        placeholder="SMD..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
-                <input type="Submit" />
-                </form>
-            <div>
-                {authUser ? <><p>{`Signed In as ${authUser.email}`}
-                </p> <button onClick={userSignOut}>SignOut</button></>: <p>Signed Out</p>}
-            </div>
+      <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+        {filteredTests.map((item, index) => (
+          <Box key={index} p={4} borderBottomWidth="1px">
+            <Text>{`TestID: ${item.TestID}`}</Text>
+            <Text>{`Device: ${item.Device}`}</Text>
+            <Text>{`OrgAssignment: ${item.OrgAssignment}`}</Text>
+            <Text>{`TestName: ${item.TestName}`}</Text>
+            <Text>{`TestMethod: ${item.TestMethod}`}</Text>
+            <Text>{`Notes: ${item.Notes}`}</Text>
+            <Text>{`Completed: ${item.Completed}`}</Text>
+            <Text>{`UpdatedBy: ${item.UpdatedBy}`}</Text>
+          </Box>
+        ))}
+      </Box>
 
-            <div>
-                {testList?.map((item, index) => (
-                    <div key={index}>
-                        {item?.TestID}
-                    </div>
-                ))
-                }
-            </div>
-            </div>
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={3}>
+          <Input
+            placeholder="Device"
+            value={device}
+            onChange={(e) => setDevice(e.target.value)}
+          />
+          <Input
+            placeholder="TestID"
+            value={testID}
+            onChange={(e) => setTestID(e.target.value)}
+          />
+          <Input
+            placeholder="OrgAssignment"
+            value={orgAssignment}
+            onChange={(e) => setOrgAssignment(e.target.value)}
+          />
+          <Input
+            placeholder="TestName"
+            value={testName}
+            onChange={(e) => setTestName(e.target.value)}
+          />
+          <Input
+            placeholder="TestMethod"
+            value={testMethod}
+            onChange={(e) => setTestMethod(e.target.value)}
+          />
+          <Input
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+          <Input
+            placeholder="Completed"
+            value={completed}
+            onChange={(e) => setCompleted(e.target.value)}
+          />
+          <Input
+            placeholder="UpdatedBy"
+            value={updatedBy}
+            onChange={(e) => setUpdatedBy(e.target.value)}
+          />
+          <Button colorScheme="blue" type="submit">
+            Add Device
+          </Button>
+        </Stack>
+      </form>
 
-        </div>
-
-
-    )
-    
+      {authUser ? (
+        <>
+          <Text>{`Signed In as ${authUser.email}`}</Text>
+          <Button colorScheme="red" onClick={userSignOut}>
+            Sign Out
+          </Button>
+        </> 
+          ) : ( 
+          <Text>Signed Out</Text>
+      )}
+    </Stack>
+  );
 };
 
 export default Demo;

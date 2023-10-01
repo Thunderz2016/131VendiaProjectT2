@@ -12,11 +12,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <BrowserRouter>
 
+ 
+
+  <ChakraProvider>
   <header>
    <DarkModeToggle />
   </header>
-
-  <ChakraProvider>
     <App />;
   </ChakraProvider>
 

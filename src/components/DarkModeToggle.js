@@ -1,16 +1,24 @@
-import { Button } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { useColorMode } from "@chakra-ui/react";
+import { Switch } from "@chakra-ui/react";
+
 
 function DarkModeToggle() {
-    const { colorMode, toggleColorMode } = useColorMode()
-    return (
-      <header>
-        <Button onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-        </Button>
-      </header>
-    )
-  }
+  const { colorMode, toggleColorMode } = useColorMode()
+  return (
+    <Switch
+      isChecked={colorMode === 'dark'}
+      onChange={toggleColorMode}
+      size="lg"
+      colorScheme="red" // You can choose a color scheme that suits your design
+      position="fixed"
+      bottom="4"
+      left="4"
+    >
+      Dark Mode
+    </Switch>
+  )
+}
 
-  export default DarkModeToggle;
-  
+ 
+export default DarkModeToggle;

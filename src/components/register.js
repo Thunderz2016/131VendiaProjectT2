@@ -6,6 +6,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormLabel,
   Heading,
@@ -46,22 +47,22 @@ function Register() {
 
   return (
     <Stack
-      spacing={4}
-      maxW="400px"
-      mx="auto"
-      mt="50px"
-      p="4"
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="lg">
+    spacing={6}
+    maxW="400px"
+    mx="auto"
+    mt="200px"
+    p="11"
+    borderWidth="1px"
+    borderRadius="lg"
+    boxShadow="md">
       
-      <Heading as="h2" size="lg">
+      <Heading as="h2" size="lg" textAlign="center">
         Register
       </Heading>
 
       <form onSubmit={register}>
 {/* input field for registration */}
-        <FormControl>
+        <FormControl mb={4}>
           <FormLabel>Email</FormLabel>
           <Input
           type="email"
@@ -72,7 +73,7 @@ function Register() {
         </FormControl>
 
 {/* Input field for entering password */}
-        <FormControl>
+        <FormControl mb={4}>
           <FormLabel>Password</FormLabel>
             <InputGroup size='md'>
               <Input
@@ -90,21 +91,25 @@ function Register() {
           </InputGroup>
         </FormControl>
 
+          <Center>
           <Button colorScheme="red" type="submit">
             Register
           </Button>
+          </Center>
 
       </form>
 
 {/* link button to login */}
+      <Center>
       <Box>
         <p>
         Already Have an Account?{" "}
-        <Link as={RouterLink} to="/login">
+        <Link color='blue' as={RouterLink} to="/login">
           Login
         </Link>
         </p>
       </Box>
+      </Center>
 
     </Stack>
 

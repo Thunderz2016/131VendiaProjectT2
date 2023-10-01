@@ -6,6 +6,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormLabel,
   Heading,
@@ -20,7 +21,7 @@ function Login() {
 // Initialize state variables to store email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // navigate from login to demo page
+  // navigate from login to DeviceOne page
   const navigate = useNavigate();
   // hide and show password
   const handleClick = () => setShow(!show)
@@ -33,10 +34,12 @@ function Login() {
     // Use Firebase's signInWithEmailAndPassword function to sign in a user
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        console.log('Logged in user:', userCredential.user);
+
         
         // If registration is successful, log the user credential
         console.log(userCredential);
-        navigate("/Demo"); // to redirect to the demo page, if the login is successful
+        navigate("/DeviceOne"); // to redirect to the DeviceOne page, if the login is successful
       })
       // If there's an error during registration, log the error
       .catch((error) => {
@@ -46,22 +49,22 @@ function Login() {
 
   return (
     <Stack
-      spacing={4}
+      spacing={6}
       maxW="400px"
       mx="auto"
-      mt="50px"
-      p="5"
+      mt="200px"
+      p="11"
       borderWidth="1px"
       borderRadius="lg"
       boxShadow="md">
 
-      <Heading as="h2" size="lg">
+      <Heading as="h2" size="lg" textAlign="center">
         Login
       </Heading>
 
       <form onSubmit={login}>
 {/* Input field for entering login email */}
-        <FormControl>
+        <FormControl mb={4}>
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
@@ -72,7 +75,7 @@ function Login() {
         </FormControl>
 
 {/* Input field for entering password */}
-        <FormControl>
+        <FormControl mb={4}>
           <FormLabel>Password</FormLabel>
             <InputGroup size='md'>
               <Input
@@ -90,21 +93,26 @@ function Login() {
           </InputGroup>
         </FormControl>
 
+        <Center>
         <Button colorScheme="blue" type="submit">
           Log In
         </Button>
+        </Center>
 
       </form>
 
 {/* link button for registration */}
+      <Center>
       <Box>
         <p>
           Don't have an account?{" "}
-          <Link color='yellow' href='#' as={RouterLink} to="/register">
+          <Link color='red' href='#' as={RouterLink} to="/register">
             Register
           </Link>
         </p>
       </Box>
+      </Center>
+      
 
     </Stack>
     

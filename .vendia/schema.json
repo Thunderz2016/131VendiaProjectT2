@@ -6,6 +6,9 @@
   "x-vendia-acls": {
     "Test-acls": {
       "type": "Test"
+    },
+    "Device-acls": {
+      "type": "Device"
     }
   },
   "properties": {
@@ -52,6 +55,26 @@
         "x-vendia-unique": []
       },
       "title": "Test"
+    },
+    "Device": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "Status": {
+            "title": "Status",
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "x-vendia-unique": []
+      },
+      "description": "",
+      "title": "Device"
     }
   }
 }

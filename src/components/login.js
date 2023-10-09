@@ -12,9 +12,10 @@ import {
   Input,
   Link,
   Stack,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
-import { InputGroup } from "@chakra-ui/react";
-import { InputRightElement } from "@chakra-ui/react";
+
 
 function Login() {
 // Initialize state variables to store email and password

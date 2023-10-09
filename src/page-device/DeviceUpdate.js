@@ -18,7 +18,7 @@ export const UpdateDevice = () => {
   const [testName, setTestName] = useState(""); // State for Test Name
   const [testMethod, setTestMethod] = useState(""); // State for Test Method
   const [notes, setNotes] = useState(""); // State for Notes
-  const [completed, setCompleted] = useState(false); // State for Completion status
+  const [completed, setCompleted] = useState(""); // State for Completion status
   //const [testList, setTestList] = useState([]); // State for a list of tests (not used in this code)
   const [updatedBy, setUpdatedBy] = useState(""); // State for the entity that updated the device
 
@@ -26,6 +26,7 @@ export const UpdateDevice = () => {
 
   // useEffect hook to fetch device information when 'deviceId' changes
   useEffect(() => {
+    if (deviceId) {
 
     // Fetch the device information based on the deviceId
     const fetchDevice = async () => {
@@ -43,6 +44,7 @@ export const UpdateDevice = () => {
     };
 
     fetchDevice(); // Calling the fetchDevice function when 'deviceId' changes
+  }
   }, [deviceId]); // The effect runs whenever 'deviceId' changes
 
 
@@ -74,7 +76,7 @@ export const UpdateDevice = () => {
 
   return (
     <Stack spacing={4}>
-      <Text fontSize="xl">Update Device</Text>
+      <Text fontSize="xl" align="center">Update Device</Text>
       <form onSubmit={handleSubmit}>
         <Stack spacing={4} direction="column" align="center" justify="center">
 
@@ -97,7 +99,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="TestID"
+            placeholder="TestID[Integer]"
             value={testID}
             onChange={(e) => setTestID(e.target.value)}
             size="md"
@@ -142,7 +144,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="Completed"
+            placeholder="Completed[Boolean]"
             value={completed}
             onChange={(e) => setCompleted(e.target.value)}
             size="md"

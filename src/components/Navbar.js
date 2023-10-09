@@ -1,20 +1,15 @@
 import {
-  Box,
-  Button,
-  Flex,
-  VStack,
-  Input,
-  Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react";
+  Box, Button,
+  Flex, VStack,
+  Input, Text,
+  Menu, MenuButton,
+  MenuList, MenuItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Link } from "react-router-dom";
-import { HamburgerIcon, EditIcon, 
-  DeleteIcon, AddIcon, StarIcon  } from "@chakra-ui/icons";
+import { 
+  HamburgerIcon, EditIcon, 
+  DeleteIcon, AddIcon, StarIcon, ViewIcon  } from "@chakra-ui/icons";
 import { auth } from "../firebase";
 //import { Navigate } from "react-router-dom";
 import { IconButton } from "@chakra-ui/react";
@@ -32,13 +27,13 @@ const Navbar = () => {
     signOut(auth)
       .then(() => {
         console.log("sign out successful");
-        navigate("/");
+        //navigate("/login");
       })
       .catch((error) => console.log(error));
   };
 
   return (
-    <Box bg="blue.500" py={3} px={4} boxShadow="base" position="sticky" top="0">
+    <Box bg="orange" py={3} px={3} boxShadow="md" position="sticky" top="0">
     <Menu>
       <MenuButton
       as={IconButton}
@@ -72,6 +67,12 @@ const Navbar = () => {
           </MenuItem>
         </Link>
 
+        <Link to="/ListDevice">
+          <MenuItem icon={<ViewIcon />} >
+             List Page
+          </MenuItem>
+        </Link>
+
         {authUser ? (
           <>
             {/*<Text textAlign="center">{`Signed In as ${authUser.email}`}</Text>*/}
@@ -82,6 +83,12 @@ const Navbar = () => {
         ) : (
           <Text textAlign="center">Signed Out</Text>
         )}
+
+        <Link to="/">
+        <Button colorScheme="blue" type="submit">
+          Log In
+        </Button>
+        </Link>
         
       </MenuList>
 
@@ -101,3 +108,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+

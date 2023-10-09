@@ -37,7 +37,7 @@ export const DeleteDevice = () => {
     
     return(
         <Stack spacing={4}>
-        <Text fontSize="xl">Update Device</Text>
+        <Text fontSize="xl" align="center">Update Device</Text>
         <form onSubmit={removeDevice}>
         <Stack spacing={4} direction="column" align="center" justify="center">
             <Input

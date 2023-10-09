@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import DynamicList from './components/DynamicList';
 import DeviceUpdate from './page-device/DeviceUpdate';
 import DeleteDevice from './page-device/DeleteDevice';
+import ListDevice from './page-device/ListDevice';
 
 function App() {
   // Initialize the user state
@@ -50,6 +51,7 @@ function App() {
         />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path= "/ListDevice" element={<ListDevice />} />
         <Route path="/Device" element={<Device />} />
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />

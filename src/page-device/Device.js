@@ -1,38 +1,49 @@
+// add devices with various attributes to a database
+
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
-import { Input, Button, Text, Box, Stack, } from "@chakra-ui/react";
 import { vendiaClient } from "../vendiaClient";
+import {
+  Input, Button,
+  Text, Box,
+  Stack, Table,
+  Thead, Tbody,
+  Tr,Th, Td,
+} from "@chakra-ui/react";
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react'
+
 
 const { client } = vendiaClient();
 
 export const Device = () => {
-  const [device, setDevice] = useState("");
-  const [testID, setTestID] = useState("");
-  const [orgAssignment, setOrgAssignment] = useState("");
-  const [testName, setTestName] = useState("");
-  const [testMethod, setTestMethod] = useState("");
-  const [notes, setNotes] = useState("");
-  const [completed, setCompleted] = useState("");
-  const [testList, setTestList] = useState([]);
-  const [updatedBy, setUpdatedBy] = useState("");
+  const location = useLocation(); // Get the current location object
+  const searchParams = new URLSearchParams(location.search);
+  const textParam = searchParams.get("text"); // Get the 'text' parameter from the URL
+
+  const [devices, setDevices] = useState([
+    {
+      Device: textParam || "Device #",
+      testID: "",
+      orgAssignment: "",
+      testName: "",
+      testMethod: "",
+      notes: "",
+      completed: "",
+      updatedBy: "",
+    },
+  ]);
+
   const [authUser, setAuthUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTests, setFilteredTests] = useState([]);
-
-  //const navigate = useNavigate();
-
-  useEffect(() => {
-    // List all the Test
-    const listTest = async () => {
-      const listTestResponse = await client.entities.test.list();
-      console.log(listTestResponse?.items);
-      setTestList(listTestResponse?.items);
-    };
-
-    listTest();
-  }, []);
+  
+  //const [deviceName, setDeviceName] = useState(""); // Hidden device name
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -40,139 +51,245 @@ export const Device = () => {
     });
   }, []);
 
+  // Function to add a device to the database
   const addDevice = async () => {
-    // Add a new prod uct
-    const addDeviceResponse = await client.entities.test.add({
-      Device: device,
-      TestID: parseInt(testID),
-      OrgAssignment: orgAssignment,
-      TestName: testName,
-      TestMethod: testMethod,
-      Notes: notes,
-      Completed: Boolean(completed),
-      UpdatedBy: updatedBy,
-    });
-    console.log(addDeviceResponse);
+    for (const deviceData of devices) {
+      console.log('Device Data:', deviceData);
+      const addDeviceResponse = await client.entities.test.add({
+        Device: deviceData.Device, // Set the device name here
+        TestID: parseInt(deviceData.testID),
+        OrgAssignment: deviceData.orgAssignment,
+        TestName: deviceData.testName,
+        TestMethod: deviceData.testMethod,
+        Notes: deviceData.notes,
+        Completed: Boolean(deviceData.completed),
+        UpdatedBy: deviceData.updatedBy,
+      });
+      console.log(addDeviceResponse);
+    }
   };
+  
 
+  // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     addDevice();
   };
 
-{/*
-  const filterTests = () => {
-    const lowerSearchQuery = searchQuery.toLowerCase();
-    const filtered = testList.filter((test) => {
-      return (
-        test.TestName.toLowerCase().includes(lowerSearchQuery) ||
-        test.OrgAssignment.toLowerCase().includes(lowerSearchQuery)
-      );
-    });
-    setFilteredTests(filtered);
+  // Function to add a new row to the devices array
+  const addRow = () => {
+    setDevices([...devices, { ...devices[0] }]); // Add a new row with the same initial values as the first row
   };
-*/}
 
   return (
-    
-    <Stack spacing={4}>
-      <Text fontSize="xl" align="center">Device Add Page</Text>
+    <Stack spacing={4} >
+       <Text fontSize="xl" align="center">
+        {textParam || "Device Add Page"} {/* Display the textParam or default title */}
+      </Text>
 
-      {/*
-       Search box Not available rn
-      <Input htmlSize={5} width='200px'
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      */}
-      
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-        {filteredTests.map((item, index) => (
-          <Box key={index} p={4} borderBottomWidth="1px">
-            <Text>{`TestID: ${item.TestID}`}</Text>
-            <Text>{`Device: ${item.Device}`}</Text>
-            <Text>{`OrgAssignment: ${item.OrgAssignment}`}</Text>
-            <Text>{`TestName: ${item.TestName}`}</Text>
-            <Text>{`TestMethod: ${item.TestMethod}`}</Text>
-            <Text>{`Notes: ${item.Notes}`}</Text>
-            <Text>{`Completed: ${item.Completed}`}</Text>
-            <Text>{`UpdatedBy: ${item.UpdatedBy}`}</Text>
-          </Box>
-        ))}
+      <Box overflowX="auto" align="center">
+
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Device</Th>
+              <Th>TestID</Th>
+              <Th>OrgAssignment</Th>
+              <Th>TestName</Th>
+              <Th>TestMethod</Th>
+              <Th>Notes</Th>
+              <Th>Completed</Th>
+              <Th>UpdatedBy</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {devices.map((device, index) => (
+              <Tr key={index}>
+                <Td>
+                  {/* Device */}
+                  <Input
+                    placeholder="Device #"
+                    //value={textParam || "Device #"}
+                    value={device.Device}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, Device: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* TestID[integer] */}
+                 <NumberInput>
+                  <NumberInputField 
+                    placeholder="TestID"
+                    value={device.testID}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, testID: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"/>
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                  </NumberInput>
+
+                </Td>
+
+                <Td>
+                  {/* OrgAssignment */}
+                  <Input
+                    placeholder="OrgAssignment"
+                    value={device.orgAssignment}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, orgAssignment: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* TestName */}
+                  <Input
+                    placeholder="TestName"
+                    value={device.testName}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, testName: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* TestMethod */}
+                  <Input
+                    placeholder="TestMethod"
+                    value={device.testMethod}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, testMethod: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* Notes */}
+                  <Input
+                    placeholder="Notes"
+                    value={device.notes}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, notes: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* Completed */}
+                  <Input
+                    placeholder="Completed"
+                    value={device.completed}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, completed: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+
+                <Td>
+                  {/* Updatedby */}
+                  <Input
+                    placeholder="Updatedby"
+                    value={device.updatedBy}
+                    onChange={(e) =>
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, i) =>
+                          i === index
+                            ? { ...prevDevice, updatedBy: e.target.value }
+                            : prevDevice
+                        )
+                      )
+                    }
+                    size="md"
+                    width="100%"
+                    textAlign="center"
+                  />
+                </Td>
+              </Tr>
+              
+            ))}
+          </Tbody>
+        </Table>
+        
       </Box>
 
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={4} direction="column" align="center" justify="center">
-          <Input
-            placeholder="Device"
-            value={device}
-            onChange={(e) => setDevice(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="TestID[integer]"
-            value={testID}
-            onChange={(e) => setTestID(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="OrgAssignment"
-            value={orgAssignment}
-            onChange={(e) => setOrgAssignment(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="TestName"
-            value={testName}
-            onChange={(e) => setTestName(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="TestMethod"
-            value={testMethod}
-            onChange={(e) => setTestMethod(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="Notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="Completed[Boolean]"
-            value={completed}
-            onChange={(e) => setCompleted(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Input
-            placeholder="UpdatedBy"
-            value={updatedBy}
-            onChange={(e) => setUpdatedBy(e.target.value)}
-            size="md"
-            width="500px"
-            textAlign="center"
-          />
-          <Button colorScheme="blue" type="submit">
-            Add Device
-          </Button>
-        </Stack>
-      </form>
+      <Stack align="center">
+
+      <Button colorScheme="blue" onClick={addRow} >
+        Add Row
+      </Button>
+
+      <Button colorScheme="blue" onClick={handleSubmit} >
+        Add Device
+      </Button>
+
+      </Stack>
 
     </Stack>
   );

@@ -24,7 +24,7 @@ export const DeleteDevice = () => {
           // Delete the device based on the deviceId
           await client.entities.test.remove(deviceId);
           // Redirect to the device list page or any other desired page
-          navigate("/device");
+          //navigate("/device");
         } catch (error) {
           console.error("Error deleting device:", error);
         }

@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { vendiaClient } from "../vendiaClient";
 import { Stack, Box, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import {
+  Table, Thead,
+  Tbody,Tr, Th,
+  Td
+} from '@chakra-ui/react'
 
 const { client } = vendiaClient();
 
@@ -53,34 +58,39 @@ export const List = () => {
       <Text fontSize="xl" align="center">List Device Page</Text>
   
       <Box overflowX="auto" align="center">
-        <table>
-          <thead>
-            <tr>
-              <th>Device</th>
-              <th>TestID</th>
-              <th>OrgAssignment</th>
-              <th>TestName</th>
-              <th>TestMethod</th>
-              <th>Notes</th>
-              <th>Completed</th>
-              <th>UpdatedBy</th>
-            </tr>
-          </thead>
-          <tbody>
+
+        <Table>
+
+          <Thead>
+            <Tr>
+              <Th>Device</Th>
+              <Th>TestID</Th>
+              <Th>OrgAssignment</Th>
+              <Th>TestName</Th>
+              <Th fontWeight='extrabold'>TestMethod</Th>
+              <Th>Notes</Th>
+              <Th>Completed</Th>
+              <Th>UpdatedBy</Th>
+            </Tr>
+          </Thead>
+
+          <Tbody>
             {testList.map((test, index) => (
-              <tr key={index}>
-                <td>{test.Device}</td>
-                <td>{test.TestID}</td>
-                <td>{test.OrgAssignment}</td>
-                <td>{test.TestName}</td>
-                <td>{test.TestMethod}</td>
-                <td>{test.Notes}</td>
-                <td>{test.Completed.toString()}</td>
-                <td>{test.UpdatedBy}</td>
-              </tr>
+              <Tr key={index}>
+                <Td>{test.Device}</Td>
+                <Td>{test.TestID}</Td>
+                <Td>{test.OrgAssignment}</Td>
+                <Td>{test.TestName}</Td>
+                <Td>{test.TestMethod}</Td>
+                <Td>{test.Notes}</Td>
+                <Td>{test.Completed.toString()}</Td>
+                <Td>{test.UpdatedBy}</Td>
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+
+        </Table>
+
       </Box>
     </Stack>
   );

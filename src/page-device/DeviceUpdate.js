@@ -1,36 +1,35 @@
 // Importing necessary React components and hooks from external libraries
 import React, { useEffect, useState } from "react";
 //import { useNavigate, useParams } from "react-router-dom"; // Using React Router for navigation
-import { Input, Button, Text, Stack } from "@chakra-ui/react"; // Using Chakra UI components
+import { Input, Button, Text, Stack } from "@chakra-ui/react";
 import { vendiaClient } from "../vendiaClient"; // Importing a custom client from a module
 
-// Destructuring the 'client' object from vendiaClient module
 const { client } = vendiaClient();
 
 // Defining a functional component called UpdateDevice
 export const UpdateDevice = () => {
 
   // Defining multiple state variables to store form input values and other data
-  const [deviceId, setDeviceId] = useState(""); // State for Device ID
-  const [device, setDevice] = useState(""); // State for Device
-  const [testID, setTestID] = useState(""); // State for Test ID
-  const [orgAssignment, setOrgAssignment] = useState(""); // State for Org Assignment
-  const [testName, setTestName] = useState(""); // State for Test Name
-  const [testMethod, setTestMethod] = useState(""); // State for Test Method
-  const [notes, setNotes] = useState(""); // State for Notes
-  const [completed, setCompleted] = useState(""); // State for Completion status
+  const [deviceId, setDeviceId] = useState(""); 
+  const [device, setDevice] = useState("");
+  const [testID, setTestID] = useState("");
+  const [orgAssignment, setOrgAssignment] = useState("");
+  const [testName, setTestName] = useState("");
+  const [testMethod, setTestMethod] = useState("");
+  const [notes, setNotes] = useState("");
+  const [completed, setCompleted] = useState("");
   //const [testList, setTestList] = useState([]); // State for a list of tests (not used in this code)
-  const [updatedBy, setUpdatedBy] = useState(""); // State for the entity that updated the device
+  const [updatedBy, setUpdatedBy] = useState("");
 
   //const navigate = useNavigate(); // Using React Router's 'useNavigate' hook for navigation
 
   // useEffect hook to fetch device information when 'deviceId' changes
   useEffect(() => {
-    if (deviceId) {
+    if (orgAssignment) {
 
-    // Fetch the device information based on the deviceId
+    // Fetch the device information
     const fetchDevice = async () => {
-      const deviceResponse = await client.entities.test.get(deviceId);
+      const deviceResponse = await client.entities.test.get(orgAssignment);
 
       // Setting the retrieved data into respective state variables
       setDevice(deviceResponse.Device);
@@ -43,9 +42,9 @@ export const UpdateDevice = () => {
       setUpdatedBy(deviceResponse.UpdatedBy);
     };
 
-    fetchDevice(); // Calling the fetchDevice function when 'deviceId' changes
+    fetchDevice(); // Calling the fetchDevice function when 'orgAssignment' changes
   }
-  }, [deviceId]); // The effect runs whenever 'deviceId' changes
+  }, [orgAssignment]); // The effect runs whenever 'orgAssignment' changes
 
 
   // Function to update the device information
@@ -65,7 +64,7 @@ export const UpdateDevice = () => {
     });
     
     console.log(updateDeviceResponse); // Logging the response (you may want to handle this differently)
-    // navigate("/device"); // Redirecting to the device list page after updating (commented out)
+    // navigate("/device"); (commented out)
   };
 
   // Function to handle form submission
@@ -99,7 +98,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="TestID[Integer]"
+            placeholder="TestID"
             value={testID}
             onChange={(e) => setTestID(e.target.value)}
             size="md"
@@ -144,7 +143,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="Completed[Boolean]"
+            placeholder="Completed"
             value={completed}
             onChange={(e) => setCompleted(e.target.value)}
             size="md"

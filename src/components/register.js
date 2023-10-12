@@ -118,3 +118,4 @@ function Register() {
 
 // Export the Register component for use in other parts of the application
 export default Register;
+

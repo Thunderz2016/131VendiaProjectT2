@@ -12,14 +12,6 @@ import {
   Thead, Tbody,
   Tr,Th, Td,
 } from "@chakra-ui/react";
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from '@chakra-ui/react'
-
 
 const { client } = vendiaClient();
 
@@ -128,8 +120,7 @@ export const Device = () => {
 
                 <Td>
                   {/* TestID[integer] */}
-                 <NumberInput>
-                  <NumberInputField 
+                  <Input
                     placeholder="TestID"
                     value={device.testID}
                     onChange={(e) =>
@@ -144,11 +135,6 @@ export const Device = () => {
                     size="md"
                     width="100%"
                     textAlign="center"/>
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                  </NumberInput>
 
                 </Td>
 

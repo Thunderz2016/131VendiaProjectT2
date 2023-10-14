@@ -10,10 +10,10 @@ import {
   WrapItem,
   IconButton,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link, Link as RouterLink } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
 
-function DynamicList() {
+function Mainpage() {
   const [textList, setTextList] = useState([]);
   const [inputText, setInputText] = useState('');
 
@@ -71,11 +71,14 @@ function DynamicList() {
             {textList.map((text, index) => (
               <WrapItem key={index}>
                 <Center w='180px' h='80px' bg='red.200'>
+
                   <RouterLink to={`/device?text=${text}`}>
                     <Text color="blue.500" textDecoration="underline" >
                       {text}
                     </Text>
                   </RouterLink>
+                  
+                  {/*This is the Close Icon For Each Box*/}
                   <IconButton
                     icon={<CloseIcon />}
                     size="xs"
@@ -83,17 +86,24 @@ function DynamicList() {
                     colorScheme="red"
                     //ml={20}
                     mb={12}
-                  
                   />
+
                 </Center>
               </WrapItem>
             ))}
           </Wrap>
 
         </Box>
+
+        <Link>
+        <Box bg="black" color="white" w="100%" align="center" p="4" as={RouterLink} to="/ListID">
+          View Archived Devices
+        </Box>
+        </Link>
+        
       </Stack>
     </Center>
   );
 }
 
-export default DynamicList;
+export default Mainpage;

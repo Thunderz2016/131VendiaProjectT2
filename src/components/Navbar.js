@@ -43,9 +43,9 @@ const Navbar = () => {
     />
     <MenuList>
 
-        <Link to="/DynamicList">
+        <Link to="/Mainpage">
           <MenuItem icon={<StarIcon />} >
-            Home Page
+           Main Page
           </MenuItem>
         </Link>
 
@@ -73,6 +73,12 @@ const Navbar = () => {
           </MenuItem>
         </Link>
 
+        <Link to="/ListID">
+          <MenuItem icon={<ViewIcon />} >
+             List ID
+          </MenuItem>
+        </Link>
+
         {authUser ? (
           <>
             {/*<Text textAlign="center">{`Signed In as ${authUser.email}`}</Text>*/}
@@ -91,22 +97,10 @@ const Navbar = () => {
         </Link>
         
       </MenuList>
-
-      
-        <Flex justifyContent="flex-end" align="center">
-          <VStack align="flex-end" spacing={2}>
-            <Input type="text" placeholder="Search" />
-          </VStack>
-        </Flex>
         
-        
-
-      
     </Menu>
     </Box>
   );
 };
 
 export default Navbar;
-
-

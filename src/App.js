@@ -6,10 +6,11 @@ import Device from './page-device/Device';
 import { onAuthStateChanged } from 'firebase/auth'; // Import onAuthStateChanged function
 import { auth } from './firebase'; // Import Firebase auth instance
 import Navbar from './components/Navbar';
-import DynamicList from './components/DynamicList';
 import DeviceUpdate from './page-device/DeviceUpdate';
 import DeleteDevice from './page-device/DeleteDevice';
 import ListDevice from './page-device/ListDevice';
+import ListID from './page-device/ListID';
+import Mainpage from './components/Mainpage';
 
 function App() {
   // Initialize the user state
@@ -52,10 +53,13 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path= "/ListDevice" element={<ListDevice />} />
+        <Route path= "/ListID" element={<ListID />} />
         <Route path="/Device" element={<Device />} />
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
-        <Route path="/dynamicList" element={<DynamicList />} />
+        <Route path="/Mainpage" element={<Mainpage />} />
+
+
       </Routes>
     </div>
   )

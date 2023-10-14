@@ -1,16 +1,12 @@
-// Importing necessary React components and hooks from external libraries
+
 import React, { useEffect, useState } from "react";
-//import { useNavigate, useParams } from "react-router-dom"; // Using React Router for navigation
-import { Input, Button, Text, Stack } from "@chakra-ui/react";
-import { vendiaClient } from "../vendiaClient"; // Importing a custom client from a module
+import { Input, Button, Text, Stack, Select } from "@chakra-ui/react";
+import { vendiaClient } from "../vendiaClient";
 
 const { client } = vendiaClient();
 
-// Defining a functional component called UpdateDevice
 export const UpdateDevice = () => {
-
-  // Defining multiple state variables to store form input values and other data
-  const [deviceId, setDeviceId] = useState(""); 
+  const [deviceId, setDeviceId] = useState("");
   const [device, setDevice] = useState("");
   const [testID, setTestID] = useState("");
   const [orgAssignment, setOrgAssignment] = useState("");
@@ -18,39 +14,12 @@ export const UpdateDevice = () => {
   const [testMethod, setTestMethod] = useState("");
   const [notes, setNotes] = useState("");
   const [completed, setCompleted] = useState("");
-  //const [testList, setTestList] = useState([]); // State for a list of tests (not used in this code)
   const [updatedBy, setUpdatedBy] = useState("");
-
-  //const navigate = useNavigate(); // Using React Router's 'useNavigate' hook for navigation
-
-  // useEffect hook to fetch device information when 'deviceId' changes
-  useEffect(() => {
-    if (orgAssignment) {
-
-    // Fetch the device information
-    const fetchDevice = async () => {
-      const deviceResponse = await client.entities.test.get(orgAssignment);
-
-      // Setting the retrieved data into respective state variables
-      setDevice(deviceResponse.Device);
-      setTestID(deviceResponse.TestID.toString());
-      setOrgAssignment(deviceResponse.OrgAssignment);
-      setTestName(deviceResponse.TestName);
-      setTestMethod(deviceResponse.TestMethod);
-      setNotes(deviceResponse.Notes);
-      setCompleted(deviceResponse.Completed);
-      setUpdatedBy(deviceResponse.UpdatedBy);
-    };
-
-    fetchDevice(); // Calling the fetchDevice function when 'orgAssignment' changes
-  }
-  }, [orgAssignment]); // The effect runs whenever 'orgAssignment' changes
-
+  const [selectedOption, setSelectedOption] = useState("");
+  const [testList, setTestList] = useState([]); // Define testList state
 
   // Function to update the device information
   const updateDevice = async () => {
-
-    // Sending a request to update the device information with the new values
     const updateDeviceResponse = await client.entities.test.update({
       _id: deviceId,
       Device: device,
@@ -62,15 +31,42 @@ export const UpdateDevice = () => {
       Completed: Boolean(completed),
       UpdatedBy: updatedBy,
     });
-    
-    console.log(updateDeviceResponse); // Logging the response (you may want to handle this differently)
-    // navigate("/device"); (commented out)
+
+    console.log(updateDeviceResponse);
   };
 
-  // Function to handle form submission
+  useEffect(() => {
+    if (deviceId) {
+      const fetchDevice = async () => {
+        const deviceResponse = await client.entities.test.get(deviceId);
+
+        setDevice(deviceResponse.Device);
+        setTestID(deviceResponse.TestID.toString());
+        setOrgAssignment(deviceResponse.OrgAssignment);
+        setTestName(deviceResponse.TestName);
+        setTestMethod(deviceResponse.TestMethod);
+        setNotes(deviceResponse.Notes);
+        setCompleted(deviceResponse.Completed);
+        setUpdatedBy(deviceResponse.UpdatedBy);
+      };
+
+      fetchDevice();
+    }
+  }, [deviceId]);
+
+  // Fetch the list of tests when the component mounts
+  useEffect(() => {
+    const listTest = async () => {
+      const listTestResponse = await client.entities.test.list();
+      setTestList(listTestResponse?.items);
+    };
+
+    listTest();
+  }, []);
+
   const handleSubmit = (event) => {
-    event.preventDefault(); // Preventing the default form submission behavior
-    updateDevice(); // Calling the updateDevice function to update the device
+    event.preventDefault();
+    updateDevice();
   };
 
   return (
@@ -79,14 +75,21 @@ export const UpdateDevice = () => {
       <form onSubmit={handleSubmit}>
         <Stack spacing={4} direction="column" align="center" justify="center">
 
-          <Input
-            placeholder="Device ID to Update"
+          <Select
+            placeholder="Select option"
+            //value={selectedOption}
             value={deviceId}
+            //onChange={(e) => setSelectedOption(e.target.value)}
             onChange={(e) => setDeviceId(e.target.value)}
             size="md"
             width="500px"
-            textAlign="center"
-          />
+            textAlign="center">
+            {testList.map((test, index) => (
+              <option key={test._id} value={test._id}>
+                {test.Device} - {test.OrgAssignment}
+              </option>
+            ))}
+          </Select>
 
           <Input
             placeholder="Device"
@@ -98,7 +101,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="TestID"
+            placeholder="TestID[Integer]"
             value={testID}
             onChange={(e) => setTestID(e.target.value)}
             size="md"
@@ -143,7 +146,7 @@ export const UpdateDevice = () => {
           />
 
           <Input
-            placeholder="Completed"
+            placeholder="Completed[Boolean]"
             value={completed}
             onChange={(e) => setCompleted(e.target.value)}
             size="md"
@@ -159,11 +162,10 @@ export const UpdateDevice = () => {
             width="500px"
             textAlign="center"
           />
-        
-        <Button colorScheme="blue" type="submit">
-          Update Device
-        </Button>
 
+          <Button colorScheme="blue" type="submit">
+            Update Device
+          </Button>
         </Stack>
       </form>
     </Stack>

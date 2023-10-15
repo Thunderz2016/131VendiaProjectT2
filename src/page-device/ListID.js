@@ -3,10 +3,10 @@ import { vendiaClient } from "../vendiaClient";
 import { Stack, Box, Text } from "@chakra-ui/react";
 import {
   Table, Thead,
-  Tbody,Tr, Th, Button,
+  Tbody,Tr, Th,
   Td
 } from '@chakra-ui/react'
-import { useDisclosure } from "@chakra-ui/react";
+import UpdateDevice from "./DeviceUpdate";
 
 const { client } = vendiaClient();
 
@@ -15,7 +15,7 @@ export const ListID = () => {
  // const [deviceId, setdeviceId] = useState("");
   const [deviceId, setDeviceId] = useState(""); // State for Device ID
   // Change state variable name to "devices" for storing the list of devices
-  const [devices, setDevices] = useState("");
+  //const [devices, setDevices] = useState("");
   const [device, setDevice] = useState("");
   const [testID, setTestID] = useState("");
   const [orgAssignment, setOrgAssignment] = useState("");

@@ -3,7 +3,7 @@ import {
    Text, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   EditIcon, DeleteIcon, AddIcon, ViewIcon  } from "@chakra-ui/icons";
 import { auth } from "../firebase";
@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import React from "react";
+
 
 const Navbar = () => {
   useEffect(() => {
@@ -35,6 +36,7 @@ const Navbar = () => {
   const btnRef = React.useRef() // from Chakra UI
   const sizes = ['xs'] // size of the Drawer
   const [size, setSize] = React.useState('') // from Chakra UI
+  
 
 
 const userSignOut = () => { {/* Signout fronm firebase*/}
@@ -46,7 +48,13 @@ const userSignOut = () => { {/* Signout fronm firebase*/}
       .catch((error) => console.log(error));
   };
 
+  const location = useLocation();
 
+
+  if (location.pathname === "/" || location.pathname === "/register") {
+    return null; // Don't render the Navbar for login and register routes
+  }
+  
   return (
     <Box bg="orange" py={3} px={3} boxShadow="md" position="sticky" top="0">
 

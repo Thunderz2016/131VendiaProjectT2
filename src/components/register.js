@@ -104,7 +104,7 @@ function Register() {
       <Box>
         <p>
         Already Have an Account?{" "}
-        <Link color='blue' as={RouterLink} to="/login">
+        <Link color='blue' as={RouterLink} to="/">
           Login
         </Link>
         </p>

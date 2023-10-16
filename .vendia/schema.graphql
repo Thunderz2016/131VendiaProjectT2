@@ -1,5 +1,3 @@
-directive @vendia_batch on MUTATION
-
 directive @vendia_transaction on MUTATION | QUERY
 
 enum Vendia_ModelAttributeTypes {
@@ -213,6 +211,69 @@ type Vendia_Meta_Erased {
   nodes: [String!]!
 }
 
+input Self_Device_ConditionInput_ {
+  Name: Vendia_ModelStringInput_
+  Status: Vendia_ModelBooleanInput_
+  _and: [Self_Device_ConditionInput_]
+  _or: [Self_Device_ConditionInput_]
+  _not: Self_Device_ConditionInput_
+}
+
+input Self_Device_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
+  Name: Vendia_ModelStringInput_
+  Status: Vendia_ModelBooleanInput_
+  _and: [Self_Device_FilterInput_]
+  _or: [Self_Device_FilterInput_]
+  _not: Self_Device_FilterInput_
+}
+
+input Self_Device_OrderInput_ {
+  _id: Vendia_ModelSortDirection
+}
+
+type Self_Device {
+  _id: ID!
+  Name: String
+  Status: Boolean
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_Device_Result_ {
+  error: String
+  result: Self_Device
+}
+
+type Self_Device_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_Device
+}
+
+type Self_Device_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+type Self_Device_Connection_ {
+  _DeviceItems: [Self_Device]
+  nextToken: String
+}
+
+input Self_Device_Input_ {
+  Name: String
+  Status: Boolean
+}
+
+input Self_Device_UpdateInput_ {
+  Name: String
+  Status: Boolean
+}
+
+input Self_Device_PartialInput_ {
+  Name: String
+  Status: Boolean
+}
+
 input Self_Test_ConditionInput_ {
   Completed: Vendia_ModelBooleanInput_
   Device: Vendia_ModelStringInput_
@@ -314,6 +375,7 @@ input Self_Test_PartialInput_ {
 
 input Vendia_Block_transactions_transactionsItem_ConditionInput_ {
   _id: Vendia_ModelStringInput_
+  actor: Vendia_Block_transactions_transactionsItem_actor_ConditionInput_
   hash: Vendia_ModelStringInput_
   redactedHash: Vendia_ModelStringInput_
   signature: Vendia_ModelStringInput_
@@ -328,6 +390,7 @@ input Vendia_Block_transactions_transactionsItem_ConditionInput_ {
 
 input Vendia_Block_transactions_transactionsItem_FilterInput_ {
   _id: Vendia_ModelStringInput_
+  actor: Vendia_Block_transactions_transactionsItem_actor_FilterInput_
   hash: Vendia_ModelStringInput_
   redactedHash: Vendia_ModelStringInput_
   signature: Vendia_ModelStringInput_
@@ -342,6 +405,7 @@ input Vendia_Block_transactions_transactionsItem_FilterInput_ {
 
 type Vendia_Block_transactions_transactionsItem {
   _id: String!
+  actor: Vendia_Block_transactions_transactionsItem_actor
   hash: String!
   redactedHash: String
   signature: String
@@ -363,6 +427,53 @@ type Vendia_Block_transactions_transactionsItem_Transaction_Result_ {
 }
 
 type Vendia_Block_transactions_transactionsItem_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+input Vendia_Block_transactions_transactionsItem_actor_ConditionInput_ {
+  id: Vendia_ModelStringInput_
+  type: Vendia_ModelStringInput_
+  roleId: Vendia_ModelStringInput_
+  roleName: Vendia_ModelStringInput_
+  roleVersion: Vendia_ModelStringInput_
+  contractTaskId: Vendia_ModelStringInput_
+  _and: [Vendia_Block_transactions_transactionsItem_actor_ConditionInput_]
+  _or: [Vendia_Block_transactions_transactionsItem_actor_ConditionInput_]
+  _not: Vendia_Block_transactions_transactionsItem_actor_ConditionInput_
+}
+
+input Vendia_Block_transactions_transactionsItem_actor_FilterInput_ {
+  id: Vendia_ModelStringInput_
+  type: Vendia_ModelStringInput_
+  roleId: Vendia_ModelStringInput_
+  roleName: Vendia_ModelStringInput_
+  roleVersion: Vendia_ModelStringInput_
+  contractTaskId: Vendia_ModelStringInput_
+  _and: [Vendia_Block_transactions_transactionsItem_actor_FilterInput_]
+  _or: [Vendia_Block_transactions_transactionsItem_actor_FilterInput_]
+  _not: Vendia_Block_transactions_transactionsItem_actor_FilterInput_
+}
+
+type Vendia_Block_transactions_transactionsItem_actor {
+  id: String!
+  type: Vendia_Block_transactions_transactionsItem_actor_typeEnum!
+  roleId: String
+  roleName: String
+  roleVersion: String
+  contractTaskId: String
+}
+
+type Vendia_Block_transactions_transactionsItem_actor_Result_ {
+  error: String
+  result: Vendia_Block_transactions_transactionsItem_actor
+}
+
+type Vendia_Block_transactions_transactionsItem_actor_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Vendia_Block_transactions_transactionsItem_actor
+}
+
+type Vendia_Block_transactions_transactionsItem_actor_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
@@ -1723,6 +1834,83 @@ type Vendia_SharingPolicy_acl_aclItem_principal_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
+input Vendia_CDC_destination_ConditionInput_ {
+  type: Vendia_ModelStringInput_
+  uri: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_destination_ConditionInput_]
+  _or: [Vendia_CDC_destination_ConditionInput_]
+  _not: Vendia_CDC_destination_ConditionInput_
+}
+
+input Vendia_CDC_destination_FilterInput_ {
+  type: Vendia_ModelStringInput_
+  uri: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_destination_FilterInput_]
+  _or: [Vendia_CDC_destination_FilterInput_]
+  _not: Vendia_CDC_destination_FilterInput_
+}
+
+type Vendia_CDC_destination {
+  type: Vendia_CDC_destination_typeEnum
+  uri: String
+}
+
+type Vendia_CDC_destination_Result_ {
+  error: String
+  result: Vendia_CDC_destination
+}
+
+type Vendia_CDC_destination_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Vendia_CDC_destination
+}
+
+type Vendia_CDC_destination_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+input Vendia_CDC_subscriptionPeriod_ConditionInput_ {
+  startBlockPositionType: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_subscriptionPeriod_ConditionInput_]
+  _or: [Vendia_CDC_subscriptionPeriod_ConditionInput_]
+  _not: Vendia_CDC_subscriptionPeriod_ConditionInput_
+}
+
+input Vendia_CDC_subscriptionPeriod_FilterInput_ {
+  startBlockPositionType: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_subscriptionPeriod_FilterInput_]
+  _or: [Vendia_CDC_subscriptionPeriod_FilterInput_]
+  _not: Vendia_CDC_subscriptionPeriod_FilterInput_
+}
+
+type Vendia_CDC_subscriptionPeriod {
+  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+}
+
+type Vendia_CDC_subscriptionPeriod_Result_ {
+  error: String
+  result: Vendia_CDC_subscriptionPeriod
+}
+
+type Vendia_CDC_subscriptionPeriod_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Vendia_CDC_subscriptionPeriod
+}
+
+type Vendia_CDC_subscriptionPeriod_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+enum Vendia_Block_transactions_transactionsItem_actor_typeEnum {
+  API_KEY
+  API_CREDENTIALS
+  SMART_CONTRACT
+  VENDIA_USER
+  VENDIA_SYSTEM
+  VENDIA_INTERNAL
+  JWT_EXTERNAL
+}
+
 enum Vendia_File_vendia_checksums_checksumsItem_algorithmEnum {
   md5
   sha256
@@ -1792,6 +1980,15 @@ enum Vendia_SharingPolicy_acl_aclItem_operations_operationsItemEnum {
   WRITE
   INVOKE
   ERASE_GLOBAL
+}
+
+enum Vendia_CDC_destination_typeEnum {
+  AWS_LAMBDA_ARN
+}
+
+enum Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum {
+  LATEST
+  ORIGIN
 }
 
 enum Vendia_Block_statusEnum {
@@ -3195,6 +3392,87 @@ input Vendia_SharingPolicy_PartialInput_ {
   acl: [Vendia_SharingPolicy_acl_aclItem_PartialInput_]
 }
 
+input Vendia_CDC_ConditionInput_ {
+  name: Vendia_ModelStringInput_
+  destination: Vendia_CDC_destination_ConditionInput_
+  enabled: Vendia_ModelBooleanInput_
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_ConditionInput_
+  statusReason: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_ConditionInput_]
+  _or: [Vendia_CDC_ConditionInput_]
+  _not: Vendia_CDC_ConditionInput_
+}
+
+input Vendia_CDC_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
+  name: Vendia_ModelStringInput_
+  destination: Vendia_CDC_destination_FilterInput_
+  enabled: Vendia_ModelBooleanInput_
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_FilterInput_
+  statusReason: Vendia_ModelStringInput_
+  _and: [Vendia_CDC_FilterInput_]
+  _or: [Vendia_CDC_FilterInput_]
+  _not: Vendia_CDC_FilterInput_
+}
+
+input Vendia_CDC_OrderInput_ {
+  _id: Vendia_ModelSortDirection
+}
+
+type Vendia_CDC {
+  _id: ID!
+  name: String
+  destination: Vendia_CDC_destination
+  enabled: Boolean
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod
+  statusReason: String
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Vendia_CDC_Result_ {
+  error: String
+  result: Vendia_CDC
+}
+
+type Vendia_CDC_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Vendia_CDC
+}
+
+type Vendia_CDC_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+type Vendia_CDC_Connection_ {
+  Vendia_CDCItems: [Vendia_CDC]
+  nextToken: String
+}
+
+input Vendia_CDC_Input_ {
+  name: String!
+  destination: Vendia_CDC_destination_Input_
+  enabled: Boolean!
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_Input_
+  statusReason: String
+}
+
+input Vendia_CDC_UpdateInput_ {
+  name: String
+  destination: Vendia_CDC_destination_UpdateInput_
+  enabled: Boolean
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_UpdateInput_
+  statusReason: String
+}
+
+input Vendia_CDC_PartialInput_ {
+  name: String
+  destination: Vendia_CDC_destination_PartialInput_
+  enabled: Boolean
+  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_PartialInput_
+  statusReason: String
+}
+
 input Vendia_Contract_InvokeInput_ {
   invocationId: String
   queryArgs: String
@@ -3202,307 +3480,86 @@ input Vendia_Contract_InvokeInput_ {
 }
 
 type Query {
-  get_Test(
-    id: ID!
-    version: Int
-    readMode: Vendia_ReadMode = NODE_COMMITTED
-  ): Self_Test
-  list_TestItems(
-    filter: Self_Test_FilterInput_
-    readMode: Vendia_ReadMode = NODE_COMMITTED
-    order: [Self_Test_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Self_Test_Connection_
-  list_TestVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
-  listVendia_SubscriptionItems(
-    filter: Vendia_Subscription_FilterInput_
-    order: [Vendia_Subscription_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_Subscription_Connection_
+  get_Device(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Device
+  list_DeviceItems(filter: Self_Device_FilterInput_, readMode: Vendia_ReadMode = NODE_LEDGERED, order: [Self_Device_OrderInput_!], limit: Int, nextToken: String): Self_Device_Connection_
+  list_DeviceVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
+  get_Test(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Test
+  list_TestItems(filter: Self_Test_FilterInput_, readMode: Vendia_ReadMode = NODE_LEDGERED, order: [Self_Test_OrderInput_!], limit: Int, nextToken: String): Self_Test_Connection_
+  list_TestVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
+  listVendia_SubscriptionItems(filter: Vendia_Subscription_FilterInput_, order: [Vendia_Subscription_OrderInput_!], limit: Int, nextToken: String): Vendia_Subscription_Connection_
   getVendia_Block(id: ID!): Vendia_Block
-  listVendia_BlockItems(
-    filter: Vendia_Block_FilterInput_
-    order: [Vendia_Block_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_Block_Connection_
+  listVendia_BlockItems(filter: Vendia_Block_FilterInput_, order: [Vendia_Block_OrderInput_!], limit: Int, nextToken: String): Vendia_Block_Connection_
   getVendia_File(id: ID!, version: Int): Vendia_File
-  listVendia_FileItems(
-    filter: Vendia_File_FilterInput_
-    order: [Vendia_File_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_File_Connection_
-  listVendia_FileVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_FileItems(filter: Vendia_File_FilterInput_, order: [Vendia_File_OrderInput_!], limit: Int, nextToken: String): Vendia_File_Connection_
+  listVendia_FileVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_FileTask(id: ID!): Vendia_FileTask
-  listVendia_FileTaskItems(
-    filter: Vendia_FileTask_FilterInput_
-    order: [Vendia_FileTask_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_FileTask_Connection_
+  listVendia_FileTaskItems(filter: Vendia_FileTask_FilterInput_, order: [Vendia_FileTask_OrderInput_!], limit: Int, nextToken: String): Vendia_FileTask_Connection_
   getVendia_Folder(id: ID!, version: Int): Vendia_Folder
-  listVendia_FolderItems(
-    filter: Vendia_Folder_FilterInput_
-    order: [Vendia_Folder_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_Folder_Connection_
-  listVendia_FolderVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_FolderItems(filter: Vendia_Folder_FilterInput_, order: [Vendia_Folder_OrderInput_!], limit: Int, nextToken: String): Vendia_Folder_Connection_
+  listVendia_FolderVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_Contract(id: ID!, version: Int): Vendia_Contract
-  listVendia_ContractItems(
-    filter: Vendia_Contract_FilterInput_
-    order: [Vendia_Contract_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_Contract_Connection_
-  listVendia_ContractVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_ContractItems(filter: Vendia_Contract_FilterInput_, order: [Vendia_Contract_OrderInput_!], limit: Int, nextToken: String): Vendia_Contract_Connection_
+  listVendia_ContractVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_ContractTask(id: ID!): Vendia_ContractTask
-  listVendia_ContractTaskItems(
-    filter: Vendia_ContractTask_FilterInput_
-    order: [Vendia_ContractTask_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_ContractTask_Connection_
+  listVendia_ContractTaskItems(filter: Vendia_ContractTask_FilterInput_, order: [Vendia_ContractTask_OrderInput_!], limit: Int, nextToken: String): Vendia_ContractTask_Connection_
   getVendia_EraseTask(id: ID!): Vendia_EraseTask
-  listVendia_EraseTaskItems(
-    filter: Vendia_EraseTask_FilterInput_
-    order: [Vendia_EraseTask_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_EraseTask_Connection_
+  listVendia_EraseTaskItems(filter: Vendia_EraseTask_FilterInput_, order: [Vendia_EraseTask_OrderInput_!], limit: Int, nextToken: String): Vendia_EraseTask_Connection_
   getVendia_ApiKey(id: ID!, version: Int): Vendia_ApiKey
-  listVendia_ApiKeyItems(
-    filter: Vendia_ApiKey_FilterInput_
-    order: [Vendia_ApiKey_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_ApiKey_Connection_
-  listVendia_ApiKeyVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_ApiKeyItems(filter: Vendia_ApiKey_FilterInput_, order: [Vendia_ApiKey_OrderInput_!], limit: Int, nextToken: String): Vendia_ApiKey_Connection_
+  listVendia_ApiKeyVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_JwtAuthentication(id: ID!, version: Int): Vendia_JwtAuthentication
-  listVendia_JwtAuthenticationItems(
-    filter: Vendia_JwtAuthentication_FilterInput_
-    order: [Vendia_JwtAuthentication_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_JwtAuthentication_Connection_
-  listVendia_JwtAuthenticationVersions(
-    id: ID!
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_JwtAuthenticationItems(filter: Vendia_JwtAuthentication_FilterInput_, order: [Vendia_JwtAuthentication_OrderInput_!], limit: Int, nextToken: String): Vendia_JwtAuthentication_Connection_
+  listVendia_JwtAuthenticationVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_Settings(version: Int): Vendia_Settings
-  listVendia_SettingsVersions(
-    limit: Int
-    nextToken: String
-  ): Vendia_Version_Connection_
+  listVendia_SettingsVersions(limit: Int, nextToken: String): Vendia_Version_Connection_
   getVendia_UniInfo: Vendia_UniInfo
   getVendia_DeploymentInfo(id: ID!): Vendia_DeploymentInfo
-  listVendia_DeploymentInfoItems(
-    filter: Vendia_DeploymentInfo_FilterInput_
-    order: [Vendia_DeploymentInfo_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_DeploymentInfo_Connection_
-  getVendia_SharingPolicy(
-    id: ID
-    version: Int
-    name: String
-  ): Vendia_SharingPolicy
-  listVendia_SharingPolicyItems(
-    filter: Vendia_SharingPolicy_FilterInput_
-    order: [Vendia_SharingPolicy_OrderInput_!]
-    limit: Int
-    nextToken: String
-  ): Vendia_SharingPolicy_Connection_
-  listVendia_SharingPolicyVersions(
-    id: ID
-    limit: Int
-    nextToken: String
-    name: String
-  ): Vendia_Version_Connection_
+  listVendia_DeploymentInfoItems(filter: Vendia_DeploymentInfo_FilterInput_, order: [Vendia_DeploymentInfo_OrderInput_!], limit: Int, nextToken: String): Vendia_DeploymentInfo_Connection_
+  getVendia_SharingPolicy(id: ID, version: Int, name: String): Vendia_SharingPolicy
+  listVendia_SharingPolicyItems(filter: Vendia_SharingPolicy_FilterInput_, order: [Vendia_SharingPolicy_OrderInput_!], limit: Int, nextToken: String): Vendia_SharingPolicy_Connection_
+  listVendia_SharingPolicyVersions(id: ID, limit: Int, nextToken: String, name: String): Vendia_Version_Connection_
 }
 
 type Mutation {
-  add_Test(
-    input: Self_Test_Input_!
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode = NODE_COMMITTED
-  ): Self_Test_Transaction_Result_
-  put_Test(
-    id: ID!
-    input: Self_Test_Input_!
-    condition: Self_Test_ConditionInput_
-    aclInput: Vendia_Acls_Input_!
-    syncMode: Vendia_SyncMode = NODE_COMMITTED
-  ): Self_Test_Transaction_Result_
-  update_Test(
-    id: ID!
-    input: Self_Test_UpdateInput_!
-    condition: Self_Test_ConditionInput_
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode = NODE_COMMITTED
-  ): Self_Test_Transaction_Result_
-  remove_Test(
-    id: ID!
-    condition: Self_Test_ConditionInput_
-    syncMode: Vendia_SyncMode = NODE_COMMITTED
-  ): Self_Test_Delete_Transaction_Result_
-  addVendia_File(
-    input: Vendia_File_Input_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_File_Transaction_Result_
-  putVendia_File(
-    id: ID!
-    input: Vendia_File_Input_!
-    condition: Vendia_File_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_File_Transaction_Result_
-  updateVendia_File(
-    id: ID!
-    input: Vendia_File_UpdateInput_!
-    condition: Vendia_File_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_File_Transaction_Result_
-  removeVendia_File(
-    id: ID!
-    condition: Vendia_File_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_File_Delete_Transaction_Result_
-  eraseVendia_File(
-    id: ID!
-    eraseMode: Vendia_EraseMode!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_File_Transaction_Result_
-  eraseVendia_FileTask(
-    id: ID!
-    input: Vendia_FileTask_EraseInput_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_FileTask_Transaction_Result_
-  addVendia_Folder(
-    input: Vendia_Folder_Input_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Folder_Transaction_Result_
-  removeVendia_Folder(
-    id: ID!
-    condition: Vendia_Folder_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Folder_Delete_Transaction_Result_
-  addVendia_Contract(
-    input: Vendia_Contract_Input_!
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Contract_Transaction_Result_
-  updateVendia_Contract(
-    id: ID!
-    input: Vendia_Contract_UpdateInput_!
-    condition: Vendia_Contract_ConditionInput_
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Contract_Transaction_Result_
-  removeVendia_Contract(
-    id: ID!
-    condition: Vendia_Contract_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Contract_Delete_Transaction_Result_
-  eraseVendia_ContractTask(
-    id: ID!
-    input: Vendia_ContractTask_EraseInput_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_ContractTask_Transaction_Result_
-  addVendia_ApiKey(
-    input: Vendia_ApiKey_Input_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_ApiKey_Transaction_Result_
-  updateVendia_ApiKey(
-    id: ID!
-    input: Vendia_ApiKey_UpdateInput_!
-    condition: Vendia_ApiKey_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_ApiKey_Transaction_Result_
-  removeVendia_ApiKey(
-    id: ID!
-    condition: Vendia_ApiKey_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_ApiKey_Delete_Transaction_Result_
-  addVendia_JwtAuthentication(
-    input: Vendia_JwtAuthentication_Input_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_JwtAuthentication_Transaction_Result_
-  updateVendia_JwtAuthentication(
-    id: ID!
-    input: Vendia_JwtAuthentication_UpdateInput_!
-    condition: Vendia_JwtAuthentication_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_JwtAuthentication_Transaction_Result_
-  removeVendia_JwtAuthentication(
-    id: ID!
-    condition: Vendia_JwtAuthentication_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_JwtAuthentication_Delete_Transaction_Result_
-  updateVendia_Settings(
-    input: Vendia_Settings_UpdateInput_!
-    condition: Vendia_Settings_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Settings_Transaction_Result_
-  addVendia_SharingPolicy(
-    input: Vendia_SharingPolicy_Input_!
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_SharingPolicy_Transaction_Result_
-  putVendia_SharingPolicy(
-    id: ID
-    name: String
-    input: Vendia_SharingPolicy_Input_!
-    condition: Vendia_SharingPolicy_ConditionInput_
-    aclInput: Vendia_Acls_Input_!
-    syncMode: Vendia_SyncMode!
-  ): Vendia_SharingPolicy_Transaction_Result_
-  updateVendia_SharingPolicy(
-    id: ID
-    name: String
-    input: Vendia_SharingPolicy_UpdateInput_!
-    condition: Vendia_SharingPolicy_ConditionInput_
-    aclInput: Vendia_Acls_Input_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_SharingPolicy_Transaction_Result_
-  removeVendia_SharingPolicy(
-    id: ID
-    name: String
-    condition: Vendia_SharingPolicy_ConditionInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_SharingPolicy_Delete_Transaction_Result_
-  invokeVendia_Contract(
-    id: ID!
-    revisionId: String
-    input: Vendia_Contract_InvokeInput_
-    syncMode: Vendia_SyncMode!
-  ): Vendia_Contract_Transaction_Result_
+  add_Device(input: Self_Device_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Transaction_Result_
+  put_Device(id: ID!, input: Self_Device_Input_!, condition: Self_Device_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Transaction_Result_
+  update_Device(id: ID!, input: Self_Device_UpdateInput_!, condition: Self_Device_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Transaction_Result_
+  remove_Device(id: ID!, condition: Self_Device_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Delete_Transaction_Result_
+  add_Test(input: Self_Test_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
+  put_Test(id: ID!, input: Self_Test_Input_!, condition: Self_Test_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
+  update_Test(id: ID!, input: Self_Test_UpdateInput_!, condition: Self_Test_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
+  remove_Test(id: ID!, condition: Self_Test_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Delete_Transaction_Result_
+  addVendia_File(input: Vendia_File_Input_!, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
+  putVendia_File(id: ID!, input: Vendia_File_Input_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
+  updateVendia_File(id: ID!, input: Vendia_File_UpdateInput_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
+  removeVendia_File(id: ID!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Delete_Transaction_Result_
+  eraseVendia_File(id: ID!, eraseMode: Vendia_EraseMode!, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
+  eraseVendia_FileTask(id: ID!, input: Vendia_FileTask_EraseInput_!, syncMode: Vendia_SyncMode!): Vendia_FileTask_Transaction_Result_
+  addVendia_Folder(input: Vendia_Folder_Input_!, syncMode: Vendia_SyncMode!): Vendia_Folder_Transaction_Result_
+  removeVendia_Folder(id: ID!, condition: Vendia_Folder_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Folder_Delete_Transaction_Result_
+  addVendia_Contract(input: Vendia_Contract_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
+  updateVendia_Contract(id: ID!, input: Vendia_Contract_UpdateInput_!, condition: Vendia_Contract_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
+  removeVendia_Contract(id: ID!, condition: Vendia_Contract_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Delete_Transaction_Result_
+  eraseVendia_ContractTask(id: ID!, input: Vendia_ContractTask_EraseInput_!, syncMode: Vendia_SyncMode!): Vendia_ContractTask_Transaction_Result_
+  addVendia_ApiKey(input: Vendia_ApiKey_Input_!, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Transaction_Result_
+  updateVendia_ApiKey(id: ID!, input: Vendia_ApiKey_UpdateInput_!, condition: Vendia_ApiKey_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Transaction_Result_
+  removeVendia_ApiKey(id: ID!, condition: Vendia_ApiKey_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Delete_Transaction_Result_
+  addVendia_JwtAuthentication(input: Vendia_JwtAuthentication_Input_!, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Transaction_Result_
+  updateVendia_JwtAuthentication(id: ID!, input: Vendia_JwtAuthentication_UpdateInput_!, condition: Vendia_JwtAuthentication_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Transaction_Result_
+  removeVendia_JwtAuthentication(id: ID!, condition: Vendia_JwtAuthentication_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Delete_Transaction_Result_
+  updateVendia_Settings(input: Vendia_Settings_UpdateInput_!, condition: Vendia_Settings_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Settings_Transaction_Result_
+  addVendia_SharingPolicy(input: Vendia_SharingPolicy_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
+  putVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_Input_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
+  updateVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_UpdateInput_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
+  removeVendia_SharingPolicy(id: ID, name: String, condition: Vendia_SharingPolicy_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Delete_Transaction_Result_
+  invokeVendia_Contract(id: ID!, revisionId: String, input: Vendia_Contract_InvokeInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
 }
 
 type Subscription {
+  onAdd_Device: Self_Device_Result_
+  onUpdate_Device: Self_Device_Result_
+  onPut_Device: Self_Device_Result_
+  onRemove_Device: Self_Device_Result_
   onAdd_Test: Self_Test_Result_
   onUpdate_Test: Self_Test_Result_
   onPut_Test: Self_Test_Result_
@@ -3567,6 +3624,7 @@ type Schema {
 
 input Vendia_Block_transactions_transactionsItem_Input_ {
   _id: String!
+  actor: Vendia_Block_transactions_transactionsItem_actor_Input_
   hash: String!
   redactedHash: String
   signature: String
@@ -3578,6 +3636,7 @@ input Vendia_Block_transactions_transactionsItem_Input_ {
 
 input Vendia_Block_transactions_transactionsItem_UpdateInput_ {
   _id: String
+  actor: Vendia_Block_transactions_transactionsItem_actor_UpdateInput_
   hash: String
   redactedHash: String
   signature: String
@@ -3589,6 +3648,7 @@ input Vendia_Block_transactions_transactionsItem_UpdateInput_ {
 
 input Vendia_Block_transactions_transactionsItem_PartialInput_ {
   _id: String
+  actor: Vendia_Block_transactions_transactionsItem_actor_PartialInput_
   hash: String
   redactedHash: String
   signature: String
@@ -3596,6 +3656,33 @@ input Vendia_Block_transactions_transactionsItem_PartialInput_ {
   submissionTime: String
   mutations: [String]
   _owner: String
+}
+
+input Vendia_Block_transactions_transactionsItem_actor_Input_ {
+  id: String!
+  type: Vendia_Block_transactions_transactionsItem_actor_typeEnum!
+  roleId: String
+  roleName: String
+  roleVersion: String
+  contractTaskId: String
+}
+
+input Vendia_Block_transactions_transactionsItem_actor_UpdateInput_ {
+  id: String
+  type: Vendia_Block_transactions_transactionsItem_actor_typeEnum
+  roleId: String
+  roleName: String
+  roleVersion: String
+  contractTaskId: String
+}
+
+input Vendia_Block_transactions_transactionsItem_actor_PartialInput_ {
+  id: String
+  type: Vendia_Block_transactions_transactionsItem_actor_typeEnum
+  roleId: String
+  roleName: String
+  roleVersion: String
+  contractTaskId: String
 }
 
 input Vendia_Block__erasure_Input_ {
@@ -4255,4 +4342,31 @@ input Vendia_SharingPolicy_acl_aclItem_principal_UpdateInput_ {
 
 input Vendia_SharingPolicy_acl_aclItem_principal_PartialInput_ {
   nodes: [String]
+}
+
+input Vendia_CDC_destination_Input_ {
+  type: Vendia_CDC_destination_typeEnum
+  uri: String
+}
+
+input Vendia_CDC_destination_UpdateInput_ {
+  type: Vendia_CDC_destination_typeEnum
+  uri: String
+}
+
+input Vendia_CDC_destination_PartialInput_ {
+  type: Vendia_CDC_destination_typeEnum
+  uri: String
+}
+
+input Vendia_CDC_subscriptionPeriod_Input_ {
+  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+}
+
+input Vendia_CDC_subscriptionPeriod_UpdateInput_ {
+  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+}
+
+input Vendia_CDC_subscriptionPeriod_PartialInput_ {
+  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
 }

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/login';
 import Register from './components/register';
-import Dashboard from './components/Dashboard';
-import DeviceOne from './page-device/DeviceOne';
-import DeviceTwo from './page-device/DeviceTwo';
-import DeviceThree from './page-device/DeviceThree';
-import DeviceFour from './page-device/DeviceFour';
+import Device from './page-device/Device';
 import { onAuthStateChanged } from 'firebase/auth'; // Import onAuthStateChanged function
 import { auth } from './firebase'; // Import Firebase auth instance
+import Navbar from './components/Navbar';
+import DeviceUpdate from './page-device/DeviceUpdate';
+import DeleteDevice from './page-device/DeleteDevice';
+import ListDevice from './page-device/ListDevice';
+import ListID from './page-device/ListID';
+import Mainpage from './components/Mainpage';
 
 function App() {
   // Initialize the user state
@@ -34,7 +36,9 @@ function App() {
   const isAuthenticated = !!user; // true if user is not null, false otherwise
 
   return (
+    
     <div className="App">
+       <Navbar />
       <Routes>
         {/* Default route, redirects to login if not authenticated */}
         <Route
@@ -46,16 +50,16 @@ function App() {
             )
           }
         />
-
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path= "/ListDevice" element={<ListDevice />} />
+        <Route path= "/ListID" element={<ListID />} />
+        <Route path="/Device" element={<Device />} />
+        <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
+        <Route path="/DeleteDevice" element={<DeleteDevice />} />
+        <Route path="/Mainpage" element={<Mainpage />} />
 
-        <Route path="/DeviceOne" element={<DeviceOne />} />
-        <Route path="/DeviceTwo" element={<DeviceTwo />} />
-        <Route path="/DeviceThree" element={<DeviceThree />} />
-        <Route path="/DeviceFour" element={<DeviceFour />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>
   )

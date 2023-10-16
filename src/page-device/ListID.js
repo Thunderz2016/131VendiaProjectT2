@@ -96,10 +96,12 @@ export const ListID = () => {
     console.log(listDeviceResponse);
   };
 
+const updateDevice = async () => {
   const handleSubmit = (event) => {
     event.preventDefault(); // Preventing the default form submission behavior
     updateDevice(); // Calling the updateDevice function to update the device
   };
+};
 
   return (
 

@@ -1,7 +1,6 @@
-// Import necessary dependencies from React and Firebase and Chakra
 import React, { useState } from "react";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -18,30 +17,45 @@ import { InputGroup } from "@chakra-ui/react";
 import { InputRightElement } from "@chakra-ui/react";
 
 function Login() {
-// Initialize state variables to store email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // navigate from login to DeviceOne page
   const navigate = useNavigate();
-  // hide and show password
-  const handleClick = () => setShow(!show)
-  const [show, setShow] = React.useState(false)
-  
-  // handle the login process
-  const login = (e) => {
-    e.preventDefault();
+  const [show, setShow] = useState(false);
 
-    // Use Firebase's signInWithEmailAndPassword function to sign in a user
+  const handleClick = () => setShow(!show);
+
+  const loginWithEmailAndPassword = (e) => {
+    e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log('Logged in user:', userCredential.user);
-
-        
-        // If registration is successful, log the user credential
         console.log(userCredential);
-        navigate("/DeviceOne"); // to redirect to the DeviceOne page, if the login is successful
+        navigate("/DeviceOne");
       })
-      // If there's an error during registration, log the error
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const loginWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        console.log('Logged in user:', userCredential.user);
+        navigate("/DeviceOne");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const loginWithFacebook = () => {
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        console.log('Logged in user:', userCredential.user);
+        navigate("/DeviceOne");
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -56,14 +70,13 @@ function Login() {
       p="11"
       borderWidth="1px"
       borderRadius="lg"
-      boxShadow="md">
-
+      boxShadow="md"
+    >
       <Heading as="h2" size="lg" textAlign="center">
         Login
       </Heading>
 
-      <form onSubmit={login}>
-{/* Input field for entering login email */}
+      <form onSubmit={loginWithEmailAndPassword}>
         <FormControl mb={4}>
           <FormLabel>Email</FormLabel>
           <Input
@@ -74,50 +87,61 @@ function Login() {
           />
         </FormControl>
 
-{/* Input field for entering password */}
         <FormControl mb={4}>
           <FormLabel>Password</FormLabel>
-            <InputGroup size='md'>
-              <Input
-                pr='4.5rem'
-                type={show ? 'text' : 'password'}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputRightElement width='4.5rem'>
-               <Button h='1.75rem' size='sm' onClick={handleClick}>
-                {show ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
+          <InputGroup size="md">
+            <Input
+              pr="4.5rem"
+              type={show ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                {show ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
           </InputGroup>
         </FormControl>
 
         <Center>
-        <Button colorScheme="blue" type="submit">
-          Log In
-        </Button>
+          <Button colorScheme="blue" type="submit">
+            Log In
+          </Button>
         </Center>
-
       </form>
 
-{/* link button for registration */}
       <Center>
-      <Box>
-        <p>
-          Don't have an account?{" "}
-          <Link color='red' href='#' as={RouterLink} to="/register">
-            Register
-          </Link>
-        </p>
-      </Box>
+        <Button
+          colorScheme="red"
+          onClick={loginWithGoogle}
+        >
+          Log In with Google
+        </Button>
       </Center>
-      
 
+      <Center>
+        <Button
+          colorScheme="facebook"
+          onClick={loginWithFacebook}
+        >
+          Log In with Facebook
+        </Button>
+      </Center>
+
+      <Center>
+        <Box>
+          <p>
+            Don't have an account?{" "}
+            <Link color="red" href="#" as={RouterLink} to="/register">
+              Register
+            </Link>
+          </p>
+        </Box>
+      </Center>
     </Stack>
-    
   );
 }
 
-// Export the Login component for use in other parts of the application
 export default Login;

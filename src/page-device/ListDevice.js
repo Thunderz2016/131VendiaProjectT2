@@ -101,6 +101,7 @@ export const List = () => {
     });
     console.log(listDeviceResponse);
   };
+  
   const updateDevice = async () => {
   const handleSubmit = (event) => {
     event.preventDefault(); // Preventing the default form submission behavior

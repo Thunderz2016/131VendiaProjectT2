@@ -6,11 +6,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { vendiaClient } from "../vendiaClient";
 import {
-  Input, Button,
-  Text, Box,
-  Stack, Table,
-  Thead, Tbody,
-  Tr,Th, Td,
+  Input, Button, Text, Box,
+  Stack, Table, Thead, Tbody,
+  Tr, Th, Td,
 } from "@chakra-ui/react";
 
 const { client } = vendiaClient();
@@ -19,10 +17,11 @@ export const Device = () => {
   const location = useLocation(); // Get the current location object
   const searchParams = new URLSearchParams(location.search);
   const textParam = searchParams.get("text"); // Get the 'text' parameter from the URL
+  const deviceNameFromUrl = searchParams.get("deviceName");
 
   const [devices, setDevices] = useState([
     {
-      Device: textParam || "Device #",
+      Device: deviceNameFromUrl || "Device #",
       testID: "",
       orgAssignment: "",
       testName: "",
@@ -35,12 +34,8 @@ export const Device = () => {
 
   const [authUser, setAuthUser] = useState(null);
   
-  //const [deviceName, setDeviceName] = useState(""); // Hidden device name
-
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setAuthUser(user); // Set the user object when the authentication state changes
-    });
+    onAuthStateChanged(auth, setAuthUser);  // Directly set the user when authentication state changes
   }, []);
 
   // Function to add a device to the database
@@ -60,7 +55,7 @@ export const Device = () => {
       console.log(addDeviceResponse);
     }
   };
-  
+
 
   // Function to handle form submission
   const handleSubmit = (event) => {
@@ -69,9 +64,7 @@ export const Device = () => {
   };
 
   // Function to add a new row to the devices array
-  const addRow = () => {
-    setDevices([...devices, { ...devices[0] }]); // Add a new row with the same initial values as the first row
-  };
+  const addRow = () => setDevices([...devices, { ...devices[0] }]);
 
   return (
     <Stack spacing={4} >
@@ -83,6 +76,7 @@ export const Device = () => {
 
         <Table>
           <Thead>
+
             <Tr>
               <Th>Device</Th>
               <Th>TestID</Th>
@@ -93,15 +87,18 @@ export const Device = () => {
               <Th>Completed</Th>
               <Th>UpdatedBy</Th>
             </Tr>
+            
           </Thead>
+
           <Tbody>
+
             {devices.map((device, index) => (
               <Tr key={index}>
+
                 <Td>
                   {/* Device */}
                   <Input
                     placeholder="Device #"
-                    //value={textParam || "Device #"}
                     value={device.Device}
                     onChange={(e) =>
                       setDevices((prevDevices) =>
@@ -134,8 +131,8 @@ export const Device = () => {
                     }
                     size="md"
                     width="100%"
-                    textAlign="center"/>
-
+                    textAlign="center"
+                    />
                 </Td>
 
                 <Td>

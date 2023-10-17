@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Link, useLocation } from "react-router-dom";
 import { 
-  EditIcon, DeleteIcon, AddIcon, ViewIcon  } from "@chakra-ui/icons";
+  EditIcon, DeleteIcon, AddIcon, ViewIcon, HamburgerIcon  } from "@chakra-ui/icons";
 import { auth } from "../firebase";
 import {
   Drawer,
@@ -88,6 +88,14 @@ const userSignOut = () => { {/* Signout fronm firebase*/}
             <DrawerBody> {/* This stores everything in the drawer*/}
 
               <VStack spacing="4"> {/* This control the list spacing of the other pages*/}
+
+              <Link to="/Mainpage">
+                <Box p={2} display="flex" alignItems="center">
+                  <HamburgerIcon mr={2} />
+                  Homepage
+                </Box>
+              </Link>
+
               <Link to="/Device">
                 <Box p={2} display="flex" alignItems="center">
                   <AddIcon mr={2} />

@@ -11,6 +11,7 @@ import DeleteDevice from './page-device/DeleteDevice';
 import ListDevice from './page-device/ListDevice';
 import ListID from './page-device/ListID';
 import Mainpage from './components/Mainpage';
+import Demo  from './Device-Schema/Demo';
 
 function App() {
   // Initialize the user state
@@ -58,7 +59,7 @@ function App() {
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
         <Route path="/Mainpage" element={<Mainpage />} />
-
+        <Route path="/Demo" element={<Demo />} />
 
       </Routes>
     </div>

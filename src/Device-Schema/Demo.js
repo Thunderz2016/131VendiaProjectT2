@@ -94,7 +94,12 @@ export const Demo = () => {
   return (
     <Stack align="center">
 
-      <Text fontSize="xl">Team Zephyr Device Test Tracker</Text>
+      <Text 
+        bgGradient='linear(to-l, #7928CA, #FF0080)'
+        bgClip='text'
+        fontSize='xl'
+        fontWeight='extrabold'> Team Zephyr Device Test Tracker</Text>
+
       <form onSubmit={handleSubmit}>
 
       <Stack>

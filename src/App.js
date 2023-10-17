@@ -10,7 +10,6 @@ import DeviceUpdate from './page-device/DeviceUpdate';
 import DeleteDevice from './page-device/DeleteDevice';
 import ListDevice from './page-device/ListDevice';
 import ListID from './page-device/ListID';
-import Mainpage from './components/Mainpage';
 import Demo  from './Device-Schema/Demo';
 
 function App() {
@@ -58,7 +57,6 @@ function App() {
         <Route path="/Device" element={<Device />} />
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
-        <Route path="/Mainpage" element={<Mainpage />} />
         <Route path="/Demo" element={<Demo />} />
 
       </Routes>

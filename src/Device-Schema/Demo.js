@@ -93,8 +93,11 @@ export const Demo = () => {
 
   return (
     <Stack align="center">
-      <Text fontSize="xl">Add Device</Text>
+
+      <Text fontSize="xl">Team Zephyr Device Test Tracker</Text>
       <form onSubmit={handleSubmit}>
+
+      <Stack>
 
         {/* Name */}
         <Box>
@@ -106,6 +109,7 @@ export const Demo = () => {
             onChange={handleNameChange}
           />
         </Box>
+
 
         {/* Status */}
         <FormControl display="flex" alignItems="center">
@@ -119,9 +123,15 @@ export const Demo = () => {
           />
         </FormControl>
 
+      </Stack>
+
+        <Stack align="center">
+
         <Button colorScheme="blue" onClick={handleSubmit} >
           Add Device
         </Button>
+
+        </Stack>
 
       </form>
 
@@ -129,6 +139,7 @@ export const Demo = () => {
       <Box mt={4}>
 
       <Table>
+
         <Thead>
           <Tr>
             <Th>Name</Th>

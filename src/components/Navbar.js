@@ -89,7 +89,7 @@ const userSignOut = () => { {/* Signout fronm firebase*/}
 
               <VStack spacing="4"> {/* This control the list spacing of the other pages*/}
 
-              <Link to="/Mainpage">
+              <Link to="/Demo">
                 <Box p={2} display="flex" alignItems="center">
                   <HamburgerIcon mr={2} />
                   Homepage

@@ -149,7 +149,7 @@ export const Demo = () => {
           <Tr>
             <Th>Name</Th>
             <Th>Status</Th>
-            <Th>Link</Th>
+            <Th>View</Th>
           </Tr>
         </Thead>
 
@@ -162,7 +162,7 @@ export const Demo = () => {
 
             <Td>
               <Link to={`/device?deviceName=${device.Name}`} style={{color: 'blue'}}>
-                Add
+                Add Test
               </Link>
             </Td>
 

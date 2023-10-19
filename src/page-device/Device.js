@@ -69,7 +69,7 @@ export const Device = () => {
   return (
     <Stack spacing={4} >
        <Text fontSize="xl" align="center">
-        {textParam || "Device Add Page"} {/* Display the textParam or default title */}
+        {textParam || "Test Add Page"} {/* Display the textParam or default title */}
       </Text>
 
       <Box overflowX="auto" align="center">

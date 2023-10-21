@@ -11,6 +11,8 @@ import DeleteDevice from './page-device/DeleteDevice';
 import ListDevice from './page-device/ListDevice';
 import ListID from './page-device/ListID';
 import Demo  from './Device-Schema/Demo';
+import DynamicList from './components/DynamicList';
+import OrgCreation from './Device-Schema/orgCreation';
 
 function App() {
   // Initialize the user state
@@ -50,6 +52,7 @@ function App() {
             )
           }
         />
+
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path= "/ListDevice" element={<ListDevice />} />
@@ -58,6 +61,8 @@ function App() {
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
         <Route path="/Demo" element={<Demo />} />
+        <Route path="/DynamicList" element={<DynamicList />} />
+        <Route path="/OrgCreation" element={<OrgCreation />} />
 
       </Routes>
     </div>

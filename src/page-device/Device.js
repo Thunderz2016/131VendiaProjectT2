@@ -1,5 +1,3 @@
-// add devices with various attributes to a database
-
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,16 +6,20 @@ import { vendiaClient } from "../vendiaClient";
 import {
   Input, Button, Text, Box,
   Stack, Table, Thead, Tbody,
-  Tr, Th, Td,
+  Tr, Th, Td, Select,
 } from "@chakra-ui/react";
 
 const { client } = vendiaClient();
 
 export const Device = () => {
+  const [deviceId, setDeviceId] = useState("");
+  const [name, setName] = useState("");
   const location = useLocation(); // Get the current location object
   const searchParams = new URLSearchParams(location.search);
   const textParam = searchParams.get("text"); // Get the 'text' parameter from the URL
   const deviceNameFromUrl = searchParams.get("deviceName");
+  const [testList, setTestList] = useState([]); // Define testList state
+
 
   const [devices, setDevices] = useState([
     {
@@ -31,11 +33,39 @@ export const Device = () => {
       updatedBy: "",
     },
   ]);
+  const addOrg = async () => {
+  const addOrgResponse = await client.entities.orgs.update({
+    _id: deviceId,
+    Name: name,
+  });
+    console.log(addOrgResponse);
+  };
+
+  useEffect(() => {
+    if (deviceId) {
+      const fetchOrg = async () => {
+        const deviceResponse = await client.entities.orgs.get(deviceId);
+
+        setName(deviceResponse.Name);
+      };
+
+      fetchOrg();
+    }
+  }, [deviceId]);
 
   const [authUser, setAuthUser] = useState(null);
   
   useEffect(() => {
     onAuthStateChanged(auth, setAuthUser);  // Directly set the user when authentication state changes
+  }, []);
+
+  useEffect(() => {
+    const listTest = async () => {
+      const listTestResponse = await client.entities.orgs.list();
+      setTestList(listTestResponse?.items);
+    };
+
+    listTest();
   }, []);
 
   // Function to add a device to the database
@@ -69,7 +99,7 @@ export const Device = () => {
   return (
     <Stack spacing={4} >
        <Text fontSize="xl" align="center">
-        {textParam || "Test Add Page"} {/* Display the textParam or default title */}
+        {textParam || "Test Add Page For Per Device"} {/* Display the textParam or default title */}
       </Text>
 
       <Box overflowX="auto" align="center">
@@ -137,22 +167,19 @@ export const Device = () => {
 
                 <Td>
                   {/* OrgAssignment */}
-                  <Input
-                    placeholder="OrgAssignment"
-                    value={device.orgAssignment}
-                    onChange={(e) =>
-                      setDevices((prevDevices) =>
-                        prevDevices.map((prevDevice, i) =>
-                          i === index
-                            ? { ...prevDevice, orgAssignment: e.target.value }
-                            : prevDevice
-                        )
-                      )
-                    }
+                  <Select
+                    placeholder="Select option"
+                    value={deviceId}
+                    onChange={(e) => setDeviceId(e.target.value)}
                     size="md"
                     width="100%"
-                    textAlign="center"
-                  />
+                    textAlign="center">
+                    {testList.map((orgs, index) => (
+                      <option key={orgs._id} value={orgs._id}>
+                      {orgs.Name}
+                      </option>
+                    ))}
+                  </Select>
                 </Td>
 
                 <Td>
@@ -269,7 +296,7 @@ export const Device = () => {
       </Button>
 
       <Button colorScheme="blue" onClick={handleSubmit} >
-        Add Device
+        Add Tests
       </Button>
 
       </Stack>

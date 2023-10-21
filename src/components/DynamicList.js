@@ -80,4 +80,3 @@ function DynamicList() {
 }
 
 export default DynamicList;
-

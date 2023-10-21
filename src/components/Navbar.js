@@ -130,6 +130,14 @@ const userSignOut = () => { {/* Signout fronm firebase*/}
                   List ID
                 </Box>
               </Link>
+
+              <Link to="/OrgCreation">
+                <Box p={2} display="flex" alignItems="center">
+                  <HamburgerIcon mr={2} />
+                  Org
+                </Box>
+              </Link>
+
               </VStack>
             </DrawerBody> {/* This ENDS stores everything in the drawer*/}
 

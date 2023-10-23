@@ -41,7 +41,7 @@ function Login() {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         console.log(userCredential);
-        navigate("/Demo");
+        navigate("/DynamicList");
       })
       .catch((error) => {
         console.error(error);

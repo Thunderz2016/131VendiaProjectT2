@@ -5,7 +5,7 @@ import Register from './components/register';
 import Device from './page-device/Device';
 import { onAuthStateChanged } from 'firebase/auth'; // Import onAuthStateChanged function
 import { auth } from './firebase'; // Import Firebase auth instance
-import Navbar from './components/Navbar';
+import NavbarLayout from './components/NavbarLayout';
 import DynamicList from './components/DynamicList';
 import DeviceUpdate from './page-device/DeviceUpdate';
 import DeleteDevice from './page-device/DeleteDevice';
@@ -37,7 +37,6 @@ function App() {
   return (
     
     <div className="App">
-       <Navbar />
       <Routes>
         {/* Default route, redirects to login if not authenticated */}
         <Route
@@ -49,14 +48,19 @@ function App() {
             )
           }
         />
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path= "/ListDevice" element={<ListDevice />} />
-        <Route path="/Device" element={<Device />} />
-        <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
-        <Route path="/DeleteDevice" element={<DeleteDevice />} />
-        <Route path="/dynamicList" element={<DynamicList />} />
-      </Routes>
+          <Route index element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route element={<NavbarLayout />}>
+           <Route path="/ListDevice" element={<ListDevice />} />
+           <Route path="/Device" element={<Device />} />
+           <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
+           <Route path="/DeleteDevice" element={<DeleteDevice />} />
+           <Route path="/dynamicList" element={<DynamicList />} />
+           <Route path="/profile" element={<></>}/>
+          </Route>
+
+      </Routes>      
     </div>
   )
 }

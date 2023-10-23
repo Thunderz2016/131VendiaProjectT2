@@ -87,7 +87,7 @@ export const Device = () => {
       />
       */}
       
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+      <Box borderWidth="1px" borderRadius="lg" overflow="hidden"z>
         {filteredTests.map((item, index) => (
           <Box key={index} p={4} borderBottomWidth="1px">
             <Text>{`TestID: ${item.TestID}`}</Text>

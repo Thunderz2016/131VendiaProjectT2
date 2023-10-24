@@ -20,6 +20,17 @@ import {
   EditablePreview,
 } from "@chakra-ui/react";
 import { Switch } from "@chakra-ui/react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react'
 
 const { client } = vendiaClient();
 
@@ -112,7 +123,7 @@ export const List = () => {
     <Stack spacing={4}>
       <Text fontSize="xl" align="center">
         <p>List Device Page</p>
-        <p>Ciick on a field to edit</p>
+        <p>Click on a field to edit</p>
       </Text>
 
       <Stack>
@@ -184,18 +195,28 @@ export const List = () => {
                     <EditableTextarea />
                   </Editable>
                 </Td>
-                <Td>
-                  {<Switch id={test.Completed} />}
-                </Td>
+                <Td>{<Switch size="lg" id={test.Completed.toString} />}</Td>
                 <Td>
                   <Editable defaultValue={test.UpdatedBy}>
-                    <EditablePreview width="full"/>
+                    <EditablePreview width="full" />
                     <EditableTextarea />
                   </Editable>
                 </Td>
-                <Td>
-                  <Button colorScheme="blue">Save Changes</Button>
-                </Td>
+                <Popover placement="top-start">
+                  <PopoverTrigger>
+                    <Button>Update Device</Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverHeader>Double check!</PopoverHeader>
+                    <PopoverBody>
+                      <p>Confirm device update?</p>
+                      <Button colorScheme="red">YES</Button>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+                <Td></Td>
               </Tr>
             ))}
           </Tbody>

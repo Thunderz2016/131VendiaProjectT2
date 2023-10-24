@@ -28,7 +28,7 @@ const LinkLayout = () => {
         >
             {/*Home page */}
         <HStack as="nav" spacing="2">
-            <Link to="/demo">
+            <Link to="/Homepage">
             <Button 
                 bg="transparent"
                 size={{base:"5px", sm:"10px", md:"20px", lg:"30px", xl:"40px", "2xl":"50px"}}

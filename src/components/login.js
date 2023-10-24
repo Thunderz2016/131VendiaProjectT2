@@ -39,7 +39,7 @@ function Login() {
         
         // If registration is successful, log the user credential
         console.log(userCredential);
-        navigate("/Demo"); // to redirect to the DeviceOne page, if the login is successful
+        navigate("/Homepage"); // to redirect to the DeviceOne page, if the login is successful
       })
       // If there's an error during registration, log the error
       .catch((error) => {

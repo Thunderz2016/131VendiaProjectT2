@@ -60,12 +60,12 @@ export const Device = () => {
   }, []);
 
   useEffect(() => {
-    const listTest = async () => {
-      const listTestResponse = await client.entities.orgs.list();
-      setTestList(listTestResponse?.items);
+    const listOrgs = async () => {
+      const OrgsResponse = await client.entities.orgs.list();
+      setTestList(OrgsResponse?.items);
     };
 
-    listTest();
+    listOrgs();
   }, []);
 
   // Function to add a device to the database
@@ -169,17 +169,25 @@ export const Device = () => {
                   {/* OrgAssignment */}
                   <Select
                     placeholder="Select option"
-                    value={deviceId}
-                    onChange={(e) => setDeviceId(e.target.value)}
+                    value={device.orgAssignment}
+                    onChange={(e) =>
+                    setDevices((prevDevices) =>
+                    prevDevices.map((prevDevice, idx) =>
+                      idx === index
+                      ? { ...prevDevice, orgAssignment: e.target.value }
+                      : prevDevice
+                      )
+                      )
+                      }
                     size="md"
                     width="100%"
                     textAlign="center">
-                    {testList.map((orgs, index) => (
-                      <option key={orgs._id} value={orgs._id}>
-                      {orgs.Name}
+                    {testList.map((org) => (
+                      <option key={org.Name} value={org.Name}>
+                        {org.Name}
                       </option>
                     ))}
-                  </Select>
+                  </Select>    
                 </Td>
 
                 <Td>

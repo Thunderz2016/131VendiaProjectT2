@@ -1,9 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import firebase from "firebase/app";
-import "firebase/auth";
-import AuthDetails from "./components/AuthDetails";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,11 +15,16 @@ const firebaseConfig = {
   appId: "1:808774097027:web:f33547fd0b133338a923b6"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Authentication and get a reference to the service
 
 const auth = getAuth(app);
 
-export { auth };
+let currentUserEmail = null;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+      currentUserEmail = user.email;
+  }
+});
+
+export { auth, currentUserEmail };

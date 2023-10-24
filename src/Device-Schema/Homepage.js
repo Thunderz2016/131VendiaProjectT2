@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { vendiaClient } from '../vendiaClient';
 import { Box, Input, Stack, Switch, FormControl, FormLabel, Text } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
-import {
-  Table, Thead,
-  Tbody,Tr, Th,
-  Td
-} from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 
 const { client } = vendiaClient();
@@ -91,88 +86,66 @@ export const Demo = () => {
     // Here, you can add navigation to another page or perform other actions
   };
 
-  return (
-    <Stack align="center">
+  const renderDeviceBox = (device, index) => {
+    return (
+      <Box key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
+        <Text fontSize="xl">{device.Name}</Text>
+        <Text>Test Progress: {device.Status ? 'Active' : 'Inactive'}</Text>
 
+        <Link to={`/device?deviceName=${device.Name}`}>
+          <Button mt={3} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
+        </Link>
+
+      </Box>
+    );
+  };
+
+
+{/* Kanan Code */}
+  return (
+    <Stack align="center" spacing={5}>
       <Text 
         bgGradient='linear(to-l, #7928CA, #FF0080)'
         bgClip='text'
         fontSize='xl'
-        fontWeight='extrabold'> Team Zephyr Device Test Tracker</Text>
+        fontWeight='extrabold'> TEAM ZEPHYR DEVICE TEST TRACKER </Text>
 
-      <form onSubmit={handleSubmit}>
-
-      <Stack>
-
-        {/* Name */}
-        <Box>
-          <label>Name </label>
+        <form onSubmit={handleSubmit}>
+    <Stack>
+      
+      <Box>
+        <label>Add Device Name </label>
           <Input 
             type="text"
             name="Device"
             value={name}
-            onChange={handleNameChange}
-          />
-        </Box>
-
-
-        {/* Status */}
-        <FormControl display="flex" alignItems="center">
-          <FormLabel htmlFor="status-switch" mb="0">
-            Active
-          </FormLabel>
+            onChange={handleNameChange}/>
+      </Box>
+      
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="status-switch" mb="0">
+          Active
+        </FormLabel>
           <Switch 
             id="status-switch"
             isChecked={status}
-            onChange={handleStatusChange}
-          />
-        </FormControl>
-
-      </Stack>
-
-        <Stack align="center">
-
+            onChange={handleStatusChange}/>
+      </FormControl>
+      
+      <Stack align="center">
         <Button colorScheme="blue" onClick={handleSubmit} >
           Add Device
         </Button>
+      </Stack>
 
-        </Stack>
+    </Stack>
+    
+    </form>
+    <Stack direction="row" wrap="wrap" justifyContent="center">
+      {testList.map(renderDeviceBox)}
+    </Stack>
 
-      </form>
-
-      {/* Display the list of devices */}
-      <Box mt={4}>
-
-      <Table>
-
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Status</Th>
-            <Th>View</Th>
-          </Tr>
-        </Thead>
-
-        <Tbody>
-          {testList.map((device, index) => (
-          <Tr key={index}>
-
-            <Td>{device.Name}</Td>
-            <Td>{device.Status.toString()}</Td>
-
-            <Td>
-              <Link to={`/device?deviceName=${device.Name}`} style={{color: 'blue'}}>
-                Add Test
-              </Link>
-            </Td>
-
-          </Tr>
-        ))}
-        </Tbody>
-      
-      </Table>
-
-    </Box>
+    <Button colorScheme="teal" mt={5}>View archived devices</Button>
 
     </Stack>
   );

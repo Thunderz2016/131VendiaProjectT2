@@ -161,48 +161,48 @@ export const List = () => {
                 <Td>
                   <Editable defaultValue={test.Device}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
                 <Td>
                   {" "}
                   <Editable defaultValue={test.TestID}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
                 <Td>
                   <Editable defaultValue={test.OrgAssignment}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
                 <Td>
                   <Editable defaultValue={test.TestName}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
                 <Td>
                   <Editable defaultValue={test.TestMethod}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
                 <Td>
                   <Editable defaultValue={test.Notes}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
-                <Td>{<Switch size="lg" id={test.Completed.toString} />}</Td>
+                <Td>{<Switch size="lg"  />}</Td>
                 <Td>
                   <Editable defaultValue={test.UpdatedBy}>
                     <EditablePreview width="full" />
-                    <EditableTextarea />
+                    <EditableInput />
                   </Editable>
                 </Td>
-                <Popover placement="top-start">
+                <Popover placement="top-start" arrowSize={20}>
                   <PopoverTrigger>
                     <Button>Update Device</Button>
                   </PopoverTrigger>

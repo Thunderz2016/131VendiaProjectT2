@@ -60,6 +60,7 @@ export const DeleteDevice = () => {
       await client.entities.test.remove(testId);
       // Redirect to the device list page or any other desired page
       // navigate("/device");
+      console.log("Success deleted Test")
     } catch (error) {
       console.error("Error deleting device:", error);
     }
@@ -71,6 +72,7 @@ export const DeleteDevice = () => {
       await client.entities.device.remove(deviceId);
       // Redirect to the device list page or any other desired page
       // navigate("/device");
+      console.log("Success deleted Device")
     } catch (error) {
       console.error("Error deleting device:", error);
     }
@@ -81,13 +83,18 @@ export const DeleteDevice = () => {
     deleteDevice();
   };
 
+  const removeTest = (event) => {
+    event.preventDefault();
+    deleteTest();
+  };
+
   return (
     <Stack spacing={4}>
       <Text fontSize="xl" align="center">Delete </Text>
 
 
       {/* Remove Tests Schema*/}
-      <form onSubmit={removeDevice}>
+      <form onSubmit={removeTest}>
         <Stack spacing={4} direction="column" align="center" justify="center">
 
           <Select

@@ -9,6 +9,9 @@
     },
     "Device-acls": {
       "type": "Device"
+    },
+    "Orgs-acls": {
+      "type": "Orgs"
     }
   },
   "properties": {
@@ -75,6 +78,25 @@
       },
       "description": "",
       "title": "Device"
+    },
+    "Orgs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "Email": {
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [],
+        "x-vendia-unique": []
+      },
+      "title": "Orgs"
     }
   }
 }

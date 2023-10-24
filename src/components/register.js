@@ -37,7 +37,7 @@ function Register() {
 
         // If registration is successful, log the user credential
         console.log(userCredential);
-        navigate('/login'); // redirect to login on click
+        navigate('/'); // redirect to login on click
       })
        // If there's an error during registration, log the error
       .catch((error) => {

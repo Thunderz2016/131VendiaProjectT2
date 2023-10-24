@@ -5,12 +5,13 @@ import Register from './components/register';
 import Device from './page-device/Device';
 import { onAuthStateChanged } from 'firebase/auth'; // Import onAuthStateChanged function
 import { auth } from './firebase'; // Import Firebase auth instance
-import Navbar from './components/Navbar';
 import DeviceUpdate from './page-device/DeviceUpdate';
 import DeleteDevice from './page-device/DeleteDevice';
 import ListDevice from './page-device/ListDevice';
 import ListID from './page-device/ListID';
-import Demo  from './Device-Schema/Demo';
+import OrgCreation from './Device-Schema/orgCreation';
+import NavbarLayout from './Navbar/NavbarLayout';
+import Homepage from './Device-Schema/Homepage';
 
 function App() {
   // Initialize the user state
@@ -38,8 +39,7 @@ function App() {
   return (
     
     <div className="App">
-       <Navbar />
-      <Routes>
+    <Routes>
         {/* Default route, redirects to login if not authenticated */}
         <Route
           element={
@@ -50,16 +50,22 @@ function App() {
             )
           }
         />
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+
+      <Route index element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      <Route element={<NavbarLayout />}>
         <Route path= "/ListDevice" element={<ListDevice />} />
         <Route path= "/ListID" element={<ListID />} />
         <Route path="/Device" element={<Device />} />
         <Route path="/DeviceUpdate" element={<DeviceUpdate />} />
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
-        <Route path="/Demo" element={<Demo />} />
+        <Route path="/Homepage" element={<Homepage />} />
+        <Route path="/OrgCreation" element={<OrgCreation />} />
+        <Route path="/profile" element={<></>}/>
+      </Route>
 
-      </Routes>
+    </Routes>
     </div>
   )
 }

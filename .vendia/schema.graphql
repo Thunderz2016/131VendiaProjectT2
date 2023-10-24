@@ -274,6 +274,69 @@ input Self_Device_PartialInput_ {
   Status: Boolean
 }
 
+input Self_Orgs_ConditionInput_ {
+  Email: Vendia_ModelStringInput_
+  Name: Vendia_ModelStringInput_
+  _and: [Self_Orgs_ConditionInput_]
+  _or: [Self_Orgs_ConditionInput_]
+  _not: Self_Orgs_ConditionInput_
+}
+
+input Self_Orgs_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
+  Email: Vendia_ModelStringInput_
+  Name: Vendia_ModelStringInput_
+  _and: [Self_Orgs_FilterInput_]
+  _or: [Self_Orgs_FilterInput_]
+  _not: Self_Orgs_FilterInput_
+}
+
+input Self_Orgs_OrderInput_ {
+  _id: Vendia_ModelSortDirection
+}
+
+type Self_Orgs {
+  _id: ID!
+  Email: String
+  Name: String
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_Orgs_Result_ {
+  error: String
+  result: Self_Orgs
+}
+
+type Self_Orgs_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_Orgs
+}
+
+type Self_Orgs_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+type Self_Orgs_Connection_ {
+  _OrgsItems: [Self_Orgs]
+  nextToken: String
+}
+
+input Self_Orgs_Input_ {
+  Email: String
+  Name: String
+}
+
+input Self_Orgs_UpdateInput_ {
+  Email: String
+  Name: String
+}
+
+input Self_Orgs_PartialInput_ {
+  Email: String
+  Name: String
+}
+
 input Self_Test_ConditionInput_ {
   Completed: Vendia_ModelBooleanInput_
   Device: Vendia_ModelStringInput_
@@ -3483,6 +3546,9 @@ type Query {
   get_Device(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Device
   list_DeviceItems(filter: Self_Device_FilterInput_, readMode: Vendia_ReadMode = NODE_LEDGERED, order: [Self_Device_OrderInput_!], limit: Int, nextToken: String): Self_Device_Connection_
   list_DeviceVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
+  get_Orgs(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Orgs
+  list_OrgsItems(filter: Self_Orgs_FilterInput_, readMode: Vendia_ReadMode = NODE_LEDGERED, order: [Self_Orgs_OrderInput_!], limit: Int, nextToken: String): Self_Orgs_Connection_
+  list_OrgsVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   get_Test(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Test
   list_TestItems(filter: Self_Test_FilterInput_, readMode: Vendia_ReadMode = NODE_LEDGERED, order: [Self_Test_OrderInput_!], limit: Int, nextToken: String): Self_Test_Connection_
   list_TestVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
@@ -3518,6 +3584,9 @@ type Query {
   getVendia_SharingPolicy(id: ID, version: Int, name: String): Vendia_SharingPolicy
   listVendia_SharingPolicyItems(filter: Vendia_SharingPolicy_FilterInput_, order: [Vendia_SharingPolicy_OrderInput_!], limit: Int, nextToken: String): Vendia_SharingPolicy_Connection_
   listVendia_SharingPolicyVersions(id: ID, limit: Int, nextToken: String, name: String): Vendia_Version_Connection_
+  getVendia_CDC(id: ID!, version: Int): Vendia_CDC
+  listVendia_CDCItems(filter: Vendia_CDC_FilterInput_, order: [Vendia_CDC_OrderInput_!], limit: Int, nextToken: String): Vendia_CDC_Connection_
+  listVendia_CDCVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
 }
 
 type Mutation {
@@ -3525,6 +3594,10 @@ type Mutation {
   put_Device(id: ID!, input: Self_Device_Input_!, condition: Self_Device_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Transaction_Result_
   update_Device(id: ID!, input: Self_Device_UpdateInput_!, condition: Self_Device_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Transaction_Result_
   remove_Device(id: ID!, condition: Self_Device_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Device_Delete_Transaction_Result_
+  add_Orgs(input: Self_Orgs_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Orgs_Transaction_Result_
+  put_Orgs(id: ID!, input: Self_Orgs_Input_!, condition: Self_Orgs_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Orgs_Transaction_Result_
+  update_Orgs(id: ID!, input: Self_Orgs_UpdateInput_!, condition: Self_Orgs_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Orgs_Transaction_Result_
+  remove_Orgs(id: ID!, condition: Self_Orgs_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Orgs_Delete_Transaction_Result_
   add_Test(input: Self_Test_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
   put_Test(id: ID!, input: Self_Test_Input_!, condition: Self_Test_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
   update_Test(id: ID!, input: Self_Test_UpdateInput_!, condition: Self_Test_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Test_Transaction_Result_
@@ -3552,6 +3625,9 @@ type Mutation {
   putVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_Input_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
   updateVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_UpdateInput_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
   removeVendia_SharingPolicy(id: ID, name: String, condition: Vendia_SharingPolicy_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Delete_Transaction_Result_
+  addVendia_CDC(input: Vendia_CDC_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_CDC_Transaction_Result_
+  updateVendia_CDC(id: ID!, input: Vendia_CDC_UpdateInput_!, condition: Vendia_CDC_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_CDC_Transaction_Result_
+  removeVendia_CDC(id: ID!, condition: Vendia_CDC_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_CDC_Delete_Transaction_Result_
   invokeVendia_Contract(id: ID!, revisionId: String, input: Vendia_Contract_InvokeInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
 }
 
@@ -3560,6 +3636,10 @@ type Subscription {
   onUpdate_Device: Self_Device_Result_
   onPut_Device: Self_Device_Result_
   onRemove_Device: Self_Device_Result_
+  onAdd_Orgs: Self_Orgs_Result_
+  onUpdate_Orgs: Self_Orgs_Result_
+  onPut_Orgs: Self_Orgs_Result_
+  onRemove_Orgs: Self_Orgs_Result_
   onAdd_Test: Self_Test_Result_
   onUpdate_Test: Self_Test_Result_
   onPut_Test: Self_Test_Result_
@@ -3613,6 +3693,10 @@ type Subscription {
   onUpdateVendia_SharingPolicy: Vendia_SharingPolicy_Result_
   onPutVendia_SharingPolicy: Vendia_SharingPolicy_Result_
   onRemoveVendia_SharingPolicy: Vendia_SharingPolicy_Result_
+  onAddVendia_CDC: Vendia_CDC_Result_
+  onUpdateVendia_CDC: Vendia_CDC_Result_
+  onPutVendia_CDC: Vendia_CDC_Result_
+  onRemoveVendia_CDC: Vendia_CDC_Result_
   onUpdateVendia_Transaction: Vendia_Transaction_Update_
 }
 

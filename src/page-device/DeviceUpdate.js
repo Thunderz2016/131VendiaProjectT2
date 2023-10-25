@@ -72,7 +72,7 @@ export const UpdateDevice = () => {
       console.error("Cannot Access: You are not allowed to update.");
       return;
     }
-
+  
     if (!allowedOrgNames) {
       console.error("Cannot Access: You are not associated with any organization.");
       return;
@@ -113,7 +113,7 @@ export const UpdateDevice = () => {
         setCompleted(deviceResponse.Completed);
         setUpdatedBy(deviceResponse.UpdatedBy);
       };
-
+      
       fetchDevice();
     }
   }, [deviceId]);
@@ -133,7 +133,7 @@ export const UpdateDevice = () => {
     event.preventDefault();
     updateDevice();
   };
-
+{/*
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -156,6 +156,7 @@ export const UpdateDevice = () => {
         unsubscribe();
     };
   }, [orgAssignment, emailToOrgNameMap]);
+*/}
 
   return (
     <Stack spacing={4}>

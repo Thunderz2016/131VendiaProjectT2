@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import Login from './components/login';
 import Register from './components/register';
 import Device from './page-device/Device';
@@ -12,10 +12,13 @@ import ListID from './page-device/ListID';
 import OrgCreation from './Device-Schema/orgCreation';
 import NavbarLayout from './Navbar/NavbarLayout';
 import Homepage from './Device-Schema/Homepage';
+import AgGridTable from './page-device/AgGridTable';
+
 
 function App() {
   // Initialize the user state
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Listen for changes in authentication state
@@ -23,11 +26,14 @@ function App() {
       if (user) {
         // User is signed in.
         setUser(user);
+        navigate("/homepage");
       } else {
         // No user is signed in.
         setUser(null);
+        navigate("/");
       }
     });
+     console.log(user);
 
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
@@ -39,20 +45,13 @@ function App() {
   return (
     
     <div className="App">
+
     <Routes>
-        {/* Default route, redirects to login if not authenticated */}
-        <Route
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
 
       <Route index element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {isAuthenticated && (
 
       <Route element={<NavbarLayout />}>
         <Route path= "/ListDevice" element={<ListDevice />} />
@@ -62,8 +61,11 @@ function App() {
         <Route path="/DeleteDevice" element={<DeleteDevice />} />
         <Route path="/Homepage" element={<Homepage />} />
         <Route path="/OrgCreation" element={<OrgCreation />} />
+        <Route path="/AgGridTable" element={<AgGridTable />} />
         <Route path="/profile" element={<></>}/>
       </Route>
+
+      )}
 
     </Routes>
     </div>

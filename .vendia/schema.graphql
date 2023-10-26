@@ -2047,6 +2047,7 @@ enum Vendia_SharingPolicy_acl_aclItem_operations_operationsItemEnum {
 
 enum Vendia_CDC_destination_typeEnum {
   AWS_LAMBDA_ARN
+  WORKFLOW
 }
 
 enum Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum {

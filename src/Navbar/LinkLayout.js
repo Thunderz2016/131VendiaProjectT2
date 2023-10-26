@@ -91,6 +91,30 @@ const LinkLayout = () => {
             </Link>            
         </HStack>
 
+        <HStack as="nav" spacing="5">
+            <Link to="/ListID">
+            <Button 
+                bg="transparent"
+                size={{base:"5px", sm:"10px", md:"20px", lg:"30px", xl:"40px", "2xl":"50px"}}
+                > 
+                <CalendarIcon paddingRight={1}/>
+                  Org List
+            </Button>
+            </Link>            
+        </HStack>
+
+        <HStack as="nav" spacing="5">
+            <Link to="/AgGridTable">
+            <Button 
+                bg="transparent"
+                size={{base:"5px", sm:"10px", md:"20px", lg:"30px", xl:"40px", "2xl":"50px"}}
+                > 
+                <CalendarIcon paddingRight={1}/>
+                AgGridTable
+            </Button>
+            </Link>            
+        </HStack>
+
         </Flex>
     );
 };

@@ -76,6 +76,7 @@ const Layout = () => {
         size="sm"
       >  
         <Avatar 
+        name='Team Zephyr'
         src='https://bit.ly/broken-link' 
         size={{base:"sm", md:"md"}}
         />
@@ -83,11 +84,13 @@ const Layout = () => {
 
     </Link>
 
-   {/*Sign out/Login button*/}
+    {/* Sign out/Login button */}
+
    {authUser ? (
       <>
-        {/*<Text textAlign="center">{`Signed In as ${authUser.email}`}</Text>*/}
-        <Link to="/" >
+      
+      <Text textAlign="center">{`Signed In as ${authUser.email}`}</Text>
+      <Link to="/" >
         <Button  
           top={{base:"5px", sm:"10px", md:"20px"}}
           colorScheme="red" 
@@ -98,7 +101,7 @@ const Layout = () => {
            Sign Out
           </Text>
         </Button>
-        </Link>
+      </Link>
         </>
       ) : (
         <Link to="/" >
@@ -112,7 +115,7 @@ const Layout = () => {
             Log In
           </Button>
         </Link>
-      )}
+    )}
 
     {/* Search bar*/}
     <VStack justifyContent="flex-end" 

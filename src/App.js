@@ -26,18 +26,22 @@ function App() {
       if (user) {
         // User is signed in.
         setUser(user);
-        navigate("/homepage");
+        //navigate("/homepage");
       } else {
         // No user is signed in.
         setUser(null);
         navigate("/");
       }
     });
-     console.log(user);
+     //console.log(user);
 
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    console.log("auth2 is: ", auth.currentUser);
+  }, [user]);
 
   // Determine authentication status based on the user state
   const isAuthenticated = !!user; // true if user is not null, false otherwise

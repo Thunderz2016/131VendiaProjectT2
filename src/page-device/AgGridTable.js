@@ -4,6 +4,11 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { vendiaClient } from "../vendiaClient";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { ModuleRegistry } from '@ag-grid-community/core';
+import { SideBarModule } from '@ag-grid-enterprise/side-bar';
+import 'ag-grid-enterprise'; // Import this for enterprise features
+
+ModuleRegistry.registerModules([SideBarModule]);
 
 const { client } = vendiaClient();
 const auth = getAuth();
@@ -29,7 +34,7 @@ export const AgGridTable = () => {
             });
 
             setEmailToOrgNameMap(map);
-            console.log("Email to Org Name Map:", emailToOrgNameMap);
+            console.log("Email to Org Name Map:", map);
         };
 
         const listTest = async () => {
@@ -41,9 +46,15 @@ export const AgGridTable = () => {
         listTest();
     }, []);
 
+    const autoGroupColumnDef = {
+        headerName: "OrgAssignment",
+        minWidth: 200,
+        filter: 'agGroupColumnFilter',
+    };
+
     // AgGridReact component props and methods
     const columnDefs = [
-        { headerName: "Device", field: "Device", editable: true },
+        { headerName: "Device", field: "Device", editable: true, rowGroup: true },
         { headerName: "TestID", field: "TestID", editable: true },
         { headerName: "OrgAssignment", field: "OrgAssignment", editable: true },
         { headerName: "TestName", field: "TestName", editable: true },
@@ -56,7 +67,10 @@ export const AgGridTable = () => {
     const defaultColDef = {
         flex: 1,
         minWidth: 150,
-        resizable: true
+        resizable: true,
+        sortable: true, // Added sortable
+        filter: true,   // Added filter
+        floatingFilter: true, // Added floatingFilter
     };
 
     const handleCellValueChanged = async (params) => {
@@ -114,8 +128,11 @@ export const AgGridTable = () => {
                 rowData={testList}
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
+                autoGroupColumnDef={autoGroupColumnDef} // Added this property
                 onCellValueChanged={handleCellValueChanged}
                 domLayout='autoHeight'
+                rowGroupPanelShow={'always'} // Show the row grouping panel always
+                sideBar={'filters'} // Show the sidebar for filters
 
             />
 

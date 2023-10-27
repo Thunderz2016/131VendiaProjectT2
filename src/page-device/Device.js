@@ -8,6 +8,7 @@ import {
   Stack, Table, Thead, Tbody,
   Tr, Th, Td, Select,
 } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 const { client } = vendiaClient();
 
@@ -70,9 +71,10 @@ export const Device = () => {
 
   // Function to add a device to the database
   const addDevice = async () => {
+    try {
     for (const deviceData of devices) {
       console.log('Device Data:', deviceData);
-      const addDeviceResponse = await client.entities.test.add({
+      await client.entities.test.add({
         Device: deviceData.Device, // Set the device name here
         TestID: parseInt(deviceData.testID),
         OrgAssignment: deviceData.orgAssignment,
@@ -82,15 +84,25 @@ export const Device = () => {
         Completed: Boolean(deviceData.completed),
         UpdatedBy: deviceData.updatedBy,
       });
-      console.log(addDeviceResponse);
+    }
+    return 200;
+    } catch (error) {
+      throw new Error("Failed to add device");
     }
   };
+
+  const toast = useToast();
 
 
   // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    addDevice();
+    // Call the addTests to Schema function
+    toast.promise(addDevice(), {
+      success: { title: "Success", description: "New Tests added" },
+      error: { title: "Error", description: "Failed to add Test to org" },
+      loading: { title: "Adding tests", description: "Please wait..." },
+    });
   };
 
   // Function to add a new row to the devices array
@@ -125,8 +137,8 @@ export const Device = () => {
             {devices.map((device, index) => (
               <Tr key={index}>
 
-                <Td>
-                  {/* Device */}
+                {/* Device */}
+                <Td>  
                   <Input
                     placeholder="Device #"
                     value={device.Device}
@@ -145,8 +157,9 @@ export const Device = () => {
                   />
                 </Td>
 
+                    {/* TestID[integer] */}
                 <Td>
-                  {/* TestID[integer] */}
+                  
                   <Input
                     placeholder="TestID"
                     value={device.testID}
@@ -165,19 +178,19 @@ export const Device = () => {
                     />
                 </Td>
 
+                    {/* OrgAssignment */}
                 <Td>
-                  {/* OrgAssignment */}
                   <Select
                     placeholder="Select option"
                     value={device.orgAssignment}
                     onChange={(e) =>
-                    setDevices((prevDevices) =>
-                    prevDevices.map((prevDevice, idx) =>
-                      idx === index
-                      ? { ...prevDevice, orgAssignment: e.target.value }
-                      : prevDevice
-                      )
-                      )
+                      setDevices((prevDevices) =>
+                        prevDevices.map((prevDevice, idx) =>
+                          idx === index
+                            ? { ...prevDevice, orgAssignment: e.target.value }
+                            : prevDevice
+                          )
+                        )
                       }
                     size="md"
                     width="100%"
@@ -190,8 +203,8 @@ export const Device = () => {
                   </Select>    
                 </Td>
 
+                      {/* TestName */}
                 <Td>
-                  {/* TestName */}
                   <Input
                     placeholder="TestName"
                     value={device.testName}
@@ -210,8 +223,8 @@ export const Device = () => {
                   />
                 </Td>
 
+                    {/* TestMethod */}
                 <Td>
-                  {/* TestMethod */}
                   <Input
                     placeholder="TestMethod"
                     value={device.testMethod}
@@ -230,8 +243,8 @@ export const Device = () => {
                   />
                 </Td>
 
+                    {/* Notes */}
                 <Td>
-                  {/* Notes */}
                   <Input
                     placeholder="Notes"
                     value={device.notes}
@@ -250,8 +263,8 @@ export const Device = () => {
                   />
                 </Td>
 
+                    {/* Completed */}
                 <Td>
-                  {/* Completed */}
                   <Input
                     placeholder="Completed"
                     value={device.completed}
@@ -270,15 +283,15 @@ export const Device = () => {
                   />
                 </Td>
 
+                    {/* Updatedby */}
                 <Td>
-                  {/* Updatedby */}
-                  <Input
-                    placeholder="Updatedby"
+                  <Select
+                    placeholder="Select option"
                     value={device.updatedBy}
                     onChange={(e) =>
                       setDevices((prevDevices) =>
-                        prevDevices.map((prevDevice, i) =>
-                          i === index
+                        prevDevices.map((prevDevice, idx) =>
+                          idx === index
                             ? { ...prevDevice, updatedBy: e.target.value }
                             : prevDevice
                         )
@@ -286,9 +299,15 @@ export const Device = () => {
                     }
                     size="md"
                     width="100%"
-                    textAlign="center"
-                  />
+                    textAlign="center">
+                    {testList.map((org) => (
+                      <option key={org.Email} value={org.Email}>
+                        {org.Email}
+                      </option>
+                    ))}
+                  </Select>
                 </Td>
+
               </Tr>
               
             ))}

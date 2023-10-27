@@ -8,6 +8,10 @@ import { ModuleRegistry } from '@ag-grid-community/core';
 import { SideBarModule } from '@ag-grid-enterprise/side-bar';
 import 'ag-grid-enterprise'; // Import this for enterprise features
 
+import { db } from "../firebase"; // Assuming you've exported db from firebase.js
+import { doc, getDoc } from "firebase/firestore";
+
+
 ModuleRegistry.registerModules([SideBarModule]);
 
 const { client } = vendiaClient();
@@ -17,8 +21,27 @@ export const AgGridTable = () => {
     const [testList, setTestList] = useState([]);
     const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
     const [updatedBy, setUpdatedBy] = useState("");
+    const [showSideBar, setShowSideBar] = useState(false);
+    const ADMIN_EMAILS = ["teamzephyr2023@gmail.com"]; // Add your admin emails here
 
-    const isValidUpdate = (email, orgAssignment) => emailToOrgNameMap[email]?.includes(orgAssignment);
+    const isAdminEmail = async (email) => {
+        const userRef = doc(db, 'users', email); // Assuming you use email as the document ID
+        const userDoc = await getDoc(userRef);
+    
+        if (userDoc.exists() && userDoc.data().role === 'admin') {
+            return true;
+        }
+        return false;
+    };
+    
+
+    const isValidUpdate = async (email, orgAssignment) => {
+        // If the email belongs to an admin, return true immediately
+        if (await isAdminEmail(email)) {
+            return true;
+        }
+        return emailToOrgNameMap[email]?.includes(orgAssignment);
+    };
 
     // Fetching organization details to map emails to organization names
     useEffect(() => {
@@ -46,32 +69,30 @@ export const AgGridTable = () => {
         listTest();
     }, []);
 
-    const autoGroupColumnDef = {
-        headerName: "OrgAssignment",
-        minWidth: 200,
-        filter: 'agGroupColumnFilter',
-    };
-
     // AgGridReact component props and methods
     const columnDefs = [
-        { headerName: "Device", field: "Device", editable: true, rowGroup: true },
-        { headerName: "TestID", field: "TestID", editable: true },
-        { headerName: "OrgAssignment", field: "OrgAssignment", editable: true },
-        { headerName: "TestName", field: "TestName", editable: true },
-        { headerName: "TestMethod", field: "TestMethod", editable: true },
-        { headerName: "Notes", field: "Notes", editable: true },
-        { headerName: "Completed", field: "Completed", editable: true },
-        { headerName: "UpdatedBy", field: "UpdatedBy", editable: true },
+        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true},
+        { headerName: "TestID", field: "TestID", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
+        { headerName: "OrgAssignment", field: "OrgAssignment", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true, sort: 'asc' },
+        { headerName: "TestName", field: "TestName", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
+        { headerName: "TestMethod", field: "TestMethod", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
+        { headerName: "Notes", field: "Notes", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
+        { headerName: "Completed", field: "Completed", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
+        { headerName: "UpdatedBy", field: "UpdatedBy", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true },
     ];
 
     const defaultColDef = {
         flex: 1,
         minWidth: 150,
+        sortable: true,
         resizable: true,
-        sortable: true, // Added sortable
-        filter: true,   // Added filter
-        floatingFilter: true, // Added floatingFilter
+        floatingFilter: true,
+        menuTabs: ['filterMenuTab'],
     };
+
+    const autoGroupColumnDef = {
+        minWidth: 200,
+    };    
 
     const handleCellValueChanged = async (params) => {
         const { colDef: { field }, 
@@ -90,7 +111,8 @@ export const AgGridTable = () => {
         console.log("currentUserEmail:", currentUserEmail);
 
         // Check if the current user is allowed to update
-        if (!isValidUpdate(currentUserEmail, rowData.OrgAssignment)) {
+        if (!(await isValidUpdate(currentUserEmail, rowData.OrgAssignment))) {
+            console.log("Cannot Access: You are not allowed to update.");
             alert("Invalid email or organization. You are not allowed to access this.");
             return;
         }
@@ -131,8 +153,8 @@ export const AgGridTable = () => {
                 autoGroupColumnDef={autoGroupColumnDef} // Added this property
                 onCellValueChanged={handleCellValueChanged}
                 domLayout='autoHeight'
+                animateRows={true}
                 rowGroupPanelShow={'always'} // Show the row grouping panel always
-                sideBar={'filters'} // Show the sidebar for filters
 
             />
 

@@ -14,7 +14,6 @@ import NavbarLayout from './Navbar/NavbarLayout';
 import Homepage from './Device-Schema/Homepage';
 import AgGridTable from './page-device/AgGridTable';
 
-
 function App() {
   // Initialize the user state
   const [user, setUser] = useState(null);
@@ -48,6 +47,7 @@ function App() {
 
   return (
     
+    
     <div className="App">
 
     <Routes>
@@ -73,6 +73,8 @@ function App() {
 
     </Routes>
     </div>
+    
+   
   )
 }
 

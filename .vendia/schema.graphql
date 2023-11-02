@@ -213,6 +213,7 @@ type Vendia_Meta_Erased {
 
 input Self_Device_ConditionInput_ {
   Name: Vendia_ModelStringInput_
+  Percentage: Vendia_ModelIntInput_
   Status: Vendia_ModelBooleanInput_
   _and: [Self_Device_ConditionInput_]
   _or: [Self_Device_ConditionInput_]
@@ -222,6 +223,7 @@ input Self_Device_ConditionInput_ {
 input Self_Device_FilterInput_ {
   _owner: Vendia_ModelStringInput_
   Name: Vendia_ModelStringInput_
+  Percentage: Vendia_ModelIntInput_
   Status: Vendia_ModelBooleanInput_
   _and: [Self_Device_FilterInput_]
   _or: [Self_Device_FilterInput_]
@@ -235,6 +237,7 @@ input Self_Device_OrderInput_ {
 type Self_Device {
   _id: ID!
   Name: String
+  Percentage: Int
   Status: Boolean
   _acl: [Vendia_Acl!]
   _owner: String
@@ -261,16 +264,19 @@ type Self_Device_Connection_ {
 
 input Self_Device_Input_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 
 input Self_Device_UpdateInput_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 
 input Self_Device_PartialInput_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 

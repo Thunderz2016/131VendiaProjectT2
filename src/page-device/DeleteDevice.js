@@ -4,18 +4,24 @@ import { Stack } from "@chakra-ui/react";
 import { Button, Text, Input } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Select } from "@chakra-ui/react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { getUserRole, currentUserEmail } from "../firebase";
+
 
 const { client } = vendiaClient();
 
 export const DeleteDevice = () => {
+  
   const [deviceId, setDeviceId] = useState(""); // Add deviceId state for updating/removing
   const [name, setName] = useState();
   const [status, setStatus] = useState(false);
   const [devices, setDevices] = useState([]); 
   const [testList, setTestList] = useState([]); // Define testList state
   const [device, setDevice] = useState([]);
-  const [testId, setTestId] = useState(""); 
-
+  const [testId, setTestId] = useState("");
+  const [authUser, setAuthUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   const navigate = useNavigate();
 
@@ -52,7 +58,23 @@ export const DeleteDevice = () => {
   
     listDevices();
   }, []);
-  
+
+  useEffect(() => {
+    onAuthStateChanged(auth, setAuthUser);  // Directly set the user when authentication state changes
+  }, []);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(currentUserEmail);
+      setUserRole(role);
+    };
+
+    fetchUserRole();
+  }, []);
+
+  if (userRole !== "admin") {
+    return <div>You do not have permission to view this page.</div>;
+  }  
 
   const deleteTest = async () => {
     try {

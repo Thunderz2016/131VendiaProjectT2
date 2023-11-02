@@ -71,6 +71,12 @@
           "Status": {
             "title": "Status",
             "type": "boolean"
+          },
+          "Percentage": {
+            "title": "Percentage",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
           }
         },
         "required": [],

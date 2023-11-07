@@ -18,7 +18,7 @@ root.render(
   <header>
    <DarkModeToggle />
   </header>
-    <App />;
+    <App />
   </ChakraProvider>
 
 </BrowserRouter>

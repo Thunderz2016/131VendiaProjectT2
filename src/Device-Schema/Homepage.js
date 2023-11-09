@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { vendiaClient } from '../vendiaClient';
 import { Box, Input, Stack, Switch, FormControl, FormLabel, Text } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
+import { Button, Progress } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const { client } = vendiaClient();
@@ -98,7 +98,7 @@ export const Demo = () => {
         <Text fontSize="xl">{device.Name}</Text>
         
         <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
-
+         <Progress value={percentage[device.Name]}/> 
         <Link to={`/device?deviceName=${device.Name}`}>
           <Button mt={3} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
         </Link>

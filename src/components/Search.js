@@ -29,7 +29,7 @@ const UniversalSearch = () => {
         }
         return null;
       })
-      .filter((content) => content !== null); // Search for the term
+      .filter((page) => page !== null); // Search for the term
 
     console.log(matchingResults);
     setSearchResults(matchingResults);
@@ -49,10 +49,11 @@ const UniversalSearch = () => {
         }}
       />
       <button onClick={handleSearch}>Search</button>
+      {searchResults.length > 0 && <h1>RESULTS FOUND IN:</h1>}
       <div>
         {searchResults.map((result, index) => (
           <div key={index}>
-            <p>{result.content}</p>
+            {/* <p>{result.content}</p> */}
             <Link
               to={`/${result.pageName}`}
               as={RouterLink}

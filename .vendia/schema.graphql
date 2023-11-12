@@ -213,6 +213,7 @@ type Vendia_Meta_Erased {
 
 input Self_Device_ConditionInput_ {
   Name: Vendia_ModelStringInput_
+  Percentage: Vendia_ModelIntInput_
   Status: Vendia_ModelBooleanInput_
   _and: [Self_Device_ConditionInput_]
   _or: [Self_Device_ConditionInput_]
@@ -222,6 +223,7 @@ input Self_Device_ConditionInput_ {
 input Self_Device_FilterInput_ {
   _owner: Vendia_ModelStringInput_
   Name: Vendia_ModelStringInput_
+  Percentage: Vendia_ModelIntInput_
   Status: Vendia_ModelBooleanInput_
   _and: [Self_Device_FilterInput_]
   _or: [Self_Device_FilterInput_]
@@ -235,6 +237,7 @@ input Self_Device_OrderInput_ {
 type Self_Device {
   _id: ID!
   Name: String
+  Percentage: Int
   Status: Boolean
   _acl: [Vendia_Acl!]
   _owner: String
@@ -261,16 +264,19 @@ type Self_Device_Connection_ {
 
 input Self_Device_Input_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 
 input Self_Device_UpdateInput_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 
 input Self_Device_PartialInput_ {
   Name: String
+  Percentage: Int
   Status: Boolean
 }
 
@@ -1897,70 +1903,70 @@ type Vendia_SharingPolicy_acl_aclItem_principal_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
-input Vendia_CDC_destination_ConditionInput_ {
+input Vendia_ChangeDataEventStream_destination_ConditionInput_ {
   type: Vendia_ModelStringInput_
   uri: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_destination_ConditionInput_]
-  _or: [Vendia_CDC_destination_ConditionInput_]
-  _not: Vendia_CDC_destination_ConditionInput_
+  _and: [Vendia_ChangeDataEventStream_destination_ConditionInput_]
+  _or: [Vendia_ChangeDataEventStream_destination_ConditionInput_]
+  _not: Vendia_ChangeDataEventStream_destination_ConditionInput_
 }
 
-input Vendia_CDC_destination_FilterInput_ {
+input Vendia_ChangeDataEventStream_destination_FilterInput_ {
   type: Vendia_ModelStringInput_
   uri: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_destination_FilterInput_]
-  _or: [Vendia_CDC_destination_FilterInput_]
-  _not: Vendia_CDC_destination_FilterInput_
+  _and: [Vendia_ChangeDataEventStream_destination_FilterInput_]
+  _or: [Vendia_ChangeDataEventStream_destination_FilterInput_]
+  _not: Vendia_ChangeDataEventStream_destination_FilterInput_
 }
 
-type Vendia_CDC_destination {
-  type: Vendia_CDC_destination_typeEnum
+type Vendia_ChangeDataEventStream_destination {
+  type: Vendia_ChangeDataEventStream_destination_typeEnum
   uri: String
 }
 
-type Vendia_CDC_destination_Result_ {
+type Vendia_ChangeDataEventStream_destination_Result_ {
   error: String
-  result: Vendia_CDC_destination
+  result: Vendia_ChangeDataEventStream_destination
 }
 
-type Vendia_CDC_destination_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_destination_Transaction_Result_ {
   transaction: Vendia_Transaction!
-  result: Vendia_CDC_destination
+  result: Vendia_ChangeDataEventStream_destination
 }
 
-type Vendia_CDC_destination_Delete_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_destination_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
-input Vendia_CDC_subscriptionPeriod_ConditionInput_ {
+input Vendia_ChangeDataEventStream_streamPeriod_ConditionInput_ {
   startBlockPositionType: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_subscriptionPeriod_ConditionInput_]
-  _or: [Vendia_CDC_subscriptionPeriod_ConditionInput_]
-  _not: Vendia_CDC_subscriptionPeriod_ConditionInput_
+  _and: [Vendia_ChangeDataEventStream_streamPeriod_ConditionInput_]
+  _or: [Vendia_ChangeDataEventStream_streamPeriod_ConditionInput_]
+  _not: Vendia_ChangeDataEventStream_streamPeriod_ConditionInput_
 }
 
-input Vendia_CDC_subscriptionPeriod_FilterInput_ {
+input Vendia_ChangeDataEventStream_streamPeriod_FilterInput_ {
   startBlockPositionType: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_subscriptionPeriod_FilterInput_]
-  _or: [Vendia_CDC_subscriptionPeriod_FilterInput_]
-  _not: Vendia_CDC_subscriptionPeriod_FilterInput_
+  _and: [Vendia_ChangeDataEventStream_streamPeriod_FilterInput_]
+  _or: [Vendia_ChangeDataEventStream_streamPeriod_FilterInput_]
+  _not: Vendia_ChangeDataEventStream_streamPeriod_FilterInput_
 }
 
-type Vendia_CDC_subscriptionPeriod {
-  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+type Vendia_ChangeDataEventStream_streamPeriod {
+  startBlockPositionType: Vendia_ChangeDataEventStream_streamPeriod_startBlockPositionTypeEnum
 }
 
-type Vendia_CDC_subscriptionPeriod_Result_ {
+type Vendia_ChangeDataEventStream_streamPeriod_Result_ {
   error: String
-  result: Vendia_CDC_subscriptionPeriod
+  result: Vendia_ChangeDataEventStream_streamPeriod
 }
 
-type Vendia_CDC_subscriptionPeriod_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_streamPeriod_Transaction_Result_ {
   transaction: Vendia_Transaction!
-  result: Vendia_CDC_subscriptionPeriod
+  result: Vendia_ChangeDataEventStream_streamPeriod
 }
 
-type Vendia_CDC_subscriptionPeriod_Delete_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_streamPeriod_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
@@ -2045,12 +2051,12 @@ enum Vendia_SharingPolicy_acl_aclItem_operations_operationsItemEnum {
   ERASE_GLOBAL
 }
 
-enum Vendia_CDC_destination_typeEnum {
+enum Vendia_ChangeDataEventStream_destination_typeEnum {
   AWS_LAMBDA_ARN
   WORKFLOW
 }
 
-enum Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum {
+enum Vendia_ChangeDataEventStream_streamPeriod_startBlockPositionTypeEnum {
   LATEST
   ORIGIN
 }
@@ -3456,84 +3462,84 @@ input Vendia_SharingPolicy_PartialInput_ {
   acl: [Vendia_SharingPolicy_acl_aclItem_PartialInput_]
 }
 
-input Vendia_CDC_ConditionInput_ {
+input Vendia_ChangeDataEventStream_ConditionInput_ {
   name: Vendia_ModelStringInput_
-  destination: Vendia_CDC_destination_ConditionInput_
+  destination: Vendia_ChangeDataEventStream_destination_ConditionInput_
   enabled: Vendia_ModelBooleanInput_
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_ConditionInput_
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod_ConditionInput_
   statusReason: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_ConditionInput_]
-  _or: [Vendia_CDC_ConditionInput_]
-  _not: Vendia_CDC_ConditionInput_
+  _and: [Vendia_ChangeDataEventStream_ConditionInput_]
+  _or: [Vendia_ChangeDataEventStream_ConditionInput_]
+  _not: Vendia_ChangeDataEventStream_ConditionInput_
 }
 
-input Vendia_CDC_FilterInput_ {
+input Vendia_ChangeDataEventStream_FilterInput_ {
   _owner: Vendia_ModelStringInput_
   name: Vendia_ModelStringInput_
-  destination: Vendia_CDC_destination_FilterInput_
+  destination: Vendia_ChangeDataEventStream_destination_FilterInput_
   enabled: Vendia_ModelBooleanInput_
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_FilterInput_
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod_FilterInput_
   statusReason: Vendia_ModelStringInput_
-  _and: [Vendia_CDC_FilterInput_]
-  _or: [Vendia_CDC_FilterInput_]
-  _not: Vendia_CDC_FilterInput_
+  _and: [Vendia_ChangeDataEventStream_FilterInput_]
+  _or: [Vendia_ChangeDataEventStream_FilterInput_]
+  _not: Vendia_ChangeDataEventStream_FilterInput_
 }
 
-input Vendia_CDC_OrderInput_ {
+input Vendia_ChangeDataEventStream_OrderInput_ {
   _id: Vendia_ModelSortDirection
 }
 
-type Vendia_CDC {
+type Vendia_ChangeDataEventStream {
   _id: ID!
   name: String
-  destination: Vendia_CDC_destination
+  destination: Vendia_ChangeDataEventStream_destination
   enabled: Boolean
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod
   statusReason: String
   _acl: [Vendia_Acl!]
   _owner: String
 }
 
-type Vendia_CDC_Result_ {
+type Vendia_ChangeDataEventStream_Result_ {
   error: String
-  result: Vendia_CDC
+  result: Vendia_ChangeDataEventStream
 }
 
-type Vendia_CDC_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_Transaction_Result_ {
   transaction: Vendia_Transaction!
-  result: Vendia_CDC
+  result: Vendia_ChangeDataEventStream
 }
 
-type Vendia_CDC_Delete_Transaction_Result_ {
+type Vendia_ChangeDataEventStream_Delete_Transaction_Result_ {
   transaction: Vendia_Transaction!
 }
 
-type Vendia_CDC_Connection_ {
-  Vendia_CDCItems: [Vendia_CDC]
+type Vendia_ChangeDataEventStream_Connection_ {
+  Vendia_ChangeDataEventStreamItems: [Vendia_ChangeDataEventStream]
   nextToken: String
 }
 
-input Vendia_CDC_Input_ {
+input Vendia_ChangeDataEventStream_Input_ {
   name: String!
-  destination: Vendia_CDC_destination_Input_
+  destination: Vendia_ChangeDataEventStream_destination_Input_
   enabled: Boolean!
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_Input_
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod_Input_
   statusReason: String
 }
 
-input Vendia_CDC_UpdateInput_ {
+input Vendia_ChangeDataEventStream_UpdateInput_ {
   name: String
-  destination: Vendia_CDC_destination_UpdateInput_
+  destination: Vendia_ChangeDataEventStream_destination_UpdateInput_
   enabled: Boolean
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_UpdateInput_
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod_UpdateInput_
   statusReason: String
 }
 
-input Vendia_CDC_PartialInput_ {
+input Vendia_ChangeDataEventStream_PartialInput_ {
   name: String
-  destination: Vendia_CDC_destination_PartialInput_
+  destination: Vendia_ChangeDataEventStream_destination_PartialInput_
   enabled: Boolean
-  subscriptionPeriod: Vendia_CDC_subscriptionPeriod_PartialInput_
+  streamPeriod: Vendia_ChangeDataEventStream_streamPeriod_PartialInput_
   statusReason: String
 }
 
@@ -3585,9 +3591,9 @@ type Query {
   getVendia_SharingPolicy(id: ID, version: Int, name: String): Vendia_SharingPolicy
   listVendia_SharingPolicyItems(filter: Vendia_SharingPolicy_FilterInput_, order: [Vendia_SharingPolicy_OrderInput_!], limit: Int, nextToken: String): Vendia_SharingPolicy_Connection_
   listVendia_SharingPolicyVersions(id: ID, limit: Int, nextToken: String, name: String): Vendia_Version_Connection_
-  getVendia_CDC(id: ID!, version: Int): Vendia_CDC
-  listVendia_CDCItems(filter: Vendia_CDC_FilterInput_, order: [Vendia_CDC_OrderInput_!], limit: Int, nextToken: String): Vendia_CDC_Connection_
-  listVendia_CDCVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
+  getVendia_ChangeDataEventStream(id: ID!, version: Int): Vendia_ChangeDataEventStream
+  listVendia_ChangeDataEventStreamItems(filter: Vendia_ChangeDataEventStream_FilterInput_, order: [Vendia_ChangeDataEventStream_OrderInput_!], limit: Int, nextToken: String): Vendia_ChangeDataEventStream_Connection_
+  listVendia_ChangeDataEventStreamVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
 }
 
 type Mutation {
@@ -3626,9 +3632,9 @@ type Mutation {
   putVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_Input_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
   updateVendia_SharingPolicy(id: ID, name: String, input: Vendia_SharingPolicy_UpdateInput_!, condition: Vendia_SharingPolicy_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Transaction_Result_
   removeVendia_SharingPolicy(id: ID, name: String, condition: Vendia_SharingPolicy_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_SharingPolicy_Delete_Transaction_Result_
-  addVendia_CDC(input: Vendia_CDC_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_CDC_Transaction_Result_
-  updateVendia_CDC(id: ID!, input: Vendia_CDC_UpdateInput_!, condition: Vendia_CDC_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_CDC_Transaction_Result_
-  removeVendia_CDC(id: ID!, condition: Vendia_CDC_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_CDC_Delete_Transaction_Result_
+  addVendia_ChangeDataEventStream(input: Vendia_ChangeDataEventStream_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_ChangeDataEventStream_Transaction_Result_
+  updateVendia_ChangeDataEventStream(id: ID!, input: Vendia_ChangeDataEventStream_UpdateInput_!, condition: Vendia_ChangeDataEventStream_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_ChangeDataEventStream_Transaction_Result_
+  removeVendia_ChangeDataEventStream(id: ID!, condition: Vendia_ChangeDataEventStream_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_ChangeDataEventStream_Delete_Transaction_Result_
   invokeVendia_Contract(id: ID!, revisionId: String, input: Vendia_Contract_InvokeInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
 }
 
@@ -3694,10 +3700,10 @@ type Subscription {
   onUpdateVendia_SharingPolicy: Vendia_SharingPolicy_Result_
   onPutVendia_SharingPolicy: Vendia_SharingPolicy_Result_
   onRemoveVendia_SharingPolicy: Vendia_SharingPolicy_Result_
-  onAddVendia_CDC: Vendia_CDC_Result_
-  onUpdateVendia_CDC: Vendia_CDC_Result_
-  onPutVendia_CDC: Vendia_CDC_Result_
-  onRemoveVendia_CDC: Vendia_CDC_Result_
+  onAddVendia_ChangeDataEventStream: Vendia_ChangeDataEventStream_Result_
+  onUpdateVendia_ChangeDataEventStream: Vendia_ChangeDataEventStream_Result_
+  onPutVendia_ChangeDataEventStream: Vendia_ChangeDataEventStream_Result_
+  onRemoveVendia_ChangeDataEventStream: Vendia_ChangeDataEventStream_Result_
   onUpdateVendia_Transaction: Vendia_Transaction_Update_
 }
 
@@ -4429,29 +4435,29 @@ input Vendia_SharingPolicy_acl_aclItem_principal_PartialInput_ {
   nodes: [String]
 }
 
-input Vendia_CDC_destination_Input_ {
-  type: Vendia_CDC_destination_typeEnum
+input Vendia_ChangeDataEventStream_destination_Input_ {
+  type: Vendia_ChangeDataEventStream_destination_typeEnum
   uri: String
 }
 
-input Vendia_CDC_destination_UpdateInput_ {
-  type: Vendia_CDC_destination_typeEnum
+input Vendia_ChangeDataEventStream_destination_UpdateInput_ {
+  type: Vendia_ChangeDataEventStream_destination_typeEnum
   uri: String
 }
 
-input Vendia_CDC_destination_PartialInput_ {
-  type: Vendia_CDC_destination_typeEnum
+input Vendia_ChangeDataEventStream_destination_PartialInput_ {
+  type: Vendia_ChangeDataEventStream_destination_typeEnum
   uri: String
 }
 
-input Vendia_CDC_subscriptionPeriod_Input_ {
-  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+input Vendia_ChangeDataEventStream_streamPeriod_Input_ {
+  startBlockPositionType: Vendia_ChangeDataEventStream_streamPeriod_startBlockPositionTypeEnum
 }
 
-input Vendia_CDC_subscriptionPeriod_UpdateInput_ {
-  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+input Vendia_ChangeDataEventStream_streamPeriod_UpdateInput_ {
+  startBlockPositionType: Vendia_ChangeDataEventStream_streamPeriod_startBlockPositionTypeEnum
 }
 
-input Vendia_CDC_subscriptionPeriod_PartialInput_ {
-  startBlockPositionType: Vendia_CDC_subscriptionPeriod_startBlockPositionTypeEnum
+input Vendia_ChangeDataEventStream_streamPeriod_PartialInput_ {
+  startBlockPositionType: Vendia_ChangeDataEventStream_streamPeriod_startBlockPositionTypeEnum
 }

@@ -13,7 +13,7 @@ import OrgCreation from './Device-Schema/orgCreation';
 import NavbarLayout from './Navbar/NavbarLayout';
 import Homepage from './Device-Schema/Homepage';
 import AgGridTable from './page-device/AgGridTable';
-
+import Profile from './Device-Schema/Profile';
 
 function App() {
   // Initialize the user state
@@ -48,6 +48,7 @@ function App() {
 
   return (
     
+    
     <div className="App">
 
     <Routes>
@@ -66,6 +67,7 @@ function App() {
         <Route path="/Homepage" element={<Homepage />} />
         <Route path="/OrgCreation" element={<OrgCreation />} />
         <Route path="/AgGridTable" element={<AgGridTable />} />
+        <Route path="/Profile" element={<Profile />} />
         <Route path="/profile" element={<></>}/>
       </Route>
 
@@ -73,6 +75,8 @@ function App() {
 
     </Routes>
     </div>
+    
+   
   )
 }
 

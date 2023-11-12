@@ -9,10 +9,14 @@ import {
   Tr, Th, Td, Select,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
+import { getUserRole, currentUserEmail } from "../firebase"; 
 
 const { client } = vendiaClient();
 
 export const Device = () => {
+
+  const toast = useToast(); // Initialize the toast component
+  
   const [deviceId, setDeviceId] = useState("");
   const [name, setName] = useState("");
   const location = useLocation(); // Get the current location object
@@ -20,24 +24,28 @@ export const Device = () => {
   const textParam = searchParams.get("text"); // Get the 'text' parameter from the URL
   const deviceNameFromUrl = searchParams.get("deviceName");
   const [testList, setTestList] = useState([]); // Define testList state
+  const [userRole, setUserRole] = useState(null); // Define state variable and setter
+  const [selectedOrgEmail, setSelectedOrgEmail] = useState("");
+  const [email, setEmail] = useState("");
 
+  const createNewDevice = () => ({
+    Device: deviceNameFromUrl || "Device #",
+    testID: "",
+    orgAssignment: "",
+    testName: "",
+    testMethod: "",
+    notes: "",
+    completed: "",
+    updatedBy: "",
+  });
 
-  const [devices, setDevices] = useState([
-    {
-      Device: deviceNameFromUrl || "Device #",
-      testID: "",
-      orgAssignment: "",
-      testName: "",
-      testMethod: "",
-      notes: "",
-      completed: "",
-      updatedBy: "",
-    },
-  ]);
+  const [devices, setDevices] = useState([createNewDevice()]);
+
   const addOrg = async () => {
   const addOrgResponse = await client.entities.orgs.update({
     _id: deviceId,
     Name: name,
+    Email: email,
   });
     console.log(addOrgResponse);
   };
@@ -48,6 +56,7 @@ export const Device = () => {
         const deviceResponse = await client.entities.orgs.get(deviceId);
 
         setName(deviceResponse.Name);
+        setEmail(deviceResponse.Email);
       };
 
       fetchOrg();
@@ -69,30 +78,39 @@ export const Device = () => {
     listOrgs();
   }, []);
 
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(currentUserEmail);
+      setUserRole(role);
+    };
+
+    fetchUserRole();
+  }, []);
+
+  if (userRole !== "admin") {
+    return <div>You do not have permission to view this page.</div>;
+  }
+
   // Function to add a device to the database
   const addDevice = async () => {
     try {
-    for (const deviceData of devices) {
-      console.log('Device Data:', deviceData);
-      await client.entities.test.add({
-        Device: deviceData.Device, // Set the device name here
-        TestID: parseInt(deviceData.testID),
-        OrgAssignment: deviceData.orgAssignment,
-        TestName: deviceData.testName,
-        TestMethod: deviceData.testMethod,
-        Notes: deviceData.notes,
-        Completed: Boolean(deviceData.completed),
-        UpdatedBy: deviceData.updatedBy,
-      });
-    }
+      for (const deviceData of devices) {
+        console.log('Device Data:', deviceData);
+        await client.entities.test.add({
+          Device: deviceData.Device, // Set the device name here
+          TestID: parseInt(deviceData.testID),
+          OrgAssignment: deviceData.orgAssignment,
+          TestName: deviceData.testName,
+          TestMethod: deviceData.testMethod,
+          Notes: deviceData.notes,
+          Completed: Boolean(deviceData.completed),
+          UpdatedBy: deviceData.updatedBy,
+        });
+      }
     return 200;
-    } catch (error) {
-      throw new Error("Failed to add device");
-    }
-  };
-
-  const toast = useToast();
-
+  } catch (error) {
+    throw new Error("Failed to add device");
+  }};
 
   // Function to handle form submission
   const handleSubmit = (event) => {
@@ -106,11 +124,11 @@ export const Device = () => {
   };
 
   // Function to add a new row to the devices array
-  const addRow = () => setDevices([...devices, { ...devices[0] }]);
-
+  const addRow = () => setDevices([...devices, createNewDevice()]);
+  
   return (
     <Stack spacing={4} >
-       <Text fontSize="xl" align="center">
+      <Text fontSize="xl" align="center">
         {textParam || "Test Add Page For Per Device"} {/* Display the textParam or default title */}
       </Text>
 
@@ -183,24 +201,29 @@ export const Device = () => {
                   <Select
                     placeholder="Select option"
                     value={device.orgAssignment}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const selectedOrg = testList.find(org => org.Name === e.target.value);
+                      setSelectedOrgEmail(selectedOrg ? selectedOrg.Email : "");
+                      console.log("Selected Org Email:", selectedOrgEmail); // Add this line
+
                       setDevices((prevDevices) =>
                         prevDevices.map((prevDevice, idx) =>
                           idx === index
                             ? { ...prevDevice, orgAssignment: e.target.value }
                             : prevDevice
-                          )
                         )
-                      }
+                      );
+                    }}
                     size="md"
                     width="100%"
-                    textAlign="center">
+                    textAlign="center"
+                  >
                     {testList.map((org) => (
                       <option key={org.Name} value={org.Name}>
                         {org.Name}
                       </option>
                     ))}
-                  </Select>    
+                  </Select>
                 </Td>
 
                       {/* TestName */}
@@ -299,12 +322,16 @@ export const Device = () => {
                     }
                     size="md"
                     width="100%"
-                    textAlign="center">
-                    {testList.map((org) => (
-                      <option key={org.Email} value={org.Email}>
-                        {org.Email}
-                      </option>
-                    ))}
+                    textAlign="center"
+                  >
+                  {testList
+                  .filter(org => org.Email === selectedOrgEmail)
+                  .map((org, index) => (
+                    <option key={index} value={org.Email}>
+                      {org.Email}
+                    </option>
+                  ))}
+
                   </Select>
                 </Td>
 

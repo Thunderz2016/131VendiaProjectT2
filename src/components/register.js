@@ -19,7 +19,6 @@ import { InputRightElement } from "@chakra-ui/react";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 
-
 function Register() {
   // Initialize state variables to store email and password
   const [email, setEmail] = useState('');
@@ -41,7 +40,7 @@ function Register() {
       .then((userCredential) => {
 
       // Save user role to Firestore
-      const userRef = doc(db, 'users', userCredential.user.uid);
+      const userRef = doc(db, 'users', userCredential.user.email);
       return setDoc(userRef, {
         email: email,
         role: isAdmin ? 'admin' : 'user'
@@ -54,7 +53,6 @@ function Register() {
         .catch((error) => {
         console.log(error);
   });
-
 };
 
   return (

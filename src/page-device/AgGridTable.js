@@ -5,14 +5,10 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { vendiaClient } from "../vendiaClient";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { ModuleRegistry } from '@ag-grid-community/core';
-import { SideBarModule } from '@ag-grid-enterprise/side-bar';
 import 'ag-grid-enterprise'; // Import this for enterprise features
 
 import { db } from "../firebase"; // Assuming you've exported db from firebase.js
 import { doc, getDoc } from "firebase/firestore";
-
-
-ModuleRegistry.registerModules([SideBarModule]);
 
 const { client } = vendiaClient();
 const auth = getAuth();
@@ -21,8 +17,6 @@ export const AgGridTable = () => {
     const [testList, setTestList] = useState([]);
     const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
     const [updatedBy, setUpdatedBy] = useState("");
-    const [showSideBar, setShowSideBar] = useState(false);
-    const ADMIN_EMAILS = ["teamzephyr2023@gmail.com"]; // Add your admin emails here
 
     const isAdminEmail = async (email) => {
         const userRef = doc(db, 'users', email); // Assuming you use email as the document ID
@@ -33,13 +27,14 @@ export const AgGridTable = () => {
         }
         return false;
     };
-    
 
     const isValidUpdate = async (email, orgAssignment) => {
+
         // If the email belongs to an admin, return true immediately
         if (await isAdminEmail(email)) {
             return true;
         }
+        // If the email does not belong to an admin, check if the email is in the emailToOrgNameMap
         return emailToOrgNameMap[email]?.includes(orgAssignment);
     };
 
@@ -71,14 +66,14 @@ export const AgGridTable = () => {
 
     // AgGridReact component props and methods
     const columnDefs = [
-        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true},
+        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true, sort: 'asc'},
         { headerName: "TestID", field: "TestID", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "OrgAssignment", field: "OrgAssignment", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true, sort: 'asc' },
+        { headerName: "OrgAssignment", field: "OrgAssignment", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true },
         { headerName: "TestName", field: "TestName", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "TestMethod", field: "TestMethod", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "Notes", field: "Notes", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "Completed", field: "Completed", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "UpdatedBy", field: "UpdatedBy", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true },
+        { headerName: "UpdatedBy", field: "UpdatedBy", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true,  },
     ];
 
     const defaultColDef = {

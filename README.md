@@ -23,3 +23,11 @@ npm install @vendia/client
 share client:generate
 
 if you clone delete the node_modules and reinstall
+
+For ag grid list
+
+npm install --save ag-grid-react ag-grid-community
+
+npm install @ag-grid-enterprise/side-bar
+
+npm install --save ag-grid-enterprise

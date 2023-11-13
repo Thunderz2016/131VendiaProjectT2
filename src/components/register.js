@@ -12,10 +12,12 @@ import {
   Heading,
   Input,
   Link,
-  Stack,
+  Stack, Checkbox,
 } from "@chakra-ui/react";
 import { InputGroup } from "@chakra-ui/react";
 import { InputRightElement } from "@chakra-ui/react";
+import { db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 function Register() {
   // Initialize state variables to store email and password
@@ -26,6 +28,8 @@ function Register() {
   // hide and show password
   const handleClick = () => setShow(!show)
   const [show, setShow] = React.useState(false)
+  const [isAdmin, setIsAdmin] = useState(false);
+
 
   // handle the registration process
   const register = (e) => {
@@ -35,15 +39,21 @@ function Register() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
 
-        // If registration is successful, log the user credential
-        console.log(userCredential);
-        navigate('/login'); // redirect to login on click
-      })
-       // If there's an error during registration, log the error
-      .catch((error) => {
-        console.log(error);
+      // Save user role to Firestore
+      const userRef = doc(db, 'users', userCredential.user.email);
+      return setDoc(userRef, {
+        email: email,
+        role: isAdmin ? 'admin' : 'user'
       });
-  };
+    })
+      .then(() => {
+        console.log("User role saved to Firestore");
+        navigate('/'); // redirect to login on click
+      })
+        .catch((error) => {
+        console.log(error);
+  });
+};
 
   return (
     <Stack
@@ -59,6 +69,14 @@ function Register() {
       <Heading as="h2" size="lg" textAlign="center">
         Register
       </Heading>
+
+      <FormControl mb={4}>
+        <FormLabel>Are you an admin?</FormLabel>
+        <Checkbox value={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
+          Admin
+        </Checkbox>
+      </FormControl>
+
 
       <form onSubmit={register}>
 {/* input field for registration */}

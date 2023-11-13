@@ -24,8 +24,8 @@ function Login() {
   // navigate from login to DeviceOne page
   const navigate = useNavigate();
   // hide and show password
-  const handleClick = () => setShow(!show)
-  const [show, setShow] = React.useState(false)
+  const handleClick = () => setShow(!show);
+  const [show, setShow] = React.useState(false);
   
   // handle the login process
   const login = (e) => {
@@ -39,7 +39,7 @@ function Login() {
         
         // If registration is successful, log the user credential
         console.log(userCredential);
-        navigate("/Demo"); // to redirect to the DeviceOne page, if the login is successful
+        navigate("/Homepage"); // to redirect to the DeviceOne page, if the login is successful
       })
       // If there's an error during registration, log the error
       .catch((error) => {
@@ -48,6 +48,16 @@ function Login() {
   };
 
   return (
+  <>
+    {auth.currentUser && (
+      <div>
+        <h1 style={{ display: "inline" }}>currently logged in as </h1>
+        <Link to="/homepage" color="blue" as={RouterLink}>
+          {auth.currentUser.email}
+        </Link>
+      </div>
+    )}
+
     <Stack
       spacing={6}
       maxW="400px"
@@ -56,66 +66,64 @@ function Login() {
       p="11"
       borderWidth="1px"
       borderRadius="lg"
-      boxShadow="md">
-
+      boxShadow="md"
+    >
       <Heading as="h2" size="lg" textAlign="center">
         Login
       </Heading>
-
+      
       <form onSubmit={login}>
-{/* Input field for entering login email */}
+        {/* Input field for entering login email */}
         <FormControl mb={4}>
           <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
         </FormControl>
+             {/* Input field for entering password */}
 
-{/* Input field for entering password */}
         <FormControl mb={4}>
           <FormLabel>Password</FormLabel>
-            <InputGroup size='md'>
+            <InputGroup size="md">
               <Input
-                pr='4.5rem'
-                type={show ? 'text' : 'password'}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputRightElement width='4.5rem'>
-               <Button h='1.75rem' size='sm' onClick={handleClick}>
-                {show ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
-          </InputGroup>
-        </FormControl>
+               pr="4.5rem"
+               type={show ? "text" : "password"}
+               placeholder="Password"
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
+             />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                  {show ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+            </InputGroup>
+          </FormControl>
 
+          <Center>
+            <Button colorScheme="blue" type="submit">
+              Log In
+            </Button>
+          </Center>
+
+        </form>
+
+        {/* link button for registration */}
         <Center>
-        <Button colorScheme="blue" type="submit">
-          Log In
-        </Button>
+        <Box>
+          <p>
+            Don't have an account?{" "}
+            <Link color="red" href="#" as={RouterLink} to="/register">
+              Register
+            </Link>
+          </p>
+        </Box>
         </Center>
-
-      </form>
-
-{/* link button for registration */}
-      <Center>
-      <Box>
-        <p>
-          Don't have an account?{" "}
-          <Link color='red' href='#' as={RouterLink} to="/register">
-            Register
-          </Link>
-        </p>
-      </Box>
-      </Center>
-      
-
-    </Stack>
-    
+      </Stack>
+  </>
   );
 }
 

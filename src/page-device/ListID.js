@@ -5,34 +5,24 @@ import { Stack, Box, Text, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/re
 const { client } = vendiaClient();
 
 export const ListID = () => {
-  const [deviceId, setDeviceId] = useState("");
-  const [testList, setTestList] = useState([]);
+  
+    const [orgLists, setOrgList] = useState([]);
 
   useEffect(() => {
-    const listTest = async () => {
-      const listTestResponse = await client.entities.test.list();
-      console.log(listTestResponse?.items);
-      setTestList(listTestResponse?.items);
+
+    const orgList = async () => {
+
+      const listOrgResponse = await client.entities.orgs.list();
+      console.log(listOrgResponse?.items);
+      setOrgList(listOrgResponse?.items);
     };
 
-    listTest();
+    orgList();
   }, []);
-
-  useEffect(() => {
-    if (deviceId) {
-      const fetchDevice = async () => {
-        const deviceResponse = await client.entities.test.get(deviceId);
-
-        // The response is not used currently. Add states if you need them.
-      };
-
-      fetchDevice(); 
-    }
-  }, [deviceId]); 
 
   return (
     <Stack spacing={4}>
-      <Text fontSize="xl" align="center">Temporary _id Page</Text>
+      <Text fontSize="xl" align="center">Orgss _id Page</Text>
       <Box overflowX="auto" align="center">
 
         <Table>
@@ -41,17 +31,17 @@ export const ListID = () => {
 
             <Tr>
               <Th>DeviceID</Th>
-              <Th>Device</Th>
-              <Th>OrgAssignment</Th>
+              <Th>Name</Th>
+              <Th>Email</Th>
             </Tr>
           </Thead>
 
           <Tbody>
-            {testList.map((test, index) => (
+            {orgLists.map((org, index) => (
               <Tr key={index}>
-                <Td>{test._id}</Td>
-                <Td>{test.Device}</Td>
-                <Td>{test.OrgAssignment}</Td>
+                <Td>{org._id}</Td>
+                <Td>{org.Name}</Td>
+                <Td>{org.Email}</Td>
               </Tr>
             ))}
           </Tbody>

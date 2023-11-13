@@ -74,7 +74,7 @@ const Layout = () => {
               Home Page
               </Link>
             </Tab>
-
+{/*
           <Tab>
             <AddIcon paddingRight={1} />
             <Link to="/Device">
@@ -83,6 +83,7 @@ const Layout = () => {
               </Text>
             </Link>
           </Tab>
+*/}
 
           <Tab>
             <DeleteIcon paddingRight={1} />
@@ -93,8 +94,6 @@ const Layout = () => {
             <CalendarIcon paddingRight={1} />
             <Link to="/AgGridTable">AgGridTable</Link>
         </Tab>
-
-
 
         </TabList>
          
@@ -193,10 +192,11 @@ const Layout = () => {
         <MenuItem icon={<StarIcon />} as='a' href='/Homepage'>
           Home Page
         </MenuItem>
-
+{/*
         <MenuItem icon={<AddIcon />} as='a' href='/Device'>
           Device Add
         </MenuItem>
+*/}
 
         <MenuItem icon={<CalendarIcon />} as='a' href='/AgGridTable'>
           List/Update

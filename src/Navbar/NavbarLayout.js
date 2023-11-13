@@ -5,11 +5,11 @@ import LinkLayout from "./LinkLayout";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import DeleteDevice from "../page-device/DeleteDevice";
 import {
-  StarIcon,
-  AddIcon,
-  EditIcon,
-  DeleteIcon,
-  CalendarIcon,
+    StarIcon,
+    AddIcon,
+    EditIcon,
+    DeleteIcon,
+    CalendarIcon,
 } from "@chakra-ui/icons";
 import Device from "../page-device/Device";
 import UpdateDevice from "../page-device/DeviceUpdate";
@@ -19,7 +19,7 @@ import Demo from "../Device-Schema/Homepage";
 import { Link } from "react-router-dom";
 
 export default function NavbarLayout() {
-  /*return (
+    /*return (
         <div>
             <Layout />
             <Divider orientation='horizontal' />
@@ -28,56 +28,56 @@ export default function NavbarLayout() {
         </div>
     )*/
 
-  return (
-    <div>
-      <Layout />
-      <Tabs align="center" isFitted="true">
-        <TabList>
+    var path = window.location.href;  // Get current URL
+    var index;                        // Index for determining active tab
 
-            <Tab>
-            <Link to="/Homepage">
-              <StarIcon paddingRight={1} />
-              Home Page
-              </Link>
-            </Tab>
+    // This is a botch but should work assuming no further changes would be made to the navbar
+    if(path.includes("/Homepage")) {
+      index = 0;
+    } else if (path.includes("/Device")) {
+      index = 1;
+    } else if (path.includes("/AgGridTable")) {
+      index = 2;
+    } else if (path.includes("/DeleteDevice")) {
+      index = 3;
+    }
 
+    return (
+        <div>
+            <Layout />
+            <Tabs isFitted="true" defaultIndex={index}>
+                <TabList>
+                    <Link to="/Homepage" style={{display: 'inline-block'}}>
+                        <Tab size='lg'>
+                            <StarIcon paddingRight={1} />
+                            Home Page
+                        </Tab>
+                    </Link>
 
-          <Tab>
-            <AddIcon paddingRight={1} />
-            <Link to="/Device">Add Device</Link>
-          </Tab>
-          <Tab>
-            <EditIcon paddingRight={1} />
-            Device Update
-          </Tab>
-          <Tab>
-            <DeleteIcon paddingRight={1} />
-            Delete
-          </Tab>
-          <Tab>
-            <CalendarIcon paddingRight={1} />
-            AgGridTable
-          </Tab>
-        </TabList>
+                    <Link to="/Device">
+                    <Tab>
+                        <AddIcon paddingRight={1} />
+                        Add Device
+                    </Tab>
+                    </Link>
 
-        <TabPanels>
-          <TabPanel>
-            <Demo />
-          </TabPanel>
-          <TabPanel>
-            <Device />
-          </TabPanel>
-          <TabPanel>
-            <UpdateDevice />
-          </TabPanel>
-          <TabPanel>
-            <DeleteDevice />
-          </TabPanel>
-          <TabPanel>
-            <AgGridTable />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
-  );
+                    <Link to="/AgGridTable">
+                    <Tab>
+                        <AddIcon paddingRight={1} />
+                        List/Update
+                    </Tab>
+                    </Link>
+
+                    <Link to="/DeleteDevice">
+                    <Tab>
+                        <AddIcon paddingRight={1} />
+                        Delete
+                    </Tab>
+                    </Link>
+
+                </TabList>
+            </Tabs>
+            <Outlet />
+        </div>
+    );
 }

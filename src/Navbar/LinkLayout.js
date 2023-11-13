@@ -40,7 +40,7 @@ const LinkLayout = () => {
             </Link>            
         </HStack>
 
-        {/*add device */}
+        {/*add device 
         <HStack as="nav" spacing="5">
             <Link to="/Device">
             <Button 
@@ -52,6 +52,7 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
+        */}
 
         <HStack as="nav" spacing="5">
             <Link to="/AgGridTable">

@@ -6,6 +6,8 @@ import { vendiaClient } from "../vendiaClient";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { ModuleRegistry } from '@ag-grid-community/core';
 import 'ag-grid-enterprise'; // Import this for enterprise features
+import { useLocation } from 'react-router-dom';
+
 
 import { db } from "../firebase"; // Assuming you've exported db from firebase.js
 import { doc, getDoc } from "firebase/firestore";
@@ -17,6 +19,10 @@ export const AgGridTable = () => {
     const [testList, setTestList] = useState([]);
     const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
     const [updatedBy, setUpdatedBy] = useState("");
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const deviceNameFromUrl = queryParams.get('deviceName');
 
     const isAdminEmail = async (email) => {
         const userRef = doc(db, 'users', email); // Assuming you use email as the document ID
@@ -66,7 +72,7 @@ export const AgGridTable = () => {
 
     // AgGridReact component props and methods
     const columnDefs = [
-        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true, sort: 'asc'},
+        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true, sort: 'asc',},
         { headerName: "TestID", field: "TestID", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "OrgAssignment", field: "OrgAssignment", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true },
         { headerName: "TestName", field: "TestName", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
@@ -138,7 +144,8 @@ export const AgGridTable = () => {
     }, []);
     
     return (
-        <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+        <div className="ag-theme-alpine" 
+            style={{ height: 400, width: '100%' }}>
 
             <AgGridReact
 

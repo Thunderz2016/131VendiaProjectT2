@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react'
 import { Input } from "@chakra-ui/react"; // Using Chakra UI components
 
-
 const { client } = vendiaClient();
 
 export const List = () => {

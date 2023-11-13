@@ -101,7 +101,7 @@ export const Demo = () => {
         width="200px"
         textAlign="center"
         m={3}
-        shadow="lg" // Adds medium shadow
+        shadow="lg" // Adds large shadow
         borderColor="gray.200"
         _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
       >
@@ -115,35 +115,56 @@ export const Demo = () => {
   };
 
   return (
-    <Flex direction="row" align="center" w="100%" p={5}>
-    {/* Container for Device Boxes */}
-    <Flex flex={1} justifyContent="center" p={5}>
-      <Stack direction="row" wrap="wrap" justifyContent="center">
-        {devices.map(renderDeviceBox)}
-      </Stack>
-    </Flex>
-
-    {/* Container for the "Add Device" Form */}
-    <Flex flex={0.3} direction="column" align="flex-end" p={5}>
+    <Stack align="center" spacing={5}>
+    {/*
+      <Text 
+        bgGradient='linear(to-l, #7928CA, #FF0080)'
+        bgClip='text'
+        fontSize='xl'
+        fontWeight='extrabold'> TEAM ZEPHYR DEVICE TEST TRACKER </Text>
+    */}
       <form onSubmit={handleSubmit}>
-        <Stack spacing={4} align="flex-end">
-          <Box>
-            <label>Add Device Name: </label>
-            <Input
-              type="text"
-              name="Device"
-              value={name}
-              onChange={handleNameChange}
-            />
-          </Box>
-          <Button colorScheme="blue" type="submit">
-            Add Device
-          </Button>
-        </Stack>
-      </form>
-    </Flex>
-  </Flex>
-);
-};
+      <Stack>
+      
+        <Box>
+          <label>Add Device Name </label>
+          <Input 
+            type="text"
+            name="Device"
+            value={name}
+            onChange={handleNameChange}/>
+        </Box>
+      {/*      <FormControl display="flex" alignItems="center">
+      
+        <FormLabel htmlFor="status-switch" mb="0">
+          Active
+        </FormLabel>
+        
+          <Switch 
+            id="status-switch"
+            isChecked={status}
+            onChange={handleStatusChange}/>
+      
+      </FormControl>
+      */}
 
-export default Demo;
+      
+      <Stack align="center">
+        <Button colorScheme="blue" onClick={handleSubmit} >
+          Add Device
+        </Button>
+      </Stack>
+
+    </Stack>
+    
+    </form>
+    <Stack direction="row" wrap="wrap" justifyContent="center">
+      {devices.map(renderDeviceBox)}
+    </Stack>
+
+    <Button colorScheme="teal" mt={5}>View archived devices</Button>
+
+    </Stack>
+  );
+};
+    export default Demo;

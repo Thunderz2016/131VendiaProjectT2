@@ -201,11 +201,19 @@ export const Demo = () => {
 
   const renderDeviceBox = (device, index) => {
     return (
-      <Stack align="center" spacing={5}>
-      <Box key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
-        
+      <Box
+        key={index}
+        borderWidth="1px"
+        borderRadius="lg"
+        p={4}
+        width="200px"
+        textAlign="center"
+        m={3}
+        shadow="lg" // Adds large shadow
+        borderColor="gray.200"
+        _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
+      >
         <Text fontSize="xl">{device.Name}</Text>
-        
         <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
         
         <ButtonGroup variant='solid' spacing='2' colorScheme='teal'>
@@ -369,5 +377,4 @@ export const Demo = () => {
     </Stack>
   );
 };
-
-export default Demo;
+    export default Demo;

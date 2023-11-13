@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { vendiaClient } from '../vendiaClient';
 import { Box, Input, Stack, Switch, FormControl, FormLabel, Text, Select, useToast, Flex } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
-import { Button, useColorModeValue } from '@chakra-ui/react';
+import {  useColorModeValue } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import {
   Modal,

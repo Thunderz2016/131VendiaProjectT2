@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from "react-router-dom";
 import { vendiaClient } from '../vendiaClient';
-import { Box, Input, Stack, Switch, FormControl, FormLabel, Text, Select, useToast } from '@chakra-ui/react';
+import { Box, Input, Stack, Switch, FormControl, FormLabel, Text, Select, useToast, Flex } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import {
@@ -201,6 +201,7 @@ export const Demo = () => {
 
   const renderDeviceBox = (device, index) => {
     return (
+      <Stack align="center" spacing={5}>
       <Box
         key={index}
         borderWidth="1px"
@@ -212,7 +213,8 @@ export const Demo = () => {
         shadow="lg" // Adds large shadow
         borderColor="gray.200"
         _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
-      >
+        >
+
         <Text fontSize="xl">{device.Name}</Text>
         <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
         
@@ -232,112 +234,111 @@ export const Demo = () => {
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader align="center">Add Test For Device</ModalHeader>
-              <ModalCloseButton />
-              <form onSubmit={handleTestSubmit}>
-              <ModalBody>
+            <ModalHeader align="center">Add Test For Device</ModalHeader>
+            <ModalCloseButton />
+            <form onSubmit={handleTestSubmit}>
+            <ModalBody>
               <Stack spacing={4} direction="column" align="center" justify="center">
+                <Input
+                  placeholder="Device"
+                  value={device.Device}
+                  onChange={(e) => setDevice(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="Device"
-  value={device.Device}
-  onChange={(e) => setDevice(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Input
+                  placeholder="TestID[Integer]"
+                  value={testID}
+                  onChange={(e) => setTestID(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="TestID[Integer]"
-  value={testID}
-  onChange={(e) => setTestID(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Select 
+                  placeholder="OrgAssignment" 
+                  value={orgAssignment} 
+                  onChange={(e) => handleOrgAssignmentChange(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center">
 
-<Select 
-  placeholder="OrgAssignment" 
-  value={orgAssignment} 
-  onChange={(e) => handleOrgAssignmentChange(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center">
+                  {orgAssignments.map((org, index) => (
+                    <option key={index} value={org.Name}>{org.Name}</option>
+                  ))}
 
-  {orgAssignments.map((org, index) => (
-    <option key={index} value={org.Name}>{org.Name}</option>
-  ))}
+                </Select>
 
-</Select>
+                <Input
+                  placeholder="TestName"
+                  value={testName}
+                  onChange={(e) => setTestName(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="TestName"
-  value={testName}
-  onChange={(e) => setTestName(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Input
+                  placeholder="TestMethod"
+                  value={testMethod}
+                  onChange={(e) => setTestMethod(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="TestMethod"
-  value={testMethod}
-  onChange={(e) => setTestMethod(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Input
+                  placeholder="Notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="Notes"
-  value={notes}
-  onChange={(e) => setNotes(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Input
+                  placeholder="Completed[Boolean]"
+                  value={completed}
+                  onChange={(e) => setCompleted(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center"
+                />
 
-<Input
-  placeholder="Completed[Boolean]"
-  value={completed}
-  onChange={(e) => setCompleted(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center"
-/>
+                <Select 
+                  placeholder="UpdatedBy" 
+                  value={updatedBy} 
+                  onChange={(e) => setUpdatedBy(e.target.value)}
+                  size="md"
+                  width="250px"
+                  textAlign="center">
 
-<Select 
-  placeholder="UpdatedBy" 
-  value={updatedBy} 
-  onChange={(e) => setUpdatedBy(e.target.value)}
-  size="md"
-  width="250px"
-  textAlign="center">
+                  {orgAssignments.map((org, index) => (
+                    <option key={index} value={org.Email}>{org.Email}</option>
+                  ))}
 
-  {orgAssignments.map((org, index) => (
-    <option key={index} value={org.Email}>{org.Email}</option>
-  ))}
+                </Select>
 
-</Select>
+                <Button colorScheme="blue" type="submit">
+                  Add Test
+                </Button>
+                <Button colorScheme="gray" onClick={onClose}>
+                  Cancel
+                </Button>
 
-<Button colorScheme="blue" type="submit">
-  Add Test
-</Button>
-<Button colorScheme="gray" onClick={onClose}>
-  Cancel
-</Button>
-
-</Stack>
+              </Stack>
                
-              </ModalBody>
+            </ModalBody>
     
-              <ModalFooter>
+            <ModalFooter>
               
-              </ModalFooter>
-              </form>
+            </ModalFooter>
+            </form>
             </ModalContent>
           </Modal>
-          </>
+        </>
 
       </Stack>
       </Stack>

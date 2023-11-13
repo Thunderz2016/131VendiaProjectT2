@@ -28,53 +28,52 @@ export default function NavbarLayout() {
         </div>
     )*/
 
-    var path = window.location.href;  // Get current URL
-    var index;                        // Index for determining active tab
+    var path = window.location.href; // Get current URL
+    var index; // Index for determining active tab
 
     // This is a botch but should work assuming no further changes would be made to the navbar
-    if(path.includes("/Homepage")) {
-      index = 0;
+    if (path.includes("/Homepage")) {
+        index = 0;
     } else if (path.includes("/Device")) {
-      index = 1;
+        index = 1;
     } else if (path.includes("/AgGridTable")) {
-      index = 2;
+        index = 2;
     } else if (path.includes("/DeleteDevice")) {
-      index = 3;
+        index = 3;
     }
 
     return (
         <div>
             <Layout />
-            <Tabs isFitted="true" defaultIndex={index}>
+            <Tabs isFitted="true" align="center" defaultIndex={index}>
                 <TabList>
-                    <Link to="/Homepage" style={{display: 'inline-block'}}>
-                        <Tab size='lg'>
+                    <Link to="/Homepage">
+                        <Tab>
                             <StarIcon paddingRight={1} />
                             Home Page
                         </Tab>
                     </Link>
 
                     <Link to="/Device">
-                    <Tab>
-                        <AddIcon paddingRight={1} />
-                        Add Device
-                    </Tab>
+                        <Tab >
+                            <AddIcon paddingRight={1} />
+                            Add Device
+                        </Tab>
                     </Link>
 
                     <Link to="/AgGridTable">
-                    <Tab>
-                        <AddIcon paddingRight={1} />
-                        List/Update
-                    </Tab>
+                        <Tab>
+                            <CalendarIcon paddingRight={1} />
+                            List/Update
+                        </Tab>
                     </Link>
 
                     <Link to="/DeleteDevice">
-                    <Tab>
-                        <AddIcon paddingRight={1} />
-                        Delete
-                    </Tab>
+                        <Tab>
+                            <AddIcon paddingRight={1} />
+                            Delete
+                        </Tab>
                     </Link>
-
                 </TabList>
             </Tabs>
             <Outlet />

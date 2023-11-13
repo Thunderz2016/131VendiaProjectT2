@@ -26,8 +26,7 @@ const LinkLayout = () => {
           bg={bg}
           wrap="wrap"
         >
-
-        {/*Home page */}
+            {/*Home page */}
         <HStack as="nav" spacing="2">
             <Link to="/Homepage">
             <Button 
@@ -39,8 +38,8 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
-
-        {/*add device */}
+  
+            {/*add device */}
         <HStack as="nav" spacing="5">
             <Link to="/Device">
             <Button 
@@ -53,19 +52,7 @@ const LinkLayout = () => {
             </Link>            
         </HStack>
 
-        <HStack as="nav" spacing="5">
-            <Link to="/AgGridTable">
-            <Button 
-                bg="transparent"
-                size={{base:"5px", sm:"10px", md:"20px", lg:"30px", xl:"40px", "2xl":"50px"}}
-                > 
-                <CalendarIcon paddingRight={1}/>
-                List/Update
-            </Button>
-            </Link>            
-        </HStack>
-
- {/*           update device 
+            {/*update device */}
         <HStack as="nav" spacing="5">
             <Link to="/DeviceUpdate">
             <Button 
@@ -77,8 +64,8 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
-*/}
-        {/*delete device */}
+
+            {/*delete device */}
         <HStack as="nav" spacing="5">
             <Link to="/DeleteDevice">
             <Button 
@@ -90,9 +77,8 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
-        
 
- {/*           list device page 
+            {/*list device page */}
         <HStack as="nav" spacing="5">
             <Link to="/ListDevice">
             <Button 
@@ -104,8 +90,7 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
-*/}
-{/*
+
         <HStack as="nav" spacing="5">
             <Link to="/ListID">
             <Button 
@@ -117,7 +102,18 @@ const LinkLayout = () => {
             </Button>
             </Link>            
         </HStack>
-*/}
+
+        <HStack as="nav" spacing="5">
+            <Link to="/AgGridTable">
+            <Button 
+                bg="transparent"
+                size={{base:"5px", sm:"10px", md:"20px", lg:"30px", xl:"40px", "2xl":"50px"}}
+                > 
+                <CalendarIcon paddingRight={1}/>
+                AgGridTable
+            </Button>
+            </Link>            
+        </HStack>
 
         </Flex>
     );

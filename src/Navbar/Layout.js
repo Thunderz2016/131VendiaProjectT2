@@ -89,6 +89,7 @@ const Layout = () => {
    {authUser ? (
       <>
       
+      <Text textAlign="center">{`Signed In as ${authUser.email}`}</Text>
       <Link to="/" >
         <Button  
           top={{base:"5px", sm:"10px", md:"20px"}}

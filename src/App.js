@@ -46,10 +46,10 @@ function App() {
   // Determine authentication status based on the user state
   const isAuthenticated = !!user; // true if user is not null, false otherwise
 
+  
   return (
-    
-    
-    <div className="App">
+      
+    <div className="App" >
 
     <Routes>
 
@@ -68,7 +68,6 @@ function App() {
         <Route path="/OrgCreation" element={<OrgCreation />} />
         <Route path="/AgGridTable" element={<AgGridTable />} />
         <Route path="/Profile" element={<Profile />} />
-        <Route path="/profile" element={<></>}/>
       </Route>
 
       )}

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { vendiaClient } from '../vendiaClient';
 import { Box, Input, Stack, Switch, FormControl, FormLabel, Text, Select, useToast, Flex } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button, useColorModeValue } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import {
   Modal,
@@ -351,8 +352,8 @@ export const Demo = () => {
       <form onSubmit={handleSubmit}>
       <Stack>
       
-        <Box>
-          <label>Add Device Name </label>
+        <Box align="center">
+          <label >Add Device Name </label>
           <Input 
             type="text"
             name="Device"
@@ -361,7 +362,7 @@ export const Demo = () => {
         </Box>
       
       <Stack align="center">
-        <Button colorScheme="blue" onClick={handleSubmit} >
+        <Button colorScheme={"teal"} onClick={handleSubmit} >
           Add Device
         </Button>
       </Stack>

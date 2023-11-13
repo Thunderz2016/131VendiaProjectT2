@@ -17,6 +17,7 @@ import {
 import { InputGroup } from "@chakra-ui/react";
 import { InputRightElement } from "@chakra-ui/react";
 
+
 function Login() {
 // Initialize state variables to store email and password
   const [email, setEmail] = useState("");
@@ -47,7 +48,10 @@ function Login() {
       });
   };
 
+
+  
   return (
+    
   <>
     {auth.currentUser && (
       <div>

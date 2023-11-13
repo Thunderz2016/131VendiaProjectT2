@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { vendiaClient } from '../vendiaClient';
 import { Box, Input, Stack, Switch, FormControl, FormLabel, Text } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
+import { Button, useColorModeValue } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const { client } = vendiaClient();
@@ -11,7 +11,7 @@ export const Demo = () => {
   const [name, setName] = useState();
   const [status, setStatus] = useState(false);
   const [devices, setDevices] = useState([]);  // State for list of devices
-  const [percentage, setPercentage] = useState({});
+  const [percentage, setPercentage] = useState({}); 
 
   useEffect(() => {
     // Fetch the list of devices in the device schema
@@ -93,7 +93,7 @@ export const Demo = () => {
 
   const renderDeviceBox = (device, index) => {
     return (
-      <Box key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
+      <Box  key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
         
         <Text fontSize="xl">{device.Name}</Text>
         
@@ -119,8 +119,8 @@ export const Demo = () => {
       <form onSubmit={handleSubmit}>
       <Stack>
       
-        <Box>
-          <label>Add Device Name </label>
+        <Box align="center">
+          <label >Add Device Name </label>
           <Input 
             type="text"
             name="Device"
@@ -143,7 +143,7 @@ export const Demo = () => {
 
       
       <Stack align="center">
-        <Button colorScheme="blue" onClick={handleSubmit} >
+        <Button colorScheme={"teal"} onClick={handleSubmit} >
           Add Device
         </Button>
       </Stack>

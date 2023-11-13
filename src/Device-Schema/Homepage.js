@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { vendiaClient } from '../vendiaClient';
-import { Box, Input, Stack, Switch, FormControl, FormLabel, Text } from '@chakra-ui/react';
+import { Box, Input, Stack, Flex, Switch, FormControl, FormLabel, Text } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
@@ -93,72 +93,57 @@ export const Demo = () => {
 
   const renderDeviceBox = (device, index) => {
     return (
-      <Box key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
-        
+      <Box
+        key={index}
+        borderWidth="1px"
+        borderRadius="lg"
+        p={4}
+        width="200px"
+        textAlign="center"
+        m={3}
+        shadow="lg" // Adds medium shadow
+        borderColor="gray.200"
+        _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
+      >
         <Text fontSize="xl">{device.Name}</Text>
-        
         <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
-
         <Link to={`/device?deviceName=${device.Name}`}>
           <Button mt={3} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
         </Link>
-
       </Box>
     );
   };
 
   return (
-    <Stack align="center" spacing={5}>
-    {/*
-      <Text 
-        bgGradient='linear(to-l, #7928CA, #FF0080)'
-        bgClip='text'
-        fontSize='xl'
-        fontWeight='extrabold'> TEAM ZEPHYR DEVICE TEST TRACKER </Text>
-    */}
-      <form onSubmit={handleSubmit}>
-      <Stack>
-      
-        <Box>
-          <label>Add Device Name </label>
-          <Input 
-            type="text"
-            name="Device"
-            value={name}
-            onChange={handleNameChange}/>
-        </Box>
-      {/*      <FormControl display="flex" alignItems="center">
-      
-        <FormLabel htmlFor="status-switch" mb="0">
-          Active
-        </FormLabel>
-        
-          <Switch 
-            id="status-switch"
-            isChecked={status}
-            onChange={handleStatusChange}/>
-      
-      </FormControl>
-      */}
-
-      
-      <Stack align="center">
-        <Button colorScheme="blue" onClick={handleSubmit} >
-          Add Device
-        </Button>
+    <Flex direction="row" align="center" w="100%" p={5}>
+    {/* Container for Device Boxes */}
+    <Flex flex={1} justifyContent="center" p={5}>
+      <Stack direction="row" wrap="wrap" justifyContent="center">
+        {devices.map(renderDeviceBox)}
       </Stack>
+    </Flex>
 
-    </Stack>
-    
-    </form>
-    <Stack direction="row" wrap="wrap" justifyContent="center">
-      {devices.map(renderDeviceBox)}
-    </Stack>
-
-    <Button colorScheme="teal" mt={5}>View archived devices</Button>
-
-    </Stack>
-  );
+    {/* Container for the "Add Device" Form */}
+    <Flex flex={0.3} direction="column" align="flex-end" p={5}>
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={4} align="flex-end">
+          <Box>
+            <label>Add Device Name: </label>
+            <Input
+              type="text"
+              name="Device"
+              value={name}
+              onChange={handleNameChange}
+            />
+          </Box>
+          <Button colorScheme="blue" type="submit">
+            Add Device
+          </Button>
+        </Stack>
+      </form>
+    </Flex>
+  </Flex>
+);
 };
 
 export default Demo;

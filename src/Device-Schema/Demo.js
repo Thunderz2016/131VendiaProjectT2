@@ -65,13 +65,24 @@ export const Demo = () => {
 
   const renderDeviceBox = (device, index) => {
     return (
-      <Box key={index} borderWidth="1px" borderRadius="lg" p={4} width="200px" textAlign="center" m={3}>
+      <Box 
+        key={index} 
+        borderWidth="1px" 
+        borderRadius="lg" 
+        p={4} 
+        width="200px" 
+        textAlign="center" 
+        m={3}
+        boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)" // This line adds a shadow effect
+        _hover={{ boxShadow: "0 6px 12px 0 rgba(0,0,0,0.3)" }} // This line enhances the shadow on hover
+      >
         <Text fontSize="xl">{device.Name}</Text>
         <Text>Test Progress: {device.Status ? 'Active' : 'Inactive'}</Text>
         <Button mt={3} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
       </Box>
     );
   };
+  
 
   return (
     <Stack align="center" spacing={5}>

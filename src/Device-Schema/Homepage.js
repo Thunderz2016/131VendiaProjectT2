@@ -59,7 +59,7 @@ export const Demo = () => {
   useEffect(() => {
     // Fetch the list of devices in the device schema
     const fetchData = async () => {
-      const listDeviceResponse = await client.entities.device.list();
+      const listDeviceResponse = await client.entities.device.list({readMode: "NODE_LEDGERED"});
       setDevices(listDeviceResponse?.items);
       console.log(listDeviceResponse?.items);
 

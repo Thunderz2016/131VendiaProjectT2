@@ -30,7 +30,7 @@ export const DeleteDevice = () => {
   useEffect(() => {
     const listTests = async () => {
       try {
-        const listTestsResponse = await client.entities.test.list();
+        const listTestsResponse = await client.entities.test.list({readMode: "NODE_LEDGERED"});
         setTestList(listTestsResponse?.items);
   
         // Log the response to check if data is being fetched
@@ -46,7 +46,7 @@ export const DeleteDevice = () => {
   useEffect(() => {
     const listDevices = async () => {
       try {
-        const listDevicesResponse = await client.entities.device.list();
+        const listDevicesResponse = await client.entities.device.list({readMode: "NODE_LEDGERED"});
         setDevices(listDevicesResponse?.items);
   
         // Log the response to check if data is being fetched

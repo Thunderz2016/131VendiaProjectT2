@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React, { useState, useEffect } from "react";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 import { vendiaClient } from "../vendiaClient";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { ModuleRegistry } from '@ag-grid-community/core';
-import 'ag-grid-enterprise'; // Import this for enterprise features
-import { useLocation } from 'react-router-dom';
-
+import { ModuleRegistry } from "@ag-grid-community/core";
+import "ag-grid-enterprise"; // Import this for enterprise features
+import { useLocation } from "react-router-dom";
 
 import { db } from "../firebase"; // Assuming you've exported db from firebase.js
 import { doc, getDoc } from "firebase/firestore";
@@ -16,152 +15,203 @@ const { client } = vendiaClient();
 const auth = getAuth();
 
 export const AgGridTable = () => {
-    const [testList, setTestList] = useState([]);
-    const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
-    const [updatedBy, setUpdatedBy] = useState("");
+  const [testList, setTestList] = useState([]);
+  const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
+  const [updatedBy, setUpdatedBy] = useState("");
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const deviceNameFromUrl = queryParams.get('deviceName');
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const deviceNameFromUrl = queryParams.get("deviceName");
 
-    const isAdminEmail = async (email) => {
-        const userRef = doc(db, 'users', email); // Assuming you use email as the document ID
-        const userDoc = await getDoc(userRef);
-    
-        if (userDoc.exists() && userDoc.data().role === 'admin') {
-            return true;
-        }
-        return false;
-    };
+  const isAdminEmail = async (email) => {
+    const userRef = doc(db, "users", email); // Assuming you use email as the document ID
+    const userDoc = await getDoc(userRef);
 
-    const isValidUpdate = async (email, orgAssignment) => {
+    if (userDoc.exists() && userDoc.data().role === "admin") {
+      return true;
+    }
+    return false;
+  };
 
-        // If the email belongs to an admin, return true immediately
-        if (await isAdminEmail(email)) {
-            return true;
-        }
-        // If the email does not belong to an admin, check if the email is in the emailToOrgNameMap
-        return emailToOrgNameMap[email]?.includes(orgAssignment);
-    };
+  const isValidUpdate = async (email, orgAssignment) => {
+    // If the email belongs to an admin, return true immediately
+    if (await isAdminEmail(email)) {
+      return true;
+    }
+    // If the email does not belong to an admin, check if the email is in the emailToOrgNameMap
+    return emailToOrgNameMap[email]?.includes(orgAssignment);
+  };
 
-    // Fetching organization details to map emails to organization names
-    useEffect(() => {
-        const fetchOrgDetails = async () => {
-            const orgsResponse = await client.entities.orgs.list();
-            const map = {};
+  // Fetching organization details to map emails to organization names
+  useEffect(() => {
+    const fetchOrgDetails = async () => {
+      try {
+        const orgsResponse = await client.entities.device.list({readMode: "NODE_LEDGERED"});
 
-            orgsResponse?.items.forEach(org => {
-                if (!map[org.Email]) {
-                    map[org.Email] = [];
-                }
-                map[org.Email].push(org.Name);
-            });
+        const map = {};
 
-            setEmailToOrgNameMap(map);
-            console.log("Email to Org Name Map:", map);
-        };
-
-        const listTest = async () => {
-            const listTestResponse = await client.entities.test.list();
-            setTestList(listTestResponse?.items);
-        };
-
-        fetchOrgDetails();
-        listTest();
-    }, []);
-
-    // AgGridReact component props and methods
-    const columnDefs = [
-        { headerName: "Device", field: "Device", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true, sort: 'asc',},
-        { headerName: "TestID", field: "TestID", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "OrgAssignment", field: "OrgAssignment", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true },
-        { headerName: "TestName", field: "TestName", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "TestMethod", field: "TestMethod", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "Notes", field: "Notes", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "Completed", field: "Completed", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
-        { headerName: "UpdatedBy", field: "UpdatedBy", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true,  },
-    ];
-
-    const defaultColDef = {
-        flex: 1,
-        minWidth: 150,
-        sortable: true,
-        resizable: true,
-        floatingFilter: true,
-        menuTabs: ['filterMenuTab'],
-    };
-
-    const autoGroupColumnDef = {
-        minWidth: 200,
-    };    
-
-    const handleCellValueChanged = async (params) => {
-        const { colDef: { field }, 
-                newValue, 
-                data: rowData } = params;
-
-        rowData[field] = newValue;
-
-        await updateDevice(rowData);
-    };
-
-    const updateDevice = async (rowData) => {
-
-        // Authentication - get current user's email address
-        const currentUserEmail = auth.currentUser?.email;
-        console.log("currentUserEmail:", currentUserEmail);
-
-        // Check if the current user is allowed to update
-        if (!(await isValidUpdate(currentUserEmail, rowData.OrgAssignment))) {
-            console.log("Cannot Access: You are not allowed to update.");
-            alert("Invalid email or organization. You are not allowed to access this.");
-            return;
-        }
-
-        const updateDeviceResponse = await client.entities.test.update({
-            _id: rowData._id,
-            Device: rowData.Device,
-            TestID: parseInt(rowData.TestID),
-            OrgAssignment: rowData.OrgAssignment,
-            TestName: rowData.TestName,
-            TestMethod: rowData.TestMethod,
-            Notes: rowData.Notes,
-            Completed: Boolean(rowData.Completed),
-            UpdatedBy: rowData.UpdatedBy,
+        orgsResponse?.items.forEach((org) => {
+          if (!map[org.Email]) {
+            map[org.Email] = [];
+          }
+          map[org.Email].push(org.Name);
         });
 
-        console.log(updateDeviceResponse);
+        setEmailToOrgNameMap(map);
+        console.log("Email to Org Name Map:", map);
+      } catch (err) {
+        console.log("error at client.entities", err);
+      }
     };
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUpdatedBy(user.email);
-            }
-        });
-    
-        return () => unsubscribe();
-    }, []);
-    
-    return (
-        <div className="ag-theme-alpine" 
-            style={{ height: 400, width: '100%' }}>
+    const listTest = async () => {
+      const listTestResponse = await client.entities.test.list({readMode: "NODE_LEDGERED"});
+      setTestList(listTestResponse?.items);
+    };
 
-            <AgGridReact
+    fetchOrgDetails();
+    listTest();
+  }, []);
 
-                rowData={testList}
-                columnDefs={columnDefs}
-                defaultColDef={defaultColDef}
-                autoGroupColumnDef={autoGroupColumnDef} // Added this property
-                onCellValueChanged={handleCellValueChanged}
-                domLayout='autoHeight'
-                animateRows={true}
-                rowGroupPanelShow={'always'} // Show the row grouping panel always
+  // AgGridReact component props and methods
+  const columnDefs = [
+    {
+      headerName: "Device",
+      field: "Device",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+      sort: "asc",
+    },
+    {
+      headerName: "TestID",
+      field: "TestID",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "OrgAssignment",
+      field: "OrgAssignment",
+      filter: "agMultiColumnFilter",
+      editable: false,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "TestName",
+      field: "TestName",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "TestMethod",
+      field: "TestMethod",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "Notes",
+      field: "Notes",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "Completed",
+      field: "Completed",
+      filter: "agMultiColumnFilter",
+      editable: true,
+      enableRowGroup: true,
+    },
+    {
+      headerName: "UpdatedBy",
+      field: "UpdatedBy",
+      filter: "agMultiColumnFilter",
+      editable: false,
+      enableRowGroup: true,
+    },
+  ];
 
-            />
+  const defaultColDef = {
+    flex: 1,
+    minWidth: 150,
+    sortable: true,
+    resizable: true,
+    floatingFilter: true,
+    menuTabs: ["filterMenuTab"],
+  };
 
-        </div>
-    );
+  const autoGroupColumnDef = {
+    minWidth: 200,
+  };
+
+  const handleCellValueChanged = async (params) => {
+    const {
+      colDef: { field },
+      newValue,
+      data: rowData,
+    } = params;
+
+    rowData[field] = newValue;
+
+    await updateDevice(rowData);
+  };
+
+  const updateDevice = async (rowData) => {
+    // Authentication - get current user's email address
+    const currentUserEmail = auth.currentUser?.email;
+    console.log("currentUserEmail:", currentUserEmail);
+
+    // Check if the current user is allowed to update
+    if (!(await isValidUpdate(currentUserEmail, rowData.OrgAssignment))) {
+      console.log("Cannot Access: You are not allowed to update.");
+      alert(
+        "Invalid email or organization. You are not allowed to access this."
+      );
+      return;
+    }
+
+    const updateDeviceResponse = await client.entities.test.update({
+      _id: rowData._id,
+      Device: rowData.Device,
+      TestID: parseInt(rowData.TestID),
+      OrgAssignment: rowData.OrgAssignment,
+      TestName: rowData.TestName,
+      TestMethod: rowData.TestMethod,
+      Notes: rowData.Notes,
+      Completed: Boolean(rowData.Completed),
+      UpdatedBy: rowData.UpdatedBy,
+    });
+
+    console.log(updateDeviceResponse);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUpdatedBy(user.email);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
+      <AgGridReact
+        rowData={testList}
+        columnDefs={columnDefs}
+        defaultColDef={defaultColDef}
+        autoGroupColumnDef={autoGroupColumnDef} // Added this property
+        onCellValueChanged={handleCellValueChanged}
+        domLayout="autoHeight"
+        animateRows={true}
+        rowGroupPanelShow={"always"} // Show the row grouping panel always
+      />
+    </div>
+  );
 };
 
 export default AgGridTable;

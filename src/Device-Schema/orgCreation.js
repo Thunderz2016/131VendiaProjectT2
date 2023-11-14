@@ -19,7 +19,7 @@ export const OrgCreation = () => {
 
       const orgList = async () => {
   
-        const listOrgResponse = await client.entities.orgs.list();
+        const listOrgResponse = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
         console.log(listOrgResponse?.items);
         setOrgList(listOrgResponse?.items);
       };

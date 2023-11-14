@@ -28,7 +28,7 @@ export const UpdateDevice = () => {
   // Fetching allowed emails
   useEffect(() => {
     const fetchAllowedEmails = async () => {
-      const allowedEmailsResponse = await client.entities.orgs.list();
+      const allowedEmailsResponse = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
       setAllowedEmails(allowedEmailsResponse?.items.map(org => org.Email));
     };
     fetchAllowedEmails();
@@ -37,7 +37,7 @@ export const UpdateDevice = () => {
   // Fetching From Orgs Schema
   useEffect(() => {
     const fetchAllowedOrgNames = async () => {
-      const allowedOrgsResponse = await client.entities.orgs.list();
+      const allowedOrgsResponse = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
       setAllowedOrgNames(allowedOrgsResponse?.items.map(org => org.Name));
     };
     fetchAllowedOrgNames();
@@ -46,7 +46,7 @@ export const UpdateDevice = () => {
   // Fetching organization details to map emails to organization names
   useEffect(() => {
     const fetchOrgDetails = async () => {
-        const orgsResponse = await client.entities.orgs.list();
+        const orgsResponse = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
         const map = {};
 
         orgsResponse?.items.forEach(org => {
@@ -121,7 +121,7 @@ export const UpdateDevice = () => {
   // Fetch the list of tests when the component mounts
   useEffect(() => {
     const listTest = async () => {
-      const listTestResponse = await client.entities.test.list();
+      const listTestResponse = await client.entities.test.list({readMode: "NODE_LEDGERED"});
       setTestList(listTestResponse?.items);
     };
 

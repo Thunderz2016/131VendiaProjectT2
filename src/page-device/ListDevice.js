@@ -44,7 +44,7 @@ export const List = () => {
 
   useEffect(() => {
     const listTest = async () => {
-      const listTestResponse = await client.entities.test.list();
+      const listTestResponse = await client.entities.test.list({readMode: "NODE_LEDGERED"});
       console.log(listTestResponse?.items);
       
       // If searchText is empty, display all items. Otherwise, filter based on the searchText.
@@ -97,6 +97,7 @@ export const List = () => {
       Notes: notes,
       Completed: Boolean(completed),
       UpdatedBy: updatedBy,
+      readMode: "NODE_LEDGERED"
     });
     console.log(listDeviceResponse);
   };

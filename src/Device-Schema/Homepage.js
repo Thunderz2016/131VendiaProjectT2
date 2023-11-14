@@ -63,7 +63,7 @@ export const Demo = () => {
       setDevices(listDeviceResponse?.items);
       console.log(listDeviceResponse?.items);
 
-      const listTestResponse = await client.entities.test.list();
+      const listTestResponse = await client.entities.test.list({readMode: "NODE_LEDGERED"});
       const deviceCompletionPercentages = {};
       console.log(listTestResponse?.items);
 
@@ -104,7 +104,7 @@ export const Demo = () => {
   useEffect(() => {
     // Replace this with actual API call to fetch org assignments
     const fetchOrgAssignments = async () => {
-      const response = await client.entities.orgs.list();
+      const response = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
       console.log(response.items); 
       setOrgAssignments(response.items);
     };

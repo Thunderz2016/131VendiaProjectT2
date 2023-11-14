@@ -71,7 +71,7 @@ export const Device = () => {
 
   useEffect(() => {
     const listOrgs = async () => {
-      const OrgsResponse = await client.entities.orgs.list();
+      const OrgsResponse = await client.entities.orgs.list({readMode: "NODE_LEDGERED"});
       setTestList(OrgsResponse?.items);
     };
 

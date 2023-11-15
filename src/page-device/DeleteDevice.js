@@ -8,7 +8,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUserRole, currentUserEmail } from "../firebase";
 
-
 const { client } = vendiaClient();
 
 export const DeleteDevice = () => {
@@ -30,7 +29,7 @@ export const DeleteDevice = () => {
   useEffect(() => {
     const listTests = async () => {
       try {
-        const listTestsResponse = await client.entities.test.list();
+        const listTestsResponse = await client.entities.test.list({readMode: 'NODE_LEDGERED'});
         setTestList(listTestsResponse?.items);
   
         // Log the response to check if data is being fetched
@@ -46,7 +45,7 @@ export const DeleteDevice = () => {
   useEffect(() => {
     const listDevices = async () => {
       try {
-        const listDevicesResponse = await client.entities.device.list();
+        const listDevicesResponse = await client.entities.device.list({readMode: 'NODE_LEDGERED'});
         setDevices(listDevicesResponse?.items);
   
         // Log the response to check if data is being fetched

@@ -11,8 +11,6 @@ import { auth } from "../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { StarIcon, AddIcon,CalendarIcon,DeleteIcon, HamburgerIcon } from "@chakra-ui/icons";
 
-//import { Navigate } from "react-router-dom";
-
 const Layout = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -84,16 +82,15 @@ const Layout = () => {
             </Link>
           </Tab>
 */}
+          <Tab>
+            <CalendarIcon paddingRight={1} />
+            <Link to="/AgGridTable">AgGridTable</Link>
+          </Tab>
 
           <Tab>
             <DeleteIcon paddingRight={1} />
             <Link to="/DeleteDevice">Delete</Link>
           </Tab>
-
-        <Tab>
-            <CalendarIcon paddingRight={1} />
-            <Link to="/AgGridTable">AgGridTable</Link>
-        </Tab>
 
         </TabList>
          
@@ -103,7 +100,7 @@ const Layout = () => {
 
     <Spacer/>
 
-  {/* Search bar*/}
+  {/* Search bar
       <HStack  
       w='80px'
       mr={2}
@@ -117,6 +114,7 @@ const Layout = () => {
             placeholder="Search" 
           />
       </HStack>
+  */}
 
  {/*Profile Button*/}
  <Menu >
@@ -201,11 +199,11 @@ const Layout = () => {
         <MenuItem icon={<CalendarIcon />} as='a' href='/AgGridTable'>
           List/Update
         </MenuItem>
-        
+
         <MenuItem icon={<DeleteIcon />} as='a' href='/DeleteDevice'>
           Delete
         </MenuItem>
-
+        
       </MenuList>
     </Menu>
     </Hide> 

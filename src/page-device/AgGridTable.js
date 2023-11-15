@@ -8,7 +8,6 @@ import { ModuleRegistry } from '@ag-grid-community/core';
 import 'ag-grid-enterprise'; // Import this for enterprise features
 import { useLocation } from 'react-router-dom';
 
-
 import { db } from "../firebase"; // Assuming you've exported db from firebase.js
 import { doc, getDoc } from "firebase/firestore";
 
@@ -47,7 +46,7 @@ export const AgGridTable = () => {
     // Fetching organization details to map emails to organization names
     useEffect(() => {
         const fetchOrgDetails = async () => {
-            const orgsResponse = await client.entities.orgs.list();
+            const orgsResponse = await client.entities.orgs.list({readMode: 'NODE_LEDGERED'});
             const map = {};
 
             orgsResponse?.items.forEach(org => {
@@ -62,13 +61,20 @@ export const AgGridTable = () => {
         };
 
         const listTest = async () => {
-            const listTestResponse = await client.entities.test.list();
-            setTestList(listTestResponse?.items);
+            const listTestResponse = await client.entities.test.list({readMode: 'NODE_LEDGERED'});
+            let filteredTests = listTestResponse?.items;
+
+            // Filter based on deviceNameFromUrl if it exists
+            if (deviceNameFromUrl) {
+                filteredTests = filteredTests.filter(test => test.Device === deviceNameFromUrl);
+            }
+
+            setTestList(filteredTests);
         };
 
         fetchOrgDetails();
         listTest();
-    }, []);
+    }, [deviceNameFromUrl]);
 
     // AgGridReact component props and methods
     const columnDefs = [

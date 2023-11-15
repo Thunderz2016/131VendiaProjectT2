@@ -16,6 +16,10 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { getUserRole, currentUserEmail } from "../firebase";
+import { useNavigate } from 'react-router-dom';
 
 const { client } = vendiaClient();
 
@@ -24,6 +28,8 @@ export const Demo = () => {
   // Notificaiton in Modal
   const toast = useToast();
 
+  const navigate = useNavigate();
+
   // States for adding a new/listing device
   const [name, setName] = useState();
   const [status, setStatus] = useState(false);
@@ -31,6 +37,8 @@ export const Demo = () => {
   const [percentage, setPercentage] = useState({});
  
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [userRole, setUserRole] = useState(null); // State to store user role
 
   const [deviceId, setDeviceId] = useState(""); // State for Device ID
 
@@ -57,13 +65,26 @@ export const Demo = () => {
 
 
   useEffect(() => {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        // Fetch the user role
+        getUserRole(user.email).then(role => {
+          setUserRole(role); // Set the user role
+        });
+      } else {
+        // Handle user not signed in or other scenarios
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     // Fetch the list of devices in the device schema
     const fetchData = async () => {
-      const listDeviceResponse = await client.entities.device.list();
+      const listDeviceResponse = await client.entities.device.list({readMode: 'NODE_LEDGERED'});
       setDevices(listDeviceResponse?.items);
       console.log(listDeviceResponse?.items);
 
-      const listTestResponse = await client.entities.test.list();
+      const listTestResponse = await client.entities.test.list({readMode: 'NODE_LEDGERED'});
       const deviceCompletionPercentages = {};
       console.log(listTestResponse?.items);
 
@@ -104,7 +125,7 @@ export const Demo = () => {
   useEffect(() => {
     // Replace this with actual API call to fetch org assignments
     const fetchOrgAssignments = async () => {
-      const response = await client.entities.orgs.list();
+      const response = await client.entities.orgs.list({readMode: 'NODE_LEDGERED'});
       console.log(response.items); 
       setOrgAssignments(response.items);
     };
@@ -173,10 +194,12 @@ export const Demo = () => {
     addDevice();
   }
 
-  // Handles link click 
-  const handleLinkClick = (deviceId) => {
-    console.log(`Device ID: ${deviceId} was clicked`);
+  // Handles link click
+  const handleLinkClick = (deviceName) => {
+  // Navigate to AgGridTable page with the deviceName as a query parameter
+  navigate(`/agGridTable?deviceName=${deviceName}`);
   };
+
 
   // Handle the submission of the test form
   const handleTestSubmit = async (event) => {
@@ -201,6 +224,16 @@ export const Demo = () => {
     }
   };
 
+  const renderAddTestButton = () => {
+    // Only show the button if the user is an admin
+    if (userRole === 'admin') {
+      return (
+        <Button size='xs' mt={4} onClick={onOpen}>Add Test</Button>
+      );
+    }
+    return null;
+  };
+
   const renderDeviceBox = (device, index) => {
     return (
       <Stack align="center" spacing={5}>
@@ -219,16 +252,14 @@ export const Demo = () => {
 
         <Text fontSize="xl">{device.Name}</Text>
         <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
-        
+
         <Progress value={percentage[device.Name]}/> 
       
         <ButtonGroup variant='solid' spacing='2' colorScheme='teal'>
 
-        <Link to={`/AgGridTable?deviceName=${device.Name}`}>
-          <Button size='xs' mt={4} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
-        </Link>
-
-        <Button size='xs' mt={4} onClick={onOpen}>Add Test</Button>
+        <Button size='xs' mt={4} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
+        
+        {renderAddTestButton()}
 
         </ButtonGroup>
         
@@ -342,7 +373,7 @@ export const Demo = () => {
             </form>
             </ModalContent>
           </Modal>
-        </>
+      </>
 
       </Stack>
       </Stack>
@@ -357,7 +388,9 @@ export const Demo = () => {
       
         <Box align="center">
           <label >Add Device Name </label>
-          <Input 
+          <Input
+            focusBorderColor='green'
+            variant='filled'
             type="text"
             name="Device"
             value={name}

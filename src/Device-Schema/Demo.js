@@ -17,7 +17,7 @@ export const Demo = () => {
 
   useEffect(() => {
     const listTest = async () => {
-      const listTestResponse = await client.entities.device.list();
+      const listTestResponse = await client.entities.device.list({readMode: 'NODE_LEDGERED'});
       console.log(listTestResponse?.items);
       setTestList(listTestResponse?.items);
     };

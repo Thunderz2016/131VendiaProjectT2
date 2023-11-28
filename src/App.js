@@ -13,6 +13,7 @@ import NavbarLayout from './Navbar/NavbarLayout';
 import Homepage from './Device-Schema/Homepage';
 import AgGridTable from './page-device/AgGridTable';
 import Profile from './Device-Schema/Profile';
+import UniversalSearch from './components/Search';
 
 function App() {
   // Initialize the user state
@@ -66,6 +67,7 @@ function App() {
         <Route path="/OrgCreation" element={<OrgCreation />} />
         <Route path="/AgGridTable" element={<AgGridTable />} />
         <Route path="/Profile" element={<Profile />} />
+        {/* <Route path="/Search" element={<UniversalSearch />} /> */}
       </Route>
 
       )}

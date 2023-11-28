@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Homepage from "../Device-Schema/Homepage";
 import Delete from "../page-device/DeleteDevice";
-import ListDevice from "../page-device/ListDevice";
+import AgGridTable from "../page-device/AgGridTable";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@chakra-ui/react";
 
@@ -13,7 +13,7 @@ const UniversalSearch = () => {
     const allPages = [
       { pageName: "Homepage", content: Homepage },
       { pageName: "DeleteDevice", content: Delete },
-      { pageName: "ListDevice", content: ListDevice },
+      { pageName: "AgGridTable", content: AgGridTable },
     ];
 
     if (searchTerm.trim() === "") {

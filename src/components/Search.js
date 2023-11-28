@@ -24,7 +24,6 @@ const UniversalSearch = () => {
     const matchingResults = allPages
       .map((page) => {
         const lowerCaseContent = page.content.toString().toLowerCase();
-        console.log(lowerCaseContent)
         const foundIndex = lowerCaseContent.indexOf(searchTerm.toLowerCase());
         if (foundIndex !== -1) {
           const contentWithSource = lowerCaseContent.slice(

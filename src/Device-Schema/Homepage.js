@@ -287,7 +287,7 @@ export const Demo = () => {
         textAlign="center"
         m={3}
         shadow="lg" // Adds large shadow
-        borderColor="gray.200"
+        borderColor="gray.400"
         _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
         >
 

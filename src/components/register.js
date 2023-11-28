@@ -12,7 +12,7 @@ import {
   Heading,
   Input,
   Link,
-  Stack, Checkbox,
+  Stack, Checkbox, useColorModeValue,
 } from "@chakra-ui/react";
 import { InputGroup } from "@chakra-ui/react";
 import { InputRightElement } from "@chakra-ui/react";
@@ -55,6 +55,8 @@ function Register() {
   });
 };
 
+const bc=useColorModeValue('black','white');
+
   return (
     <Stack
     spacing={6}
@@ -64,7 +66,9 @@ function Register() {
     p="11"
     borderWidth="1px"
     borderRadius="lg"
-    boxShadow="md">
+    boxShadow="md"
+    borderColor={bc}
+    >
       
       <Heading as="h2" size="lg" textAlign="center">
         Register
@@ -72,7 +76,7 @@ function Register() {
 
       <FormControl mb={4}>
         <FormLabel>Are you an admin?</FormLabel>
-        <Checkbox value={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
+        <Checkbox isInvalid value={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
           Admin
         </Checkbox>
       </FormControl>

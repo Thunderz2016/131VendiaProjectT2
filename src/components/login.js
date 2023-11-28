@@ -13,6 +13,7 @@ import {
   Input,
   Link,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { InputGroup } from "@chakra-ui/react";
 import { InputRightElement } from "@chakra-ui/react";
@@ -49,7 +50,8 @@ function Login() {
   };
 
 
-  
+  const bc=useColorModeValue('black','white');
+
   return (
     
   <>
@@ -71,6 +73,7 @@ function Login() {
       borderWidth="1px"
       borderRadius="lg"
       boxShadow="md"
+      borderColor={bc}
     >
       <Heading as="h2" size="lg" textAlign="center">
         Login

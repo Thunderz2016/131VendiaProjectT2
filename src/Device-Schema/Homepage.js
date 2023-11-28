@@ -38,6 +38,8 @@ export const Demo = () => {
  
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [testId, setTestId] = useState("");
+
   const [userRole, setUserRole] = useState(null); // State to store user role
 
   const [deviceId, setDeviceId] = useState(""); // State for Device ID
@@ -55,14 +57,12 @@ export const Demo = () => {
   const [orgAssignments, setOrgAssignments] = useState([]);
   const [updatedByEmails, setUpdatedByEmails] = useState([]);
 
-
   const [testList, setTestList] = useState([]);
 
   const location = useLocation(); // Get the current location object
   const searchParams = new URLSearchParams(location.search);
   const textParam = searchParams.get("text"); // Get the 'text' parameter from the URL
   const deviceNameFromUrl = searchParams.get("deviceName");
-
 
   useEffect(() => {
     onAuthStateChanged(auth, user => {
@@ -132,6 +132,22 @@ export const Demo = () => {
   
     fetchOrgAssignments();
   }, []);
+
+  useEffect(() => {
+    const listTests = async () => {
+      try {
+        const listTestsResponse = await client.entities.test.list({readMode: 'NODE_LEDGERED'});
+        setTestList(listTestsResponse?.items);
+  
+        // Log the response to check if data is being fetched
+        console.log("List of tests:", listTestsResponse?.items);
+      } catch (error) {
+        console.error("Error fetching devices:", error);
+      }
+    };
+  
+    listTests();
+  }, []);
   
   // Function to update UpdatedBy based on OrgAssignment
   const handleOrgAssignmentChange = (selectedOrg) => {
@@ -178,6 +194,19 @@ export const Demo = () => {
     }
   };
 
+  const deleteDevice = async (deviceId) => {
+    try {
+      // Delete the device based on the deviceId
+      await client.entities.device.remove(deviceId);
+      // Redirect to the device list page or any other desired page
+      // navigate("/device");
+      console.log("Success deleted Device")
+    } catch (error) {
+      console.error("Error deleting device:", error);
+    }
+  };
+  
+
   // Handles name change
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -199,7 +228,6 @@ export const Demo = () => {
   // Navigate to AgGridTable page with the deviceName as a query parameter
   navigate(`/agGridTable?deviceName=${deviceName}`);
   };
-
 
   // Handle the submission of the test form
   const handleTestSubmit = async (event) => {
@@ -234,6 +262,19 @@ export const Demo = () => {
     return null;
   };
 
+  const renderDeleteButton = (deviceId) => {
+    return (
+      <Button
+        colorScheme="red"
+        size="xs"
+        onClick={() => deleteDevice(deviceId)} // Call the deleteDevice function here
+      >
+        Delete
+      </Button>
+    );
+  };
+  
+
   const renderDeviceBox = (device, index) => {
     return (
       <Stack align="center" spacing={5}>
@@ -260,6 +301,8 @@ export const Demo = () => {
         <Button size='xs' mt={4} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
         
         {renderAddTestButton()}
+
+        {renderDeleteButton(device._id)}
 
         </ButtonGroup>
         
@@ -376,6 +419,7 @@ export const Demo = () => {
       </>
 
       </Stack>
+      
       </Stack>
     );
   };

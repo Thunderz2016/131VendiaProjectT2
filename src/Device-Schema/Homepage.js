@@ -87,6 +87,7 @@ export const Demo = () => {
   }, []);
 
   useEffect(() => {
+    console.log("client info: ", client);
     // Fetch the list of devices in the device schema
     const fetchData = async () => {
       const listDeviceResponse = await client.entities.device.list({
@@ -382,20 +383,14 @@ export const Demo = () => {
                         textAlign="center"
                       />
 
-                      <Select
+                      <Input
                         placeholder="UpdatedBy"
-                        value={updatedBy}
+                        value={auth.currentUser.email}
                         onChange={(e) => setUpdatedBy(e.target.value)}
                         size="md"
                         width="250px"
                         textAlign="center"
-                      >
-                        {orgAssignments.map((org, index) => (
-                          <option key={index} value={org.Email}>
-                            {org.Email}
-                          </option>
-                        ))}
-                      </Select>
+                      />
 
                       <Button colorScheme="blue" type="submit">
                         Add Test

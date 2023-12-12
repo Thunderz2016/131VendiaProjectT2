@@ -32,7 +32,7 @@ export const DeleteDevice = () => {
           readMode: "NODE_LEDGERED",
         });
         setTestList(listTestsResponse?.items);
-
+        console.log("testList: ", listTestsResponse?.items);
         // Log the response to check if data is being fetched
         console.log("List of tests:", listTestsResponse?.items);
       } catch (error) {
@@ -158,7 +158,7 @@ export const DeleteDevice = () => {
           >
             {testList.map((test, index) => (
               <option key={test._id} value={test._id}>
-                {test.Device} - {test.OrgAssignment}
+                {`TEST: ${test.TestName}`} - {`DEVICE: ${test.Device}`}
               </option>
             ))}
           </Select>

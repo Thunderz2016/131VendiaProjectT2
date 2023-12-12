@@ -7,6 +7,7 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { ModuleRegistry } from '@ag-grid-community/core';
 import 'ag-grid-enterprise'; // Import this for enterprise features
 import { useLocation } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 import { db } from "../firebase"; // Assuming you've exported db from firebase.js
 import { doc, getDoc } from "firebase/firestore";
@@ -15,6 +16,8 @@ const { client } = vendiaClient();
 const auth = getAuth();
 
 export const AgGridTable = () => {
+    const [deviceId, setDeviceId] = useState(""); // Add deviceId state for updating/removing
+    const [testId, setTestId] = useState("");
     const [testList, setTestList] = useState([]);
     const [emailToOrgNameMap, setEmailToOrgNameMap] = useState({});
     const [updatedBy, setUpdatedBy] = useState("");
@@ -22,6 +25,10 @@ export const AgGridTable = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const deviceNameFromUrl = queryParams.get('deviceName');
+
+    const [userRole, setUserRole] = useState(null); // State to store user role
+    const [gridApi, setGridApi] = useState(null);
+
 
     const isAdminEmail = async (email) => {
         const userRef = doc(db, 'users', email); // Assuming you use email as the document ID
@@ -86,6 +93,7 @@ export const AgGridTable = () => {
         { headerName: "Notes", field: "Notes", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "Completed", field: "Completed", filter: 'agMultiColumnFilter', editable: true, enableRowGroup: true },
         { headerName: "UpdatedBy", field: "UpdatedBy", filter: 'agMultiColumnFilter', editable: false, enableRowGroup: true,  },
+        { headerName: "Delete All", checkboxSelection: true, width: 50 }
     ];
 
     const defaultColDef = {
@@ -109,6 +117,12 @@ export const AgGridTable = () => {
         rowData[field] = newValue;
 
         await updateDevice(rowData);
+    };
+
+    const onRemoveSelected = () => {
+        const selectedData = gridApi.getSelectedRows();
+        const res = gridApi.applyTransaction({ remove: selectedData });
+        console.log('Removed Row Node', res.remove);
     };
 
     const updateDevice = async (rowData) => {
@@ -139,6 +153,38 @@ export const AgGridTable = () => {
         console.log(updateDeviceResponse);
     };
 
+    const renderDeleteButton = (testId) => {
+        if (userRole === 'admin') {
+          return (
+            <Button
+              colorScheme="red"
+              size="xs"
+              onClick={() => deleteTest(testId)} // Call the deleteDevice function here
+            >
+              Delete
+            </Button>
+          );
+        }
+        return null;
+    };
+
+    const deleteTest = async () => {
+        try {
+            if (!testId) {
+                console.error("Test ID is empty or undefined.");
+                return;
+            }
+          // Delete the device based on the deviceId
+          await client.entities.test.remove(testId);
+
+          // Redirect to the device list page or any other desired page
+          // navigate("/device");
+          console.log("Successfully deleted device");
+        } catch (error) {
+          console.error("Error deleting device:", error);
+        }
+    };
+      
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -152,6 +198,15 @@ export const AgGridTable = () => {
     return (
         <div className="ag-theme-alpine" 
             style={{ height: 400, width: '100%' }}>
+        
+        <Button 
+            colorScheme="red"
+            size="xs"
+            onClick={() => deleteTest(testId)}>
+                
+        Delete
+
+        </Button>
 
             <AgGridReact
 
@@ -163,6 +218,7 @@ export const AgGridTable = () => {
                 domLayout='autoHeight'
                 animateRows={true}
                 rowGroupPanelShow={'always'} // Show the row grouping panel always
+                onGridReady={params => setGridApi(params.api)}
 
             />
 

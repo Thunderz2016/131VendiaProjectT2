@@ -206,7 +206,6 @@ export const Demo = () => {
     }
   };
   
-
   // Handles name change
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -263,7 +262,8 @@ export const Demo = () => {
   };
 
   const renderDeleteButton = (deviceId) => {
-    return (
+    if (userRole === 'admin') {
+      return (
       <Button
         colorScheme="red"
         size="xs"
@@ -273,7 +273,8 @@ export const Demo = () => {
       </Button>
     );
   };
-  
+    return null;
+  };
 
   const renderDeviceBox = (device, index) => {
     return (

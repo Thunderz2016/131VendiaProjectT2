@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { vendiaClient } from '../vendiaClient';
-import { Box, Input, Stack, Switch, FormControl, FormLabel, Text, Select, useToast, Flex } from '@chakra-ui/react';
-import { Button, ButtonGroup } from '@chakra-ui/react';
-import { useColorModeValue } from '@chakra-ui/react';
-import { Progress } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { vendiaClient } from "../vendiaClient";
+import {
+  Box,
+  Input,
+  Stack,
+  Switch,
+  FormControl,
+  FormLabel,
+  Text,
+  Select,
+  useToast,
+  Flex,
+} from "@chakra-ui/react";
+import { Button, ButtonGroup } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
+import { Progress } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -14,17 +25,16 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUserRole, currentUserEmail } from "../firebase";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const { client } = vendiaClient();
 
 export const Demo = () => {
-
   // Notificaiton in Modal
   const toast = useToast();
 
@@ -35,7 +45,7 @@ export const Demo = () => {
   const [status, setStatus] = useState(false);
   const [devices, setDevices] = useState([]);
   const [percentage, setPercentage] = useState({});
- 
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [testId, setTestId] = useState("");
@@ -56,6 +66,7 @@ export const Demo = () => {
 
   const [orgAssignments, setOrgAssignments] = useState([]);
   const [updatedByEmails, setUpdatedByEmails] = useState([]);
+  const [homepage, setHomepage] = useState([]);
 
   const [testList, setTestList] = useState([]);
 
@@ -65,10 +76,10 @@ export const Demo = () => {
   const deviceNameFromUrl = searchParams.get("deviceName");
 
   useEffect(() => {
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         // Fetch the user role
-        getUserRole(user.email).then(role => {
+        getUserRole(user.email).then((role) => {
           setUserRole(role); // Set the user role
         });
       } else {
@@ -78,42 +89,59 @@ export const Demo = () => {
   }, []);
 
   useEffect(() => {
+    console.log("client info: ", client);
     // Fetch the list of devices in the device schema
     const fetchData = async () => {
-      const listDeviceResponse = await client.entities.device.list({readMode: 'NODE_LEDGERED'});
+      const listDeviceResponse = await client.entities.device.list({
+        readMode: "NODE_LEDGERED",
+      });
       setDevices(listDeviceResponse?.items);
       console.log(listDeviceResponse?.items);
 
-      const listTestResponse = await client.entities.test.list({readMode: 'NODE_LEDGERED'});
+      const listTestResponse = await client.entities.test.list({
+        readMode: "NODE_LEDGERED",
+      });
       const deviceCompletionPercentages = {};
       console.log(listTestResponse?.items);
 
       // Get the list of unique devices names e.g. ["Device 1", "Device 4"]
-      const uniqueDevices = [...new Set(listTestResponse?.items.map(test => test.Device))];
+      const uniqueDevices = [
+        ...new Set(listTestResponse?.items.map((test) => test.Device)),
+      ];
 
       // For each device, calculate the percentage of tests completed
-      uniqueDevices.forEach(async deviceName => {
+      uniqueDevices.forEach(async (deviceName) => {
         // Get the tests for the current device
-        const testsForDevice = listTestResponse?.items.filter(test => test.Device === deviceName);
+        const testsForDevice = listTestResponse?.items.filter(
+          (test) => test.Device === deviceName
+        );
         // Get the total number of tests for the current device
         const totalTests = testsForDevice.length;
-        const completedTests = testsForDevice.filter(test => test.Completed).length;
+        const completedTests = testsForDevice.filter(
+          (test) => test.Completed
+        ).length;
 
         // Calculate the percentage of tests completed
-        const completionPercentage = Math.round((completedTests / totalTests) * 100);
+        const completionPercentage = Math.round(
+          (completedTests / totalTests) * 100
+        );
         // Add the percentage to the deviceCompletionPercentages object
         deviceCompletionPercentages[deviceName] = completionPercentage;
-        console.log(`${deviceName} has ${completionPercentage}% tests completed`);
+        console.log(
+          `${deviceName} has ${completionPercentage}% tests completed`
+        );
 
         // Update the Percentage field in the device schema
-        const deviceToUpdate = listDeviceResponse?.items.find(device => device.Name === deviceName);
+        const deviceToUpdate = listDeviceResponse?.items.find(
+          (device) => device.Name === deviceName
+        );
         if (deviceToUpdate) {
-            await client.entities.device.update({
-                _id: deviceToUpdate._id,
-                Percentage: completionPercentage
-            });
+          await client.entities.device.update({
+            _id: deviceToUpdate._id,
+            Percentage: completionPercentage,
+          });
         }
-    });
+      });
 
       setPercentage(deviceCompletionPercentages);
       console.log(deviceCompletionPercentages);
@@ -125,11 +153,13 @@ export const Demo = () => {
   useEffect(() => {
     // Replace this with actual API call to fetch org assignments
     const fetchOrgAssignments = async () => {
-      const response = await client.entities.orgs.list({readMode: 'NODE_LEDGERED'});
-      console.log(response.items); 
+      const response = await client.entities.orgs.list({
+        readMode: "NODE_LEDGERED",
+      });
+      console.log(response.items);
       setOrgAssignments(response.items);
     };
-  
+
     fetchOrgAssignments();
   }, []);
 
@@ -153,7 +183,9 @@ export const Demo = () => {
   const handleOrgAssignmentChange = (selectedOrg) => {
     setOrgAssignment(selectedOrg);
     // Logic to filter and set updated by emails based on selected org
-    const selectedOrgData = orgAssignments.find(org => org.Name === selectedOrg);
+    const selectedOrgData = orgAssignments.find(
+      (org) => org.Name === selectedOrg
+    );
 
     if (selectedOrgData && selectedOrgData.Emails) {
       setUpdatedByEmails(selectedOrgData.Emails);
@@ -171,7 +203,7 @@ export const Demo = () => {
     });
     console.log(addDeviceResponse);
     setDevices([...devices, { Name: name, Status: status }]); // Add the new device to the local list
-    setName('');  // Reset the input field
+    setName(""); // Reset the input field
   };
 
   // Function to add a test to the database
@@ -209,23 +241,23 @@ export const Demo = () => {
   // Handles name change
   const handleNameChange = (event) => {
     setName(event.target.value);
-  }
+  };
 
   // Handles status change
   const handleStatusChange = (event) => {
     setStatus(event.target.checked);
-  }
+  };
 
   // Handles form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     addDevice();
-  }
+  };
 
   // Handles link click
   const handleLinkClick = (deviceName) => {
-  // Navigate to AgGridTable page with the deviceName as a query parameter
-  navigate(`/agGridTable?deviceName=${deviceName}`);
+    // Navigate to AgGridTable page with the deviceName as a query parameter
+    navigate(`/agGridTable?deviceName=${deviceName}`);
   };
 
   // Handle the submission of the test form
@@ -253,9 +285,11 @@ export const Demo = () => {
 
   const renderAddTestButton = () => {
     // Only show the button if the user is an admin
-    if (userRole === 'admin') {
+    if (userRole === "admin") {
       return (
-        <Button size='xs' mt={4} onClick={onOpen}>Add Test</Button>
+        <Button size="xs" mt={4} onClick={onOpen}>
+          Add Test
+        </Button>
       );
     }
     return null;
@@ -291,17 +325,46 @@ export const Demo = () => {
         borderColor="gray.400"
         _hover={{ transform: 'scale(1.20)', shadow: 'lg' }} // Scales up and increases shadow on hover for a 3D effect
         >
+          <Text fontSize="xl">{device.Name}</Text>
+          <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
 
-        <Text fontSize="xl">{device.Name}</Text>
-        <Text>Test Progress: {percentage[device.Name] || 0}%</Text>
+          <Progress value={percentage[device.Name]} />
 
-        <Progress value={percentage[device.Name]}/> 
-      
-        <ButtonGroup variant='solid' spacing='2' colorScheme='teal'>
+          <ButtonGroup variant="solid" spacing="2" colorScheme="teal">
+            <Button
+              size="xs"
+              mt={4}
+              onClick={() => handleLinkClick(device.Name)}
+            >
+              View tests
+            </Button>
 
-        <Button size='xs' mt={4} onClick={() => handleLinkClick(device.Name)}>View tests</Button>
-        
-        {renderAddTestButton()}
+            {renderAddTestButton()}
+          </ButtonGroup>
+        </Box>
+        <Stack align="center">
+          <>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader align="center">Add Test For Device</ModalHeader>
+                <ModalCloseButton />
+                <form onSubmit={handleTestSubmit}>
+                  <ModalBody>
+                    <Stack
+                      spacing={4}
+                      direction="column"
+                      align="center"
+                      justify="center"
+                    >
+                      <Input
+                        placeholder="Device"
+                        value={device.Device}
+                        onChange={(e) => setDevice(e.target.value)}
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      />
 
         {renderDeleteButton(device._id)}
 
@@ -327,14 +390,22 @@ export const Demo = () => {
                   textAlign="center"
                 />
 
-                <Input
-                  placeholder="TestID[Integer]"
-                  value={testID}
-                  onChange={(e) => setTestID(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center"
-                />
+                      <Select
+                        placeholder="OrgAssignment"
+                        value={orgAssignment}
+                        onChange={(e) =>
+                          handleOrgAssignmentChange(e.target.value)
+                        }
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      >
+                        {orgAssignments.map((org, index) => (
+                          <option key={index} value={org.Name}>
+                            {org.Name}
+                          </option>
+                        ))}
+                      </Select>
 
                 <Select
                   placeholder="OrgAssignment" 
@@ -344,81 +415,57 @@ export const Demo = () => {
                   width="250px"
                   textAlign="center">
 
-                  {orgAssignments.map((org, index) => (
-                    <option key={index} value={org.Name}>{org.Name}</option>
-                  ))}
+                      <Input
+                        placeholder="TestMethod"
+                        value={testMethod}
+                        onChange={(e) => setTestMethod(e.target.value)}
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      />
 
-                </Select>
+                      <Input
+                        placeholder="Notes"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      />
 
-                <Input
-                  placeholder="TestName"
-                  value={testName}
-                  onChange={(e) => setTestName(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center"
-                />
+                      <Input
+                        placeholder="Completed[Boolean]"
+                        value={completed}
+                        onChange={(e) => setCompleted(e.target.value)}
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      />
 
-                <Input
-                  placeholder="TestMethod"
-                  value={testMethod}
-                  onChange={(e) => setTestMethod(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center"
-                />
+                      <Input
+                        placeholder="UpdatedBy"
+                        value={auth.currentUser.email}
+                        onChange={(e) => setUpdatedBy(e.target.value)}
+                        size="md"
+                        width="250px"
+                        textAlign="center"
+                      />
 
-                <Input
-                  placeholder="Notes"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center"
-                />
+                      <Button colorScheme="blue" type="submit">
+                        Add Test
+                      </Button>
+                      <Button colorScheme="gray" onClick={onClose}>
+                        Cancel
+                      </Button>
+                    </Stack>
+                  </ModalBody>
 
-                <Input
-                  placeholder="Completed[Boolean]"
-                  value={completed}
-                  onChange={(e) => setCompleted(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center"
-                />
-
-                <Select 
-                  placeholder="UpdatedBy" 
-                  value={updatedBy} 
-                  onChange={(e) => setUpdatedBy(e.target.value)}
-                  size="md"
-                  width="250px"
-                  textAlign="center">
-
-                  {orgAssignments.map((org, index) => (
-                    <option key={index} value={org.Email}>{org.Email}</option>
-                  ))}
-
-                </Select>
-
-                <Button colorScheme="blue" type="submit">
-                  Add Test
-                </Button>
-                <Button colorScheme="gray" onClick={onClose}>
-                  Cancel
-                </Button>
-
-              </Stack>
-               
-            </ModalBody>
-    
-            <ModalFooter>
-              
-            </ModalFooter>
-            </form>
-            </ModalContent>
-          </Modal>
-      </>
-
+                  <ModalFooter></ModalFooter>
+                </form>
+              </ModalContent>
+            </Modal>
+          </>
+        </Stack>
       </Stack>
       
       </Stack>
@@ -427,37 +474,35 @@ export const Demo = () => {
 
   return (
     <Stack align="center" spacing={5}>
-
       <form onSubmit={handleSubmit}>
-      <Stack>
-      
-        <Box align="center">
-          <label >Add Device Name </label>
-          <Input
-            focusBorderColor='green'
-            variant='filled'
-            type="text"
-            name="Device"
-            value={name}
-            onChange={handleNameChange}/>
-        </Box>
-      
-      <Stack align="center">
-        <Button colorScheme={"teal"} onClick={handleSubmit} >
-          Add Device
-        </Button>
+        <Stack>
+          <Box align="center">
+            <label>Add Device Name </label>
+            <Input
+              focusBorderColor="green"
+              variant="filled"
+              type="text"
+              name="Device"
+              value={name}
+              onChange={handleNameChange}
+            />
+          </Box>
+
+          <Stack align="center">
+            <Button colorScheme={"teal"} onClick={handleSubmit}>
+              Add Device
+            </Button>
+          </Stack>
+        </Stack>
+      </form>
+      <Stack direction="row" wrap="wrap" justifyContent="center">
+        {devices.map(renderDeviceBox)}
       </Stack>
 
-    </Stack>
-    
-    </form>
-    <Stack direction="row" wrap="wrap" justifyContent="center">
-      {devices.map(renderDeviceBox)}
-    </Stack>
-
-    <Button colorScheme="teal" mt={5}>View archived devices</Button>
-
+      <Button colorScheme="teal" mt={5}>
+        View archived devices
+      </Button>
     </Stack>
   );
 };
-    export default Demo;
+export default Demo;

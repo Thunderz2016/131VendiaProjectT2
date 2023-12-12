@@ -336,7 +336,7 @@ export const Demo = () => {
                   textAlign="center"
                 />
 
-                <Select 
+                <Select
                   placeholder="OrgAssignment" 
                   value={orgAssignment} 
                   onChange={(e) => handleOrgAssignmentChange(e.target.value)}

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { vendiaClient } from "../vendiaClient";
 import { Stack } from "@chakra-ui/react";
-import { Button, Text, Input } from "@chakra-ui/react";
+import { Text, Input } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Select } from "@chakra-ui/react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUserRole, currentUserEmail } from "../firebase";
+
+import { Table, Thead, Tbody, Tr, Th, Td, Checkbox, Button } from "@chakra-ui/react";
+
 
 const { client } = vendiaClient();
 
@@ -20,6 +23,8 @@ export const DeleteDevice = () => {
   const [testId, setTestId] = useState("");
   const [authUser, setAuthUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [handleSelectDevice, setHandleSelectDevice] = useState([]);
+  const [deleteSelectedDevices, setDeleteSelectedDevices] = useState([]);
 
   const navigate = useNavigate();
 
